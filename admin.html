@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADS GROWTH | Admin Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
+header{background:#151515;padding:18px;border-bottom:2px solid #ff7900}
+h1{color:#ff7900;margin:0;font-size:23px}
+main{max-width:1100px;margin:auto;padding:18px}
+.card{background:#171717;padding:18px;border-radius:12px;margin:15px 0;border:1px solid #333}
+input,button,select{width:100%;padding:13px;margin:7px 0;border-radius:7px;border:1px solid #444;background:#222;color:white;font-size:15px}
+button{background:#ff7900;color:#111;font-weight:bold;border:0;cursor:pointer}
+button.red{background:#d93636;color:white}
+button.green{background:#16a05b;color:white}
+.hidden{display:none}
+small{color:#bbb}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{padding:11px;border-bottom:1px solid #444;text-align:left;font-size:13px}
+.tablebox{overflow-x:auto}
+.orange{color:#ff7900}
+#message{padding:10px;color:#ffb36d}
+</style>
+</head>
+<body>
+<header>
+<h1>ADS GROWTH ADMIN</h1>
+<small>Customer & Payment Management</small>
+</header>
+
+<main>
+<section id="login" class="card">
+<h2 class="orange">Admin Login</h2>
+<input id="email" type="email" placeholder="Admin Email">
+<input id="password" type="password" placeholder="Admin Password">
+<button onclick="loginAdmin()">LOGIN</button>
+<div id="loginMsg"></div>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="card">
+<h2>Welcome Admin</h2>
+<button onclick="loadData()">REFRESH DATA</button>
+<button class="red" onclick="logoutAdmin()">LOGOUT</button>
+<div id="message"></div>
+</div>
+
+<div class="card">
+<h2 class="orange">Customers</h2>
+<div class="tablebox">
+<table>
+<thead><tr>
+<th>Name</th><th>Phone</th><th>Email</th>
+<th>Plan</th><th>Amount</th><th>Status</th><th>Joined</th>
+</tr></thead>
+<tbody id="customers"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h2 class="orange">Payments</h2>
+<div class="tablebox">
+<table>
+<thead><tr>
+<th>Customer ID</th><th>UTR</th><th>Screenshot</th>
+<th>Status</th><th>Action</th>
+</tr></thead>
+<tbody id="payments"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h2 class="orange">API Key Management</h2>
+<div id="keys"></div>
+</div>
+</section>
+</main>
+
+<script>
+const SUPABASE_URL = "https://gzayipryvbdshshjidkd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Xw7tV8bUi4fHO7cfwEaPag__8Hf1dSe";
+const API = "https://ads-growth-whatsapp-api.onrender.com";
+
+const sb = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let token = "";
+let customerData = [];
+
+function msg(t){
+ document.getElementById("message").textContent=t;
+}
+async function loginAdmin(){
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ const out=document.getElementById("loginMsg");
+ out.textContent="Logging in...";
+ try{
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
+  if(error) throw error;
+  token=data.session.access_token;
+  const r=await fetch(API+"/api/admin/me",{
+   headers:{Authorization:"Bearer "+token}
+  });
+  const j=await r.json();
+  if(!r.ok || j.success===false) throw new Error(j.message||"Admin access denied");
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  await loadData();
+ }catch(e){
+  out.textContent="Login Error: "+e.message;
+ }
+}
+async function request(path,options={}){
+ const r=await fetch(API+path,{
+  ...options,
+  headers:{
+   "Content-Type":"application/json",
+   "Authorization":"Bearer "+token,
+   ...(options.headers||{})
+  }
+ });
+ const j=await r.json();
+ if(!r.ok) throw new Error(j.message||"Request failed");
+ return j;
+}
+function safe(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+async function loadData(){
+ try{
+  msg("Loading...");
+  const data=await request("/api/admin/customers");
+  customerData=data.customers||[];
+  const payments=data.payments||[];
+  const keys=data.api_keys||data.apiKeys||[];
+
+  document.getElementById("customers").innerHTML=
+   customerData.map(c=>`
+    <tr>
+     <td>${safe(c.full_name)}</td>
+     <td>${safe(c.phone)}</td>
+     <td>${safe(c.email)}</td>
+     <td>${safe(c.plan)}</td>
+     <td>₹${safe(c.amount)}</td>
+     <td>${safe(c.status)}</td>
+     <td>${safe(c.created_at?new Date(c.created_at).toLocaleString():"")}</td>
+    </tr>`).join("")||"<tr><td colspan='7'>No customers found</td></tr>";
+
+  document.getElementById("payments").innerHTML=
+   payments.map(p=>`
+    <tr>
+     <td>${safe(p.customer_id)}</td>
+     <td>${safe(p.utr)}</td>
+     <td><button onclick="viewScreenshot('${safe(p.id)}')">VIEW</button></td>
+     <td>${safe(p.status)}</td>
+     <td>
+      <button class="green" onclick="decision('${safe(p.id)}','approved')">APPROVE</button>
+      <button class="red" onclick="decision('${safe(p.id)}','rejected')">REJECT</button>
+     </td>
+    </tr>`).join("")||"<tr><td colspan='5'>No payments found</td></tr>";
+
+  document.getElementById("keys").innerHTML=
+   keys.map(k=>`
+    <div class="card">
+     <p>Customer ID: ${safe(k.customer_id)}</p>
+     <p>Key Status: <b>${safe(k.status)}</b></p>
+     <button onclick="changeKey('${safe(k.id)}','active')">ACTIVATE</button>
+     <button onclick="changeKey('${safe(k.id)}','inactive')">DEACTIVATE</button>
+     <button class="red" onclick="changeKey('${safe(k.id)}','revoked')">REVOKE</button>
+    </div>`).join("")||"No API keys found";
+
+  msg("Data loaded successfully.");
+ }catch(e){msg("Error: "+e.message);}
+}
+async function decision(id,status){
+ if(!confirm("Are you sure you want to "+status+" this payment?"))return;
+ try{
+  await request("/api/admin/payments/"+id+"/decision",{
+   method:"POST",
+   body:JSON.stringify({status,decision:status})
+  });
+  alert("Payment updated");
+  loadData();
+ }catch(e){alert(e.message);}
+}
+async function viewScreenshot(id){
+ try{
+  const d=await request("/api/admin/payments/"+id+"/screenshot");
+  const url=d.url||d.signedUrl||d.signed_url;
+  if(!url)throw new Error("Screenshot URL not returned");
+  window.open(url,"_blank");
+ }catch(e){alert(e.message);}
+}
+async function changeKey(id,status){
+ if(!confirm("Change API key status to "+status+"?"))return;
+ try{
+  await request("/api/admin/api-keys/"+id,{
+   method:"PATCH",
+   body:JSON.stringify({status})
+  });
+  alert("API key status updated");
+  loadData();
+ }catch(e){alert(e.message);}
+}
+async function logoutAdmin(){
+ await sb.auth.signOut();
+ token="";
+ document.getElementById("dashboard").classList.add("hidden");
+ document.getElementById("login").classList.remove("hidden");
+}
+</script>
+</body>
+  </html>
+  
