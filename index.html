@@ -4,187 +4,493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
 <title>ADS GROWTH | WhatsApp API</title>
-<meta name="description" content="Grow your business with WhatsApp API automation, bulk messaging and customer support tools.">
+<meta name="description" content="ADS GROWTH WhatsApp API business automation services.">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:Arial,sans-serif;background:#080808;color:#fff;line-height:1.6}
-:root{--orange:#ff791b;--dark:#111;--muted:#aaa}
-header{position:sticky;top:0;background:#101010;border-bottom:1px solid #292929;z-index:10;padding:16px 6%}
-nav{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:21px;font-weight:900;color:var(--orange)}
-nav a{color:#fff;text-decoration:none;margin-left:18px;font-size:14px}
+body{
+ font-family:Arial,sans-serif;
+ background:#080808;
+ color:#fff;
+ line-height:1.6;
+}
+:root{--orange:#ff791b;--muted:#aaa}
+header{
+ position:sticky;top:0;z-index:99;
+ background:#101010;
+ border-bottom:1px solid #292929;
+ padding:15px 6%;
+}
+nav{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:15px;
+}
+.logo{font-size:23px;font-weight:900;color:var(--orange)}
+nav a{
+ color:#fff;text-decoration:none;
+ margin-left:15px;font-size:14px;
+}
 nav a:hover{color:var(--orange)}
-.hero{padding:90px 7% 80px;text-align:center;background:radial-gradient(ellipse at top,#3a1b0a,#080808 65%)}
-.tag{display:inline-block;border:1px solid var(--orange);color:var(--orange);padding:7px 16px;border-radius:30px;font-size:12px}
-h1{font-size:clamp(38px,7vw,70px);line-height:1.1;margin:25px 0}
-h1 span,.orange{color:var(--orange)}
-.hero p{max-width:650px;margin:0 auto 28px;color:#ccc}
-.btn{display:inline-block;background:var(--orange);color:#080808;padding:14px 25px;border-radius:8px;text-decoration:none;font-weight:bold;margin:7px;border:0;cursor:pointer}
+.hero{
+ text-align:center;padding:95px 7%;
+ background:radial-gradient(ellipse at top,#48200a,#080808 70%);
+}
+.tag{
+ display:inline-block;color:var(--orange);
+ border:1px solid var(--orange);
+ padding:7px 17px;border-radius:30px;font-size:12px;
+}
+h1{
+ font-size:clamp(38px,7vw,68px);
+ line-height:1.12;margin:25px 0;
+}
+.orange{color:var(--orange)}
+.hero p{max-width:680px;margin:0 auto 25px;color:#ccc}
+.btn{
+ display:inline-block;background:var(--orange);
+ color:#080808;padding:13px 23px;
+ border:0;border-radius:8px;
+ font-weight:bold;text-decoration:none;
+ cursor:pointer;margin:6px;
+}
 .btn:hover{background:#ff9a50}
-.btn2{background:transparent;color:white;border:1px solid #777}
+.btn2{background:transparent;color:#fff;border:1px solid #777}
 section{padding:65px 7%}
 .heading{text-align:center;margin-bottom:35px}
 .heading h2{font-size:34px}
 .heading p{color:var(--muted);margin-top:8px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.card{background:#151515;border:1px solid #303030;padding:25px;border-radius:15px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:20px;
+}
+.card{
+ background:#151515;border:1px solid #303030;
+ padding:25px;border-radius:15px;
+}
 .card h3{color:var(--orange);margin-bottom:12px}
 .card p,.card li{color:#bbb;font-size:14px}
 .card ul{padding-left:20px;margin:15px 0}
 .price{font-size:32px;font-weight:bold;margin:12px 0}
 .price small{font-size:13px;color:#aaa}
+.popular{border:1px solid var(--orange)}
 .feature{text-align:center}
-.feature .symbol{font-size:35px;margin-bottom:10px}
-.popular{border:1px solid var(--orange);position:relative}
-.popular:before{content:"POPULAR PLAN";position:absolute;top:-13px;left:25px;background:var(--orange);color:#000;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:bold}
-form{max-width:550px;margin:auto;background:#151515;padding:25px;border:1px solid #333;border-radius:15px}
-input,select,textarea{width:100%;padding:14px;margin:9px 0;background:#090909;border:1px solid #444;border-radius:7px;color:white;font-size:15px}
-label{font-size:13px;color:#ddd}
-form button{width:100%;font-size:16px}
-.note{color:#aaa;font-size:12px;margin-top:12px}
-.faq{max-width:800px;margin:auto}
-details{background:#151515;border:1px solid #333;padding:17px;margin:10px 0;border-radius:9px}
+.symbol{font-size:35px;margin-bottom:10px}
+form{
+ max-width:570px;margin:auto;
+ background:#151515;padding:25px;
+ border:1px solid #333;border-radius:15px;
+}
+label{display:block;font-size:13px;color:#ddd;margin-top:12px}
+input,select,textarea{
+ width:100%;padding:14px;margin-top:7px;
+ background:#090909;border:1px solid #444;
+ border-radius:7px;color:#fff;font-size:15px;
+}
+input:focus,select:focus,textarea:focus{
+ outline:1px solid var(--orange);
+}
+form button{width:100%;margin:18px 0 5px;font-size:16px}
+.note{font-size:12px;color:#aaa;margin-top:12px}
+.payment-box{
+ max-width:480px;margin:auto;text-align:center;
+ background:#151515;border:1px solid #333;
+ padding:25px;border-radius:15px;
+}
+.qr{
+ width:100%;max-width:260px;
+ background:#fff;padding:10px;
+ border-radius:10px;margin:18px auto;
+ display:block;
+}
+.result{
+ display:none;background:#102b19;
+ border:1px solid #238548;
+ color:#b7ffca;padding:17px;
+ border-radius:9px;margin-top:15px;
+ overflow-wrap:anywhere;
+}
+.error{
+ display:none;background:#351515;
+ border:1px solid #9e3939;
+ color:#ffbaba;padding:15px;
+ border-radius:9px;margin-top:15px;
+}
+details{
+ background:#151515;border:1px solid #333;
+ padding:17px;margin:10px 0;border-radius:9px;
+}
 summary{cursor:pointer;font-weight:bold;color:var(--orange)}
-details p{color:#bbb;margin-top:12px}
-footer{text-align:center;background:#111;padding:30px;color:#aaa;border-top:1px solid #333}
+details p{color:#bbb;margin-top:10px}
+.faq{max-width:800px;margin:auto}
+footer{
+ text-align:center;background:#111;
+ padding:30px;color:#aaa;border-top:1px solid #333;
+}
 footer b{color:var(--orange)}
-@media(max-width:650px){nav{flex-wrap:wrap}nav div:last-child{width:100%;display:flex;justify-content:center;flex-wrap:wrap}nav a{margin:5px 9px}.hero{padding:65px 6%}section{padding:50px 6%}}
+@media(max-width:650px){
+ nav{flex-wrap:wrap}
+ nav div:last-child{width:100%;display:flex;justify-content:center;flex-wrap:wrap}
+ nav a{margin:5px 8px}
+ .hero{padding:65px 6%}
+ section{padding:50px 6%}
+}
 </style>
 </head>
+
 <body>
 
 <header>
 <nav>
-<div class="logo">ADS GROWTH</div>
-<div>
-<a href="#home">Home</a>
-<a href="#features">Features</a>
-<a href="#plans">Plans</a>
-<a href="#register">Join Now</a>
-</div>
+ <div class="logo">ADS GROWTH</div>
+ <div>
+  <a href="#home">Home</a>
+  <a href="#features">Features</a>
+  <a href="#plans">Plans</a>
+  <a href="#payment">Payment</a>
+  <a href="#register">Join Now</a>
+ </div>
 </nav>
 </header>
 
 <main>
+
+<!-- HERO -->
 <div class="hero" id="home">
-<div class="tag">🚀 WHATSAPP BUSINESS AUTOMATION</div>
-<h1>Grow Your Business<br>With <span>WhatsApp API</span></h1>
-<p>Connect with customers, automate conversations and manage your business communication with powerful WhatsApp API solutions.</p>
-<a class="btn" href="#register">JOIN NOW →</a>
-<a class="btn btn2" href="#plans">Explore Plans</a>
-<p style="margin-top:25px;font-size:12px">Reliable solutions for growing businesses</p>
+ <div class="tag">🚀 WHATSAPP BUSINESS AUTOMATION</div>
+ <h1>Grow Your Business<br>With <span class="orange">WhatsApp API</span></h1>
+ <p>
+  Connect with customers, automate conversations
+  and manage your business communication with
+  WhatsApp Business API solutions.
+ </p>
+ <a class="btn" href="#register">JOIN NOW →</a>
+ <a class="btn btn2" href="#plans">EXPLORE PLANS</a>
+ <p style="margin-top:25px;font-size:12px">
+  Business communication made simpler.
+ </p>
 </div>
 
+<!-- FEATURES -->
 <section id="features">
-<div class="heading"><h2>Our <span class="orange">Features</span></h2><p>Everything you need to grow your business</p></div>
-<div class="grid">
-<div class="card feature"><div class="symbol">💬</div><h3>WhatsApp API</h3><p>Connect your business using supported WhatsApp Business Platform services.</p></div>
-<div class="card feature"><div class="symbol">⚡</div><h3>Automation</h3><p>Build automated customer communication workflows.</p></div>
-<div class="card feature"><div class="symbol">📊</div><h3>Campaign Management</h3><p>Organize and manage your approved messaging campaigns.</p></div>
-<div class="card feature"><div class="symbol">🔐</div><h3>Secure Dashboard</h3><p>Manage your account and service information securely.</p></div>
-</div>
+ <div class="heading">
+  <h2>Our <span class="orange">Features</span></h2>
+  <p>Tools and support for growing businesses</p>
+ </div>
+
+ <div class="grid">
+  <div class="card feature">
+   <div class="symbol">💬</div>
+   <h3>WhatsApp API</h3>
+   <p>Official WhatsApp Business Platform onboarding assistance.</p>
+  </div>
+
+  <div class="card feature">
+   <div class="symbol">⚡</div>
+   <h3>Automation</h3>
+   <p>Plan automated customer communication workflows.</p>
+  </div>
+
+  <div class="card feature">
+   <div class="symbol">📊</div>
+   <h3>Campaign Management</h3>
+   <p>Organize approved business messaging campaigns.</p>
+  </div>
+
+  <div class="card feature">
+   <div class="symbol">🔐</div>
+   <h3>Customer Support</h3>
+   <p>Get assistance with account setup and onboarding.</p>
+  </div>
+ </div>
 </section>
 
+<!-- PLANS -->
 <section id="plans">
-<div class="heading"><h2>Choose Your <span class="orange">Plan</span></h2><p>Contact us for current pricing and availability</p></div>
-<div class="grid">
-<div class="card">
-<h3>STARTER</h3><div class="price">Contact Us</div>
-<ul><li>WhatsApp API setup guidance</li><li>Basic support</li><li>Getting started assistance</li></ul>
-<a class="btn" href="#register">JOIN NOW</a>
-</div>
-<div class="card popular">
-<h3>BUSINESS</h3><div class="price">Contact Us</div>
-<ul><li>Business API onboarding</li><li>Campaign guidance</li><li>Priority support</li></ul>
-<a class="btn" href="#register">JOIN NOW</a>
-</div>
-<div class="card">
-<h3>ENTERPRISE</h3><div class="price">Contact Us</div>
-<ul><li>Advanced setup assistance</li><li>Business support</li><li>Custom requirements</li></ul>
-<a class="btn" href="#register">JOIN NOW</a>
-</div>
-</div>
+ <div class="heading">
+  <h2>Choose Your <span class="orange">Plan</span></h2>
+  <p>Select a plan and register your interest.</p>
+ </div>
+
+ <div class="grid">
+
+  <div class="card">
+   <h3>STARTER</h3>
+   <div class="price">₹4,999</div>
+   <ul>
+    <li>Basic API onboarding assistance</li>
+    <li>Setup guidance</li>
+    <li>Customer support</li>
+   </ul>
+   <a class="btn" href="#register" onclick="selectPlan('Starter')">SELECT PLAN</a>
+  </div>
+
+  <div class="card popular">
+   <h3>BUSINESS ⭐</h3>
+   <div class="price">₹7,999</div>
+   <ul>
+    <li>Business API onboarding</li>
+    <li>Campaign setup guidance</li>
+    <li>Priority support</li>
+   </ul>
+   <a class="btn" href="#register" onclick="selectPlan('Business')">SELECT PLAN</a>
+  </div>
+
+  <div class="card">
+   <h3>ENTERPRISE</h3>
+   <div class="price">₹9,999</div>
+   <ul>
+    <li>Advanced setup assistance</li>
+    <li>Business onboarding guidance</li>
+    <li>Support assistance</li>
+   </ul>
+   <a class="btn" href="#register" onclick="selectPlan('Enterprise')">SELECT PLAN</a>
+  </div>
+
+ </div>
+
+ <p class="note" style="text-align:center">
+  Prices shown in INR. Billing period and final service scope
+  must be confirmed with ADS GROWTH before payment.
+ </p>
 </section>
 
-<section>
-<div class="heading"><h2>Payment <span class="orange">Options</span></h2><p>Payment instructions will be shared after contacting our team.</p></div>
-<div class="grid">
-<div class="card"><h3>📱 UPI Payment</h3><p>Pay using an authorized UPI ID shared by our team.</p></div>
-<div class="card"><h3>🔳 UPI QR Code</h3><p>Request our official payment QR code before making payment.</p></div>
-<div class="card"><h3>🏦 Bank Transfer</h3><p>NEFT, IMPS or RTGS details can be requested from our team.</p></div>
-<div class="card"><h3>💳 Online Payment</h3><p>Ask for an available secure payment gateway link.</p></div>
-</div>
-<p class="note" style="text-align:center">Always verify payment details before transferring money. Never share your UPI PIN or OTP.</p>
+<!-- PAYMENT QR -->
+<section id="payment">
+ <div class="heading">
+  <h2>Payment <span class="orange">QR Code</span></h2>
+  <p>Use the official QR code only after confirming your selected plan.</p>
+ </div>
+
+ <div class="payment-box">
+  <h3 class="orange">ADS GROWTH PAYMENT</h3>
+
+  <img
+   class="qr"
+   src="Screenshot_20261107_093012_PhonePe.jpg"
+   alt="ADS GROWTH Payment QR Code"
+  >
+
+  <p>Scan the QR code using your UPI payment application.</p>
+  <p class="note">
+   Verify the recipient name and amount before paying.
+   Never share your UPI PIN or OTP.
+  </p>
+ </div>
 </section>
 
+<!-- REGISTRATION -->
 <section id="register">
-<div class="heading"><h2>Join <span class="orange">ADS GROWTH</span></h2><p>Submit your details to enquire about our services.</p></div>
-<form id="joinForm">
-<label>Full Name</label>
-<input id="name" placeholder="Enter your full name" required>
-<label>Mobile Number</label>
-<input id="phone" type="tel" placeholder="Enter mobile number" required>
-<label>Email Address</label>
-<input id="email" type="email" placeholder="Enter email address">
-<label>Select Plan</label>
-<select id="plan">
-<option>Starter</option>
-<option>Business</option>
-<option>Enterprise</option>
-</select>
-<label>Your Requirement</label>
-<textarea id="message" rows="3" placeholder="Tell us what you need"></textarea>
-<button class="btn" type="submit">SUBMIT ENQUIRY →</button>
-<p class="note">This form opens WhatsApp to send an enquiry. It does not create an account or process payment.</p>
-</form>
+ <div class="heading">
+  <h2>Customer <span class="orange">Registration</span></h2>
+  <p>Submit your details to register your interest.</p>
+ </div>
+
+ <form id="joinForm">
+
+  <label>Full Name *</label>
+  <input
+   id="name"
+   type="text"
+   placeholder="Enter your full name"
+   maxlength="100"
+   required
+  >
+
+  <label>Mobile Number *</label>
+  <input
+   id="phone"
+   type="tel"
+   placeholder="Enter 10 digit mobile number"
+   maxlength="15"
+   required
+  >
+
+  <label>Email Address</label>
+  <input
+   id="email"
+   type="email"
+   placeholder="Enter email address"
+   maxlength="150"
+  >
+
+  <label>Select Plan *</label>
+  <select id="plan" required>
+   <option value="Starter">Starter - ₹4,999</option>
+   <option value="Business">Business - ₹7,999</option>
+   <option value="Enterprise">Enterprise - ₹9,999</option>
+  </select>
+
+  <label>Your Requirement</label>
+  <textarea
+   id="message"
+   rows="3"
+   maxlength="1000"
+   placeholder="Tell us what you need"
+  ></textarea>
+
+  <button class="btn" id="submitBtn" type="submit">
+   SUBMIT REGISTRATION →
+  </button>
+
+  <div class="result" id="successBox">
+   <h3>Registration Successful! ✅</h3>
+   <p>Your registration has been received.</p>
+   <p>Customer ID:</p>
+   <strong id="customerId"></strong>
+   <p style="margin-top:10px">
+    Save your Customer ID for future reference.
+   </p>
+  </div>
+
+  <div class="error" id="errorBox"></div>
+
+  <p class="note">
+   Registration does not confirm payment or activate an API account.
+   Payment verification and service activation are handled separately.
+  </p>
+
+ </form>
 </section>
 
+<!-- FAQ -->
 <section id="faq">
-<div class="heading"><h2>Frequently Asked <span class="orange">Questions</span></h2></div>
-<div class="faq">
-<details><summary>What is WhatsApp Business API?</summary><p>It is an official platform for businesses to communicate with customers at scale using approved tools and policies.</p></details>
-<details><summary>How can I join?</summary><p>Submit the enquiry form and our team can discuss onboarding and plan details.</p></details>
-<details><summary>Is payment automatic?</summary><p>No. This demo website does not collect or verify payments. Confirm payment details directly with the business.</p></details>
-<details><summary>When will I get API access?</summary><p>Access depends on business verification, platform eligibility and setup. No automatic API key is generated by this page.</p></details>
-</div>
+ <div class="heading">
+  <h2>Frequently Asked <span class="orange">Questions</span></h2>
+ </div>
+
+ <div class="faq">
+  <details>
+   <summary>What is WhatsApp Business API?</summary>
+   <p>
+    It is an official platform that allows eligible businesses
+    to communicate with customers using approved tools and policies.
+   </p>
+  </details>
+
+  <details>
+   <summary>How can I join ADS GROWTH?</summary>
+   <p>
+    Select a plan and submit the customer registration form.
+   </p>
+  </details>
+
+  <details>
+   <summary>Is payment automatically verified?</summary>
+   <p>
+    No. Payment verification is currently a manual process.
+    Registration does not mean payment has been approved.
+   </p>
+  </details>
+
+  <details>
+   <summary>When will I receive API access?</summary>
+   <p>
+    API access depends on eligibility, business verification,
+    official WhatsApp setup and approval.
+   </p>
+  </details>
+ </div>
 </section>
+
 </main>
 
 <footer>
-<p><b>ADS GROWTH WHATSAPP API</b></p>
-<p>Business communication made simpler.</p>
-<p style="margin-top:12px">© <span id="year"></span> ADS GROWTH. All rights reserved.</p>
+ <p><b>ADS GROWTH WHATSAPP API</b></p>
+ <p>Business communication made simpler.</p>
+ <p style="margin-top:12px">
+  © <span id="year"></span> ADS GROWTH. All rights reserved.
+ </p>
 </footer>
 
 <script>
-document.getElementById("year").textContent=new Date().getFullYear();
+const API_URL = "https://ads-growth-whatsapp-api.onrender.com";
 
-document.getElementById("joinForm").addEventListener("submit",function(e){
+document.getElementById("year").textContent =
+ new Date().getFullYear();
+
+const prices = {
+ Starter: 4999,
+ Business: 7999,
+ Enterprise: 9999
+};
+
+function selectPlan(plan) {
+ document.getElementById("plan").value = plan;
+}
+
+document.getElementById("joinForm").addEventListener("submit", async function(e) {
  e.preventDefault();
- const name=document.getElementById("name").value.trim();
- const phone=document.getElementById("phone").value.trim();
- const email=document.getElementById("email").value.trim();
- const plan=document.getElementById("plan").value;
- const message=document.getElementById("message").value.trim();
 
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-   alert("Please enter a valid mobile number.");
-   return;
+ const name = document.getElementById("name").value.trim();
+ const phone = document.getElementById("phone").value.trim();
+ const email = document.getElementById("email").value.trim();
+ const plan = document.getElementById("plan").value;
+ const message = document.getElementById("message").value.trim();
+
+ const successBox = document.getElementById("successBox");
+ const errorBox = document.getElementById("errorBox");
+ const submitBtn = document.getElementById("submitBtn");
+
+ successBox.style.display = "none";
+ errorBox.style.display = "none";
+
+ if (!/^[0-9+\-\s]{10,15}$/.test(phone)) {
+  errorBox.textContent = "Please enter a valid mobile number.";
+  errorBox.style.display = "block";
+  return;
  }
 
- const text="Hello ADS GROWTH! I want to enquire about WhatsApp API.%0AName: "+encodeURIComponent(name)+"%0AMobile: "+encodeURIComponent(phone)+"%0AEmail: "+encodeURIComponent(email)+"%0APlan: "+encodeURIComponent(plan)+"%0ARequirement: "+encodeURIComponent(message);
+ submitBtn.disabled = true;
+ submitBtn.textContent = "PLEASE WAIT...";
 
- /* Replace the number below with your official WhatsApp number, including country code. */
- const supportNumber="REPLACE_WITH_YOUR_WHATSAPP_NUMBER";
- if(!/^[0-9]{10,15}$/.test(supportNumber)){
-   alert("Website setup pending: add your official WhatsApp number in the code first.");
-   return;
+ try {
+  const response = await fetch(API_URL + "/api/register", {
+   method: "POST",
+   headers: {
+    "Content-Type": "application/json"
+   },
+   body: JSON.stringify({
+    full_name: name,
+    phone: phone,
+    email: email,
+    plan: plan,
+    amount: prices[plan]
+   })
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+   throw new Error(result.message || "Registration failed.");
+  }
+
+  document.getElementById("customerId").textContent =
+   result.customer.id;
+
+  successBox.style.display = "block";
+  document.getElementById("joinForm").reset();
+
+  successBox.scrollIntoView({
+   behavior: "smooth",
+   block: "center"
+  });
+
+ } catch (error) {
+  errorBox.textContent =
+   "Registration could not be completed. Please try again. " +
+   error.message;
+  errorBox.style.display = "block";
+ } finally {
+  submitBtn.disabled = false;
+  submitBtn.textContent = "SUBMIT REGISTRATION →";
  }
- window.open("https://wa.me/"+supportNumber+"?text="+text,"_blank");
 });
 </script>
+
 </body>
-                              </html>
-  
+ </html>
+ 
