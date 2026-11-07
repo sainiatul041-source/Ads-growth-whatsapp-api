@@ -1,0 +1,17 @@
+
+{
+  "name": "ads-growth-whatsapp-api",
+  "version": "1.0.0",
+  "description": "ADS GROWTH WhatsApp API backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}
