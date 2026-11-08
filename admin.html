@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADS GROWTH | Admin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
@@ -17,33 +18,51 @@ input,button,select{width:100%;padding:13px;margin:7px 0;border-radius:7px;borde
 button{background:#ff7900;color:#111;font-weight:bold;border:0;cursor:pointer}
 button.red{background:#d93636;color:white}
 button.green{background:#16a05b;color:white}
-.hidden{display:none}
+button.blue{background:#2879d0;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.hidden{display:none!important}
 small{color:#bbb}
-table{width:100%;border-collapse:collapse;min-width:650px}
+table{width:100%;border-collapse:collapse;min-width:700px}
 th,td{padding:11px;border-bottom:1px solid #444;text-align:left;font-size:13px}
 .tablebox{overflow-x:auto}
 .orange{color:#ff7900}
-#message{padding:10px;color:#ffb36d}
+#message,#loginMsg{padding:10px;color:#ffb36d;overflow-wrap:anywhere}
+.status{padding:5px 9px;border-radius:5px;background:#333;display:inline-block}
+.keybox{background:#090909;border:1px solid #ff7900;padding:12px;border-radius:8px;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.stat{background:#222;padding:14px;border-radius:8px}
+.stat b{font-size:22px;color:#ff7900;display:block;margin-top:5px}
+.action-buttons{min-width:130px}
+footer{text-align:center;color:#888;padding:20px;font-size:12px}
 </style>
 </head>
+
 <body>
+
 <header>
 <h1>ADS GROWTH ADMIN</h1>
-<small>Customer & Payment Management</small>
+<small>Customer, Payment & API Key Management</small>
 </header>
 
 <main>
+
 <section id="login" class="card">
 <h2 class="orange">Admin Login</h2>
-<input id="email" type="email" placeholder="Admin Email">
-<input id="password" type="password" placeholder="Admin Password">
-<button onclick="loginAdmin()">LOGIN</button>
+<input id="email" type="email" placeholder="Admin Email" autocomplete="username">
+<input id="password" type="password" placeholder="Admin Password" autocomplete="current-password">
+<button id="loginButton" onclick="loginAdmin()">LOGIN</button>
 <div id="loginMsg"></div>
 </section>
 
 <section id="dashboard" class="hidden">
+
 <div class="card">
 <h2>Welcome Admin</h2>
+<div class="grid">
+<div class="stat">Total Customers<b id="totalCustomers">0</b></div>
+<div class="stat">Total Payments<b id="totalPayments">0</b></div>
+<div class="stat">Active API Keys<b id="activeKeys">0</b></div>
+</div>
 <button onclick="loadData()">REFRESH DATA</button>
 <button class="red" onclick="logoutAdmin()">LOGOUT</button>
 <div id="message"></div>
@@ -53,10 +72,18 @@ th,td{padding:11px;border-bottom:1px solid #444;text-align:left;font-size:13px}
 <h2 class="orange">Customers</h2>
 <div class="tablebox">
 <table>
-<thead><tr>
-<th>Name</th><th>Phone</th><th>Email</th>
-<th>Plan</th><th>Amount</th><th>Status</th><th>Joined</th>
-</tr></thead>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Plan</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Joined</th>
+<th>API Key</th>
+</tr>
+</thead>
 <tbody id="customers"></tbody>
 </table>
 </div>
@@ -66,10 +93,15 @@ th,td{padding:11px;border-bottom:1px solid #444;text-align:left;font-size:13px}
 <h2 class="orange">Payments</h2>
 <div class="tablebox">
 <table>
-<thead><tr>
-<th>Customer ID</th><th>UTR</th><th>Screenshot</th>
-<th>Status</th><th>Action</th>
-</tr></thead>
+<thead>
+<tr>
+<th>Customer ID</th>
+<th>UTR</th>
+<th>Screenshot</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
 <tbody id="payments"></tbody>
 </table>
 </div>
@@ -77,145 +109,436 @@ th,td{padding:11px;border-bottom:1px solid #444;text-align:left;font-size:13px}
 
 <div class="card">
 <h2 class="orange">API Key Management</h2>
-<div id="keys"></div>
+<div id="keys">Loading...</div>
 </div>
+
+<div class="card">
+<h2 class="orange">Important Information</h2>
+<p>• Payment approval should be done only after checking the actual payment.</p>
+<p>• API keys are shown only once when generated. Save them securely.</p>
+<p>• Never share your Admin password or Supabase Secret Key.</p>
+</div>
+
 </section>
 </main>
+
+<footer>ADS GROWTH WHATSAPP API ADMIN PANEL</footer>
 
 <script>
 const SUPABASE_URL = "https://gzayipryvbdshshjidkd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Xw7tV8bUi4fHO7cfwEaPag__8Hf1dSe";
 const API = "https://ads-growth-whatsapp-api.onrender.com";
 
-const sb = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const sb = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
+);
+
 let token = "";
 let customerData = [];
+let paymentData = [];
+let keyData = [];
 
-function msg(t){
- document.getElementById("message").textContent=t;
+// BASIC HELPERS
+function msg(text) {
+  document.getElementById("message").textContent = text;
 }
-async function loginAdmin(){
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
- const out=document.getElementById("loginMsg");
- out.textContent="Logging in...";
- try{
-  const {data,error}=await sb.auth.signInWithPassword({email,password});
-  if(error) throw error;
-  token=data.session.access_token;
-  const r=await fetch(API+"/api/admin/me",{
-   headers:{Authorization:"Bearer "+token}
-  });
-  const j=await r.json();
-  if(!r.ok || j.success===false) throw new Error(j.message||"Admin access denied");
+
+function loginMessage(text) {
+  document.getElementById("loginMsg").textContent = text;
+}
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[c]));
+}
+
+function formatDate(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? "" : d.toLocaleString();
+}
+
+function showDashboard() {
   document.getElementById("login").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
-  await loadData();
- }catch(e){
-  out.textContent="Login Error: "+e.message;
- }
 }
-async function request(path,options={}){
- const r=await fetch(API+path,{
-  ...options,
-  headers:{
-   "Content-Type":"application/json",
-   "Authorization":"Bearer "+token,
-   ...(options.headers||{})
+
+function showLogin() {
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+}
+
+// API REQUEST HELPER
+async function request(path, options = {}) {
+  if (!token) {
+    throw new Error("Login session missing. Please login again.");
   }
- });
- const j=await r.json();
- if(!r.ok) throw new Error(j.message||"Request failed");
- return j;
-}
-function safe(v){
- return String(v??"").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-async function loadData(){
- try{
-  msg("Loading...");
-  const data=await request("/api/admin/customers");
-  customerData=data.customers||[];
-  const payments=data.payments||[];
-  const keys=data.api_keys||data.apiKeys||[];
 
-  document.getElementById("customers").innerHTML=
-   customerData.map(c=>`
-    <tr>
-     <td>${safe(c.full_name)}</td>
-     <td>${safe(c.phone)}</td>
-     <td>${safe(c.email)}</td>
-     <td>${safe(c.plan)}</td>
-     <td>₹${safe(c.amount)}</td>
-     <td>${safe(c.status)}</td>
-     <td>${safe(c.created_at?new Date(c.created_at).toLocaleString():"")}</td>
-    </tr>`).join("")||"<tr><td colspan='7'>No customers found</td></tr>";
+  const headers = {
+    "Authorization": "Bearer " + token,
+    ...(options.headers || {})
+  };
 
-  document.getElementById("payments").innerHTML=
-   payments.map(p=>`
-    <tr>
-     <td>${safe(p.customer_id)}</td>
-     <td>${safe(p.utr)}</td>
-     <td><button onclick="viewScreenshot('${safe(p.id)}')">VIEW</button></td>
-     <td>${safe(p.status)}</td>
-     <td>
-      <button class="green" onclick="decision('${safe(p.id)}','approved')">APPROVE</button>
-      <button class="red" onclick="decision('${safe(p.id)}','rejected')">REJECT</button>
-     </td>
-    </tr>`).join("")||"<tr><td colspan='5'>No payments found</td></tr>";
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
-  document.getElementById("keys").innerHTML=
-   keys.map(k=>`
-    <div class="card">
-     <p>Customer ID: ${safe(k.customer_id)}</p>
-     <p>Key Status: <b>${safe(k.status)}</b></p>
-     <button onclick="changeKey('${safe(k.id)}','active')">ACTIVATE</button>
-     <button onclick="changeKey('${safe(k.id)}','inactive')">DEACTIVATE</button>
-     <button class="red" onclick="changeKey('${safe(k.id)}','revoked')">REVOKE</button>
-    </div>`).join("")||"No API keys found";
-
-  msg("Data loaded successfully.");
- }catch(e){msg("Error: "+e.message);}
-}
-async function decision(id,status){
- if(!confirm("Are you sure you want to "+status+" this payment?"))return;
- try{
-  await request("/api/admin/payments/"+id+"/decision",{
-   method:"POST",
-   body:JSON.stringify({status,decision:status})
+  const response = await fetch(API + path, {
+    ...options,
+    headers
   });
-  alert("Payment updated");
-  loadData();
- }catch(e){alert(e.message);}
+
+  let result;
+
+  try {
+    result = await response.json();
+  } catch (e) {
+    throw new Error("Server returned an invalid response");
+  }
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Login session expired. Please login again.");
+    }
+    throw new Error(result.message || "Request failed");
+  }
+
+  return result;
 }
-async function viewScreenshot(id){
- try{
-  const d=await request("/api/admin/payments/"+id+"/screenshot");
-  const url=d.url||d.signedUrl||d.signed_url;
-  if(!url)throw new Error("Screenshot URL not returned");
-  window.open(url,"_blank");
- }catch(e){alert(e.message);}
-}
-async function changeKey(id,status){
- if(!confirm("Change API key status to "+status+"?"))return;
- try{
-  await request("/api/admin/api-keys/"+id,{
-   method:"PATCH",
-   body:JSON.stringify({status})
+
+// CHECK ADMIN SESSION
+async function verifyAdminSession(accessToken) {
+  const response = await fetch(API + "/api/admin/me", {
+    headers: {
+      "Authorization": "Bearer " + accessToken
+    }
   });
-  alert("API key status updated");
-  loadData();
- }catch(e){alert(e.message);}
+
+  let result;
+
+  try {
+    result = await response.json();
+  } catch (e) {
+    throw new Error("Could not verify admin session");
+  }
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "Admin access denied");
+  }
+
+  return result;
 }
-async function logoutAdmin(){
- await sb.auth.signOut();
- token="";
- document.getElementById("dashboard").classList.add("hidden");
- document.getElementById("login").classList.remove("hidden");
+
+// LOGIN
+async function loginAdmin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const button = document.getElementById("loginButton");
+
+  if (!email || !password) {
+    loginMessage("Please enter email and password.");
+    return;
+  }
+
+  button.disabled = true;
+  loginMessage("Logging in...");
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    if (!data.session) {
+      throw new Error("Login session not received");
+    }
+
+    token = data.session.access_token;
+
+    await verifyAdminSession(token);
+
+    showDashboard();
+    loginMessage("");
+
+    document.getElementById("password").value = "";
+
+    await loadData();
+
+  } catch (error) {
+    token = "";
+    loginMessage("Login Error: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
 }
+
+// RESTORE LOGIN AFTER CHROME RELOAD
+async function restoreAdminSession() {
+  loginMessage("Checking saved login...");
+
+  try {
+    const { data, error } = await sb.auth.getSession();
+
+    if (error) throw error;
+
+    if (!data.session) {
+      token = "";
+      showLogin();
+      loginMessage("Please login to continue.");
+      return;
+    }
+
+    token = data.session.access_token;
+
+    await verifyAdminSession(token);
+
+    showDashboard();
+
+    await loadData();
+
+  } catch (error) {
+    console.error("SESSION RESTORE ERROR:", error);
+
+    token = "";
+
+    await sb.auth.signOut();
+
+    showLogin();
+    loginMessage("Session expired or invalid. Please login again.");
+  }
+}
+
+// KEEP TOKEN UPDATED WHEN SUPABASE REFRESHES SESSION
+sb.auth.onAuthStateChange((event, session) => {
+  token = session ? session.access_token : "";
+});
+
+// LOAD ALL DATA
+async function loadData() {
+  try {
+    msg("Loading data...");
+
+    const data = await request("/api/admin/customers");
+
+    customerData = data.customers || [];
+    paymentData = data.payments || [];
+    keyData = data.api_keys || data.apiKeys || [];
+
+    document.getElementById("totalCustomers").textContent =
+      customerData.length;
+
+    document.getElementById("totalPayments").textContent =
+      paymentData.length;
+
+    document.getElementById("activeKeys").textContent =
+      keyData.filter(k => k.status === "active").length;
+
+    // CUSTOMER TABLE
+    document.getElementById("customers").innerHTML =
+      customerData.map(c => {
+        const keyButton = c.status === "approved"
+          ? `<button class="green" onclick="generateKey('${safe(c.id)}')">GENERATE KEY</button>`
+          : `<small>Approve customer first</small>`;
+
+        return `
+        <tr>
+          <td>${safe(c.full_name)}</td>
+          <td>${safe(c.phone)}</td>
+          <td>${safe(c.email)}</td>
+          <td>${safe(c.plan)}</td>
+          <td>₹${safe(c.amount)}</td>
+          <td><span class="status">${safe(c.status)}</span></td>
+          <td>${safe(formatDate(c.created_at))}</td>
+          <td class="action-buttons">${keyButton}</td>
+        </tr>`;
+      }).join("") ||
+      "<tr><td colspan='8'>No customers found</td></tr>";
+
+    // PAYMENT TABLE
+    document.getElementById("payments").innerHTML =
+      paymentData.map(p => `
+        <tr>
+          <td>${safe(p.customer_id)}</td>
+          <td>${safe(p.utr)}</td>
+          <td>
+            ${p.screenshot_path
+              ? `<button class="blue" onclick="viewScreenshot('${safe(p.id)}')">VIEW</button>`
+              : "No screenshot"}
+          </td>
+          <td><span class="status">${safe(p.status)}</span></td>
+          <td class="action-buttons">
+            ${p.status === "pending" ? `
+              <button class="green" onclick="decision('${safe(p.id)}','approved')">APPROVE</button>
+              <button class="red" onclick="decision('${safe(p.id)}','rejected')">REJECT</button>
+            ` : "Processed"}
+          </td>
+        </tr>
+      `).join("") ||
+      "<tr><td colspan='5'>No payments found</td></tr>";
+
+    // API KEY TABLE
+    document.getElementById("keys").innerHTML =
+      keyData.map(k => `
+        <div class="card">
+          <p>Customer ID: ${safe(k.customer_id)}</p>
+          <p>API Key Status: <b>${safe(k.status)}</b></p>
+          <p>Created: ${safe(formatDate(k.created_at))}</p>
+          <button class="green" onclick="changeKey('${safe(k.id)}','active')">ACTIVATE</button>
+          <button class="blue" onclick="changeKey('${safe(k.id)}','inactive')">DEACTIVATE</button>
+          <button class="red" onclick="changeKey('${safe(k.id)}','revoked')">REVOKE</button>
+        </div>
+      `).join("") || "No API keys found";
+
+    msg("Data loaded successfully.");
+
+  } catch (error) {
+    console.error("LOAD DATA ERROR:", error);
+    msg("Error: " + error.message);
+  }
+}
+
+// APPROVE OR REJECT PAYMENT
+async function decision(id, status) {
+  if (!confirm("Are you sure you want to " + status + " this payment?")) {
+    return;
+  }
+
+  try {
+    await request("/api/admin/payments/" + encodeURIComponent(id) + "/decision", {
+      method: "POST",
+      body: JSON.stringify({ status })
+    });
+
+    alert("Payment updated successfully.");
+    await loadData();
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// VIEW PAYMENT SCREENSHOT
+async function viewScreenshot(id) {
+  try {
+    const result = await request(
+      "/api/admin/payments/" + encodeURIComponent(id) + "/screenshot"
+    );
+
+    const url = result.url || result.signedUrl || result.signed_url;
+
+    if (!url) {
+      throw new Error("Screenshot URL not returned");
+    }
+
+    window.open(url, "_blank");
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// GENERATE API KEY
+async function generateKey(customerId) {
+  if (!confirm("Generate a new API key for this approved customer?")) {
+    return;
+  }
+
+  try {
+    const result = await request(
+      "/api/admin/customers/" + encodeURIComponent(customerId) + "/api-key",
+      {
+        method: "POST",
+        body: JSON.stringify({})
+      }
+    );
+
+    if (!result.api_key) {
+      throw new Error("API key was not returned");
+    }
+
+    document.getElementById("message").innerHTML =
+      "API KEY GENERATED. SAVE IT NOW:<div class='keybox' id='newKeyBox'></div><button onclick='copyNewKey()'>COPY API KEY</button>";
+
+    document.getElementById("newKeyBox").textContent = result.api_key;
+
+    alert("API Key generated. Save it securely now. It cannot be viewed again.");
+
+    await loadData();
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// COPY NEW API KEY
+async function copyNewKey() {
+  const key = document.getElementById("newKeyBox")?.textContent;
+
+  if (!key) {
+    alert("No API key available.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(key);
+    alert("API key copied. Save it securely.");
+  } catch (error) {
+    prompt("Copy your API key:", key);
+  }
+}
+
+// CHANGE API KEY STATUS
+async function changeKey(id, status) {
+  if (!confirm("Change API key status to " + status + "?")) {
+    return;
+  }
+
+  try {
+    await request("/api/admin/api-keys/" + encodeURIComponent(id), {
+      method: "PATCH",
+      body: JSON.stringify({ status })
+    });
+
+    alert("API key status updated.");
+    await loadData();
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// LOGOUT
+async function logoutAdmin() {
+  try {
+    await sb.auth.signOut();
+  } catch (error) {
+    console.error(error);
+  }
+
+  token = "";
+  showLogin();
+  loginMessage("You have logged out.");
+}
+
+// START APP
+restoreAdminSession();
 </script>
+
 </body>
-  </html>
-  
+ </html>
+ 
