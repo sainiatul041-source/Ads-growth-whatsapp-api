@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,7 +144,7 @@ border-radius:10px;
 table{
 border-collapse:collapse;
 width:100%;
-min-width:800px;
+min-width:900px;
 }
 th{
 background:linear-gradient(90deg,#21164a,#17274b);
@@ -213,28 +214,20 @@ main{padding:9px}
 
 <main>
 
-<!-- LOGIN -->
 <section id="login" class="panel login-box">
 <h2>Admin Login</h2>
 <p class="muted">Sign in to manage customers and payments.</p>
 
-<input id="email" type="email"
-placeholder="Admin Email"
-autocomplete="username">
+<input id="email" type="email" placeholder="Admin Email" autocomplete="username">
+<input id="password" type="password" placeholder="Admin Password" autocomplete="current-password">
 
-<input id="password" type="password"
-placeholder="Admin Password"
-autocomplete="current-password">
-
-<button class="btn-orange" id="loginButton"
-onclick="loginAdmin()" style="width:100%">
+<button class="btn-orange" id="loginButton" onclick="loginAdmin()" style="width:100%">
 LOGIN
 </button>
 
 <div id="loginMsg"></div>
 </section>
 
-<!-- DASHBOARD -->
 <section id="dashboard" class="hidden">
 
 <div class="panel">
@@ -269,7 +262,6 @@ LOGIN
 </div>
 </div>
 
-<!-- CUSTOMERS -->
 <div class="panel">
 <div class="section-title">
 <h2>👥 Customers</h2>
@@ -288,16 +280,16 @@ LOGIN
 <th>Amount</th>
 <th>Status</th>
 <th>Joined</th>
+<th>API ACTION</th>
 </tr>
 </thead>
 <tbody id="customers">
-<tr><td colspan="8">Loading...</td></tr>
+<tr><td colspan="9">Loading...</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<!-- PAYMENTS -->
 <div class="panel">
 <div class="section-title">
 <h2>▣ Payments</h2>
@@ -323,19 +315,15 @@ LOGIN
 </div>
 </div>
 
-<!-- GENERATED CREDENTIALS -->
 <div class="panel">
 <h2 style="color:var(--orange)">🔑 Client Activation Details</h2>
-<p class="muted">
-Payment approve करने के बाद Client ID, Temporary Password और API Key यहाँ दिखाई देंगे।
-इन्हें सुरक्षित रखें।
-</p>
+<p class="muted">Generate API Key दबाने के बाद Temporary Password और API Key यहाँ दिखाई देंगे। इन्हें सुरक्षित रखें।</p>
 <div id="generatedKey">अभी कोई नया Client Activate नहीं हुआ है।</div>
 </div>
 
 <div class="panel">
 <h2 style="color:var(--orange)">Important</h2>
-<p class="muted">• Payment approve करने से पहले अपने बैंक या UPI में वास्तविक भुगतान जाँचें।</p>
+<p class="muted">• Payment approve करने से पहले बैंक या UPI में वास्तविक भुगतान जाँचें।</p>
 <p class="muted">• Temporary Password और API Key Client को सुरक्षित तरीके से दें।</p>
 <p class="muted">• API Key WhatsApp Cloud API का Access Token नहीं है।</p>
 </div>
@@ -390,7 +378,9 @@ el("login").classList.remove("hidden");
 
 function statusPill(status){
 const s=String(status||"unknown").toLowerCase();
-return `<span class="pill ${safe(s)}">${safe(s.toUpperCase())}</span>`;
+const allowed=["approved","pending","rejected","active","revoked"];
+const cls=allowed.includes(s)?s:"";
+return `<span class="pill ${cls}">${safe(s.toUpperCase())}</span>`;
 }
 
 async function apiRequest(path,options={}){
@@ -443,7 +433,6 @@ button.disabled=true;
 loginMessage("Checking admin login...");
 
 try{
-
 const response=await fetch(API+"/api/admin/login",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -451,7 +440,6 @@ body:JSON.stringify({email,password})
 });
 
 let result={};
-
 try{
 result=await response.json();
 }catch(e){
@@ -493,7 +481,6 @@ if(!token)return;
 message("Loading dashboard data...");
 
 try{
-
 const [customerResult,paymentResult]=await Promise.all([
 apiRequest("/api/admin/customers"),
 apiRequest("/api/admin/payments")
@@ -504,17 +491,13 @@ const payments=paymentResult.payments||[];
 
 el("totalCustomers").textContent=customers.length;
 el("totalPayments").textContent=payments.length;
-
-el("approvedPayments").textContent=
-payments.filter(p=>p.status==="approved").length;
-
-el("pendingPayments").textContent=
-payments.filter(p=>p.status==="pending").length;
+el("approvedPayments").textContent=payments.filter(p=>p.status==="approved").length;
+el("pendingPayments").textContent=payments.filter(p=>p.status==="pending").length;
 
 el("customerCount").textContent=customers.length+" records";
 el("paymentCount").textContent=payments.length+" records";
 
-/* CUSTOMER TABLE */
+/* CUSTOMER TABLE WITH GENERATE KEY BUTTON */
 el("customers").innerHTML=customers.map(c=>`
 <tr>
 <td>${safe(c.id)}</td>
@@ -525,8 +508,13 @@ el("customers").innerHTML=customers.map(c=>`
 <td>₹${safe(c.amount)}</td>
 <td>${statusPill(c.status)}</td>
 <td>${safe(formatDate(c.created_at))}</td>
+<td>
+${c.status==="approved"?
+`<button class="btn-green btn-small" onclick="generateClientKey('${safe(c.id)}')">GENERATE API KEY</button>`:
+`<span class="muted">Approve payment first</span>`}
+</td>
 </tr>
-`).join("")||"<tr><td colspan='8'>No customers found.</td></tr>";
+`).join("")||"<tr><td colspan='9'>No customers found.</td></tr>";
 
 /* PAYMENT TABLE */
 el("payments").innerHTML=payments.map(p=>`
@@ -535,22 +523,13 @@ el("payments").innerHTML=payments.map(p=>`
 <td>${safe(p.customer_id)}</td>
 <td>${safe(p.utr)}</td>
 <td>
-<button class="btn-blue btn-small"
-onclick="viewScreenshot('${safe(p.id)}')">
-VIEW
-</button>
+<button class="btn-blue btn-small" onclick="viewScreenshot('${safe(p.id)}')">VIEW</button>
 </td>
 <td>${statusPill(p.status)}</td>
 <td>
 ${p.status==="pending"?`
-<button class="btn-green btn-small"
-onclick="approvePayment('${safe(p.id)}')">
-APPROVE
-</button>
-<button class="btn-red btn-small"
-onclick="rejectPayment('${safe(p.id)}')">
-REJECT
-</button>
+<button class="btn-green btn-small" onclick="approvePayment('${safe(p.id)}')">APPROVE</button>
+<button class="btn-red btn-small" onclick="rejectPayment('${safe(p.id)}')">REJECT</button>
 `:"Processed"}
 </td>
 </tr>
@@ -564,41 +543,18 @@ message("Error: "+error.message);
 }
 }
 
-/* VIEW PAYMENT SCREENSHOT */
-async function viewScreenshot(id){
+/* GENERATE CLIENT API KEY AND TEMPORARY PASSWORD */
+async function generateClientKey(customerId){
+
+if(!confirm("इस approved client के लिए API Key और login password generate करना चाहते हैं?")){
+return;
+}
 
 try{
+message("Generating API Key and client login...");
 
 const result=await apiRequest(
-"/api/admin/payment-image/"+encodeURIComponent(id)
-);
-
-if(!result.url){
-throw new Error("Screenshot URL not found.");
-}
-
-window.open(result.url,"_blank");
-
-}catch(error){
-alert(error.message);
-}
-}
-
-/* APPROVE PAYMENT */
-async function approvePayment(id){
-
-const confirmApprove=confirm(
-"क्या आपने बैंक/UPI में वास्तविक Payment Verify कर लिया है? Approve करने पर Client Activate होगा।"
-);
-
-if(!confirmApprove)return;
-
-try{
-
-message("Approving payment...");
-
-const result=await apiRequest(
-"/api/admin/approve/"+encodeURIComponent(id),
+"/api/admin/customers/"+encodeURIComponent(customerId)+"/api-key",
 {
 method:"POST",
 body:JSON.stringify({})
@@ -606,45 +562,47 @@ body:JSON.stringify({})
 );
 
 if(!result.success){
-throw new Error(result.message||"Approval failed.");
+throw new Error(result.message||"API Key generation failed.");
 }
 
-showCredentials(result);
+showCredentials(customerId,result);
 
-alert("Client approved successfully. Credentials नीचे दिखाई दे रहे हैं।");
+alert("API Key generated. नीचे Client Details देखें।");
 
 await loadData();
 
 }catch(error){
-alert("Approval Error: "+error.message);
+console.error(error);
+alert("Generate Key Error: "+error.message);
+message("Generate Key Error: "+error.message);
 }
 }
 
 /* SHOW CLIENT CREDENTIALS */
-function showCredentials(result){
+function showCredentials(customerId,result){
 
 const box=el("generatedKey");
 box.innerHTML="";
 box.className="key-reveal";
 
 const heading=document.createElement("h3");
-heading.textContent="✅ CLIENT ACTIVATED";
+heading.textContent="✅ CLIENT ACTIVATION DETAILS";
 
 const customer=document.createElement("p");
-customer.textContent="Customer ID: "+(result.customer_id||"");
+customer.textContent="Customer ID: "+customerId;
 
 const password=document.createElement("p");
 password.textContent="Temporary Password: "+
-(result.temporary_password||"पहले से बना हुआ है / दोबारा जारी नहीं हुआ");
+(result.temporary_password||"पहले से password बना हुआ है। नया password जारी नहीं हुआ।");
 
 const key=document.createElement("div");
 key.className="key-value";
 key.textContent="API KEY: "+
-(result.api_key||"पहले से Active API Key मौजूद है।");
+(result.api_key||"नई API Key response में नहीं मिली।");
 
 const note=document.createElement("p");
 note.className="muted";
-note.textContent="इन Details को सुरक्षित रखें। Temporary Password और API Key को दोबारा दिखाना संभव नहीं हो सकता।";
+note.textContent="Password और API Key को अभी सुरक्षित जगह पर कॉपी कर लें। Raw API Key दोबारा उपलब्ध नहीं हो सकती।";
 
 const copyPassword=document.createElement("button");
 copyPassword.className="btn-blue";
@@ -664,14 +622,14 @@ copyKey.onclick=()=>{
 if(result.api_key){
 copyText(result.api_key);
 }else{
-alert("इस बार नई API Key जारी नहीं हुई।");
+alert("API Key उपलब्ध नहीं है।");
 }
 };
 
 const copyId=document.createElement("button");
 copyId.className="btn-purple";
 copyId.textContent="COPY CUSTOMER ID";
-copyId.onclick=()=>copyText(result.customer_id||"");
+copyId.onclick=()=>copyText(customerId);
 
 box.append(
 heading,customer,password,key,note,
@@ -689,6 +647,55 @@ prompt("Copy this text:",value);
 }
 }
 
+/* VIEW PAYMENT SCREENSHOT */
+async function viewScreenshot(id){
+try{
+const result=await apiRequest(
+"/api/admin/payment-image/"+encodeURIComponent(id)
+);
+
+if(!result.url){
+throw new Error("Screenshot URL not found.");
+}
+
+window.open(result.url,"_blank");
+
+}catch(error){
+alert(error.message);
+}
+}
+
+/* APPROVE PAYMENT */
+async function approvePayment(id){
+
+if(!confirm("क्या आपने बैंक/UPI में वास्तविक Payment Verify कर लिया है?")){
+return;
+}
+
+try{
+message("Approving payment...");
+
+const result=await apiRequest(
+"/api/admin/approve/"+encodeURIComponent(id),
+{
+method:"POST",
+body:JSON.stringify({})
+}
+);
+
+if(!result.success){
+throw new Error(result.message||"Approval failed.");
+}
+
+alert("Payment approved. अब Customers section में जाकर Generate API Key दबाएँ।");
+
+await loadData();
+
+}catch(error){
+alert("Approval Error: "+error.message);
+}
+}
+
 /* REJECT PAYMENT */
 async function rejectPayment(id){
 
@@ -697,7 +704,6 @@ return;
 }
 
 try{
-
 await apiRequest(
 "/api/admin/reject/"+encodeURIComponent(id),
 {
@@ -716,15 +722,11 @@ alert("Reject Error: "+error.message);
 
 /* LOGOUT */
 function logoutAdmin(){
-
 token="";
 sessionStorage.removeItem("ads_admin_token");
-
 showLogin();
 loginMessage("You have logged out.");
-
-el("generatedKey").innerHTML=
-"अभी कोई नया Client Activate नहीं हुआ है।";
+el("generatedKey").innerHTML="अभी कोई नया Client Activate नहीं हुआ है।";
 }
 
 /* RESTORE LOGIN */
@@ -750,3 +752,4 @@ restoreLogin();
 
 </body>
   </html>
+  
