@@ -1,23 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b19">
 <title>ADS GROWTH | Admin Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
 --bg:#070a16;
---panel:#0d1428;
---line:#26365e;
+--panel:#101a34;
+--line:#293b68;
 --orange:#ff9a18;
---purple:#8b35ff;
---blue:#1677ff;
---green:#00c982;
+--green:#00d68b;
 --red:#f32650;
+--blue:#1677ff;
 --white:#f7f8ff;
 --muted:#aab5d1;
 }
@@ -26,259 +23,177 @@ body{
 margin:0;
 background:radial-gradient(ellipse at 50% -20%,#38207855,transparent 45%),var(--bg);
 color:var(--white);
-font-family:Arial,Helvetica,sans-serif
+font-family:Arial,sans-serif;
 }
 header{
-padding:18px 22px;
+padding:18px;
 background:linear-gradient(110deg,#17102e,#080d22 65%,#201044);
 border-bottom:3px solid var(--orange);
-box-shadow:0 5px 24px #ff8a1822
 }
 .head{
 max-width:1250px;
 margin:auto;
 display:flex;
 align-items:center;
-gap:16px
+gap:15px;
 }
 .logo{
-width:58px;
-height:58px;
-border-radius:16px;
-display:grid;
-place-items:center;
+width:55px;height:55px;
+border-radius:15px;
+display:grid;place-items:center;
 background:linear-gradient(145deg,#05c879,#087c5a);
-font-size:32px;
-box-shadow:0 0 22px #00d68b55
+font-size:30px;
 }
-.brand{flex:1;min-width:0}
-h1{margin:0;font-size:clamp(21px,3vw,32px)}
+.brand{flex:1}
+h1{margin:0;font-size:25px}
 h1 span{color:var(--orange)}
-.subtitle{color:#c0c9e1;margin-top:5px;font-size:14px}
+.subtitle{color:#c0c9e1;margin-top:5px;font-size:13px}
 .online{
-border:1px solid #00d68b;
-color:#00e69a;
-padding:9px 14px;
-border-radius:30px;
+border:1px solid var(--green);
+color:var(--green);
+padding:9px 12px;
+border-radius:25px;
+font-size:12px;
 font-weight:bold;
-white-space:nowrap;
-background:#00c98212
 }
-.online i{
-display:inline-block;
-width:8px;height:8px;
-border-radius:50%;
-background:#00e69a;
-margin-right:7px;
-box-shadow:0 0 10px #00e69a
-}
-main{max-width:1250px;margin:auto;padding:18px}
+main{max-width:1250px;margin:auto;padding:16px}
 .hidden{display:none!important}
 .panel{
 background:linear-gradient(145deg,#101a34,#0b1225);
 border:1px solid var(--line);
-border-radius:17px;
+border-radius:16px;
 padding:17px;
-margin:16px 0;
-box-shadow:0 9px 25px #0005
+margin:15px 0;
+box-shadow:0 9px 25px #0005;
 }
-.welcome{
-display:flex;
-align-items:center;
-gap:16px;
-flex-wrap:wrap
-}
-.welcome-icon{
-font-size:42px;
-width:70px;height:70px;
-border-radius:18px;
-display:grid;
-place-items:center;
-background:linear-gradient(145deg,#ffb32b,#ff7900);
-box-shadow:0 0 20px #ff971e55
-}
-.welcome-copy{flex:1;min-width:180px}
-.welcome-copy h2{margin:0 0 7px;font-size:24px}
-.muted{color:var(--muted);font-size:14px}
-.top-actions{display:flex;gap:10px;flex-wrap:wrap}
-
-button{
-border:0;
-border-radius:11px;
-padding:13px 16px;
-font-size:14px;
-font-weight:800;
-cursor:pointer;
-transition:transform .18s,filter .18s,box-shadow .18s;
-box-shadow:0 5px 16px #0005
-}
-button:hover{filter:brightness(1.12);transform:translateY(-2px)}
-button:active{transform:scale(.98)}
-button:disabled{opacity:.55;cursor:not-allowed;transform:none}
-
-.btn-orange{
-background:linear-gradient(135deg,#ffbd24,#ff7900);
-color:#1c1200;
-box-shadow:0 0 18px #ff9b263b
-}
-.btn-red{
-background:linear-gradient(135deg,#ff4265,#d90035);
-color:white;
-box-shadow:0 0 18px #ff17443b
-}
-.btn-green{
-background:linear-gradient(135deg,#20e6a0,#009c6c);
-color:#03251a;
-box-shadow:0 0 16px #00d68b35
-}
-.btn-blue{
-background:linear-gradient(135deg,#31a5ff,#0759e8);
-color:white;
-box-shadow:0 0 16px #1677ff40
-}
-.btn-purple{
-background:linear-gradient(135deg,#b14cff,#6520e8);
-color:white;
-box-shadow:0 0 16px #8b35ff40
-}
-.btn-small{padding:9px 12px;font-size:12px;margin:3px;width:auto}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(4,minmax(0,1fr));
-gap:13px;
-margin:16px 0
-}
-.stat{
-padding:17px;
-border-radius:15px;
-border:1px solid var(--line);
-min-height:112px;
-display:flex;
-align-items:center;
-gap:12px;
-background:#101a35
-}
-.stat .ico{font-size:31px}
-.stat .label{color:#d4dcf0;font-size:13px}
-.stat strong{display:block;font-size:29px;margin-top:7px}
-.stat.blue{background:linear-gradient(145deg,#082e69,#0c1936);border-color:#126bff}
-.stat.green{background:linear-gradient(145deg,#063f32,#0b1f2a);border-color:#00b982}
-.stat.purple{background:linear-gradient(145deg,#30105e,#15152e);border-color:#843bff}
-.stat.red{background:linear-gradient(145deg,#50132d,#201328);border-color:#e72b61}
-.stat.blue strong{color:#45a9ff}
-.stat.green strong{color:#19e6a2}
-.stat.purple strong{color:#bd7aff}
-.stat.red strong{color:#ff6688}
-
-.section-title{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-margin-bottom:13px;
-flex-wrap:wrap
-}
-.section-title h2{margin:0;color:var(--orange);font-size:22px}
-.table-wrap{overflow-x:auto;border:1px solid #26365e;border-radius:12px}
-table{border-collapse:collapse;width:100%;min-width:820px}
-th{
-background:linear-gradient(90deg,#21164a,#17274b);
-color:#f4c4ff;
-text-align:left;
-font-size:12px;
-letter-spacing:.3px
-}
-th,td{
-padding:12px 13px;
-border-bottom:1px solid #1e2c4d;
-font-size:13px;
-white-space:nowrap
-}
-td{color:#e4eaf8}
-tr:hover td{background:#ffffff08}
-.pill{
-display:inline-block;
-padding:6px 10px;
-border-radius:20px;
-font-size:11px;
-font-weight:bold;
-background:#263451;
-color:#d9e5ff
-}
-.pill.approved,.pill.active{
-background:#064b39;color:#64ffbf;border:1px solid #087f5e
-}
-.pill.pending,.pill.inactive{
-background:#56370b;color:#ffd37b;border:1px solid #96600d
-}
-.pill.rejected,.pill.revoked{
-background:#54172b;color:#ff8da6;border:1px solid #a82a4b
-}
-.key-card{
-border:1px solid #293b68;
-background:linear-gradient(120deg,#101a34,#11102c);
-border-radius:13px;
-padding:14px;
-margin:10px 0;
-display:flex;
-align-items:center;
-gap:12px;
-flex-wrap:wrap
-}
-.key-info{flex:1;min-width:180px}
-.key-actions{display:flex;gap:6px;flex-wrap:wrap}
-.key-actions button{width:auto}
-#message,#loginMsg{
-padding:10px;
-color:#ffc77c;
-overflow-wrap:anywhere;
-min-height:18px
-}
+.login-box{max-width:450px;margin:45px auto}
+.login-box h2{color:var(--orange)}
 input{
 width:100%;
-padding:14px;
+padding:15px;
 margin:8px 0;
 border:1px solid #34466f;
 border-radius:10px;
 background:#080f20;
 color:white;
-font-size:15px
+font-size:16px;
 }
-input:focus{outline:2px solid #8b35ff}
-.login-box{max-width:450px;margin:45px auto}
-.login-box h2{color:var(--orange);margin-top:0}
+button{
+border:0;
+border-radius:10px;
+padding:12px 15px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+margin:3px;
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.btn-orange{background:linear-gradient(135deg,#ffbd24,#ff7900);color:#1c1200}
+.btn-green{background:linear-gradient(135deg,#20e6a0,#009c6c);color:#03251a}
+.btn-red{background:linear-gradient(135deg,#ff4265,#d90035);color:white}
+.btn-blue{background:linear-gradient(135deg,#31a5ff,#0759e8);color:white}
+.btn-purple{background:linear-gradient(135deg,#b14cff,#6520e8);color:white}
+.btn-small{padding:8px 10px;font-size:11px}
+.muted{color:var(--muted);font-size:13px}
+#loginMsg,#message{
+padding:10px;
+color:#ffc77c;
+overflow-wrap:anywhere;
+}
+.welcome{
+display:flex;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+}
+.welcome-copy{flex:1}
+.welcome-copy h2{margin:0 0 7px}
+.stats{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px;
+margin:15px 0;
+}
+.stat{
+background:#101a35;
+border:1px solid var(--line);
+border-radius:14px;
+padding:15px;
+}
+.stat span{font-size:13px;color:#d4dcf0}
+.stat strong{display:block;font-size:27px;margin-top:8px}
+.stat.blue strong{color:#45a9ff}
+.stat.green strong{color:#19e6a2}
+.stat.orange strong{color:#ffb33c}
+.stat.red strong{color:#ff6688}
+.section-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:12px;
+}
+.section-title h2{margin:0;color:var(--orange);font-size:21px}
+.table-wrap{
+overflow-x:auto;
+border:1px solid #26365e;
+border-radius:10px;
+}
+table{
+border-collapse:collapse;
+width:100%;
+min-width:800px;
+}
+th{
+background:linear-gradient(90deg,#21164a,#17274b);
+color:#f4c4ff;
+text-align:left;
+font-size:12px;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #1e2c4d;
+font-size:12px;
+white-space:nowrap;
+}
+td{color:#e4eaf8}
+.pill{
+display:inline-block;
+padding:5px 9px;
+border-radius:20px;
+font-size:10px;
+font-weight:bold;
+background:#263451;
+}
+.approved,.active{background:#064b39;color:#64ffbf}
+.pending{background:#56370b;color:#ffd37b}
+.rejected,.revoked{background:#54172b;color:#ff8da6}
 .key-reveal{
 background:#050a16;
 border:1px solid var(--orange);
-padding:13px;
+padding:15px;
 border-radius:10px;
 overflow-wrap:anywhere;
+margin-top:12px;
+}
+.key-value{
 color:#ffd27e;
-margin-top:10px
+font-size:13px;
+overflow-wrap:anywhere;
+margin:10px 0;
 }
 footer{text-align:center;color:#7886a8;padding:22px;font-size:12px}
-
-@media(max-width:800px){
+@media(max-width:750px){
 .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-.welcome{align-items:flex-start}
-.top-actions{width:100%}
-.top-actions button{flex:1}
 }
-@media(max-width:520px){
-header{padding:14px}
-.logo{width:46px;height:46px;font-size:25px}
-.online{font-size:11px;padding:7px 9px}
-.subtitle{font-size:12px}
-main{padding:10px}
-.panel{padding:13px;margin:12px 0}
-.stats{gap:8px}
-.stat{padding:12px;gap:8px;min-height:95px}
-.stat .ico{font-size:23px}
-.stat .label{font-size:11px}
-.stat strong{font-size:24px}
-.welcome-copy h2{font-size:20px}
-.top-actions button{font-size:12px;padding:12px 8px}
+@media(max-width:480px){
+header{padding:13px}
+h1{font-size:20px}
+main{padding:9px}
+.panel{padding:12px}
+.stat{padding:11px}
+.stat strong{font-size:23px}
 }
 </style>
 </head>
@@ -290,114 +205,139 @@ main{padding:10px}
 <div class="logo">✆</div>
 <div class="brand">
 <h1>ADS GROWTH <span>ADMIN</span></h1>
-<div class="subtitle">Customer, Payment &amp; API Key Management</div>
+<div class="subtitle">Customer, Payment & API Key Management</div>
 </div>
-<div class="online"><i></i>ONLINE</div>
+<div class="online">● ONLINE</div>
 </div>
 </header>
 
 <main>
 
+<!-- LOGIN -->
 <section id="login" class="panel login-box">
 <h2>Admin Login</h2>
-<p class="muted">Sign in to manage customers, payments and API keys.</p>
-<input id="email" type="email" placeholder="Admin Email" autocomplete="username">
-<input id="password" type="password" placeholder="Admin Password" autocomplete="current-password">
-<button class="btn-orange" id="loginButton" onclick="loginAdmin()" style="width:100%">LOGIN</button>
+<p class="muted">Sign in to manage customers and payments.</p>
+
+<input id="email" type="email"
+placeholder="Admin Email"
+autocomplete="username">
+
+<input id="password" type="password"
+placeholder="Admin Password"
+autocomplete="current-password">
+
+<button class="btn-orange" id="loginButton"
+onclick="loginAdmin()" style="width:100%">
+LOGIN
+</button>
+
 <div id="loginMsg"></div>
 </section>
 
+<!-- DASHBOARD -->
 <section id="dashboard" class="hidden">
 
 <div class="panel">
 <div class="welcome">
-<div class="welcome-icon">♛</div>
+<div style="font-size:42px">♛</div>
 <div class="welcome-copy">
 <h2>Welcome Admin</h2>
-<div class="muted">Manage your customers, payments and API keys from here.</div>
+<div class="muted">Manage customers, payments and API activation.</div>
 </div>
-<div class="top-actions">
-<button class="btn-orange" onclick="loadData()">↻ &nbsp; REFRESH DATA</button>
-<button class="btn-red" onclick="logoutAdmin()">⇥ &nbsp; LOGOUT</button>
-</div>
+<button class="btn-orange" onclick="loadData()">↻ REFRESH</button>
+<button class="btn-red" onclick="logoutAdmin()">LOGOUT</button>
 </div>
 <div id="message"></div>
 </div>
 
 <div class="stats">
 <div class="stat blue">
-<div class="ico">👥</div>
-<div><div class="label">Total Customers</div><strong id="totalCustomers">0</strong></div>
+<span>Total Customers</span>
+<strong id="totalCustomers">0</strong>
 </div>
 <div class="stat green">
-<div class="ico">▣</div>
-<div><div class="label">Total Payments</div><strong id="totalPayments">0</strong></div>
+<span>Total Payments</span>
+<strong id="totalPayments">0</strong>
 </div>
-<div class="stat purple">
-<div class="ico">🔑</div>
-<div><div class="label">Active API Keys</div><strong id="activeKeys">0</strong></div>
+<div class="stat orange">
+<span>Approved Payments</span>
+<strong id="approvedPayments">0</strong>
 </div>
 <div class="stat red">
-<div class="ico">◷</div>
-<div><div class="label">Pending Payments</div><strong id="pendingPayments">0</strong></div>
+<span>Pending Payments</span>
+<strong id="pendingPayments">0</strong>
 </div>
 </div>
 
+<!-- CUSTOMERS -->
 <div class="panel">
 <div class="section-title">
 <h2>👥 Customers</h2>
 <span class="muted" id="customerCount">0 records</span>
 </div>
+
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>Name</th><th>Phone</th><th>Email</th>
-<th>Plan</th><th>Amount</th><th>Status</th>
-<th>Joined</th><th>API Key</th>
+<th>Customer ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Plan</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Joined</th>
 </tr>
 </thead>
 <tbody id="customers">
-<tr><td colspan="8">No data loaded</td></tr>
+<tr><td colspan="8">Loading...</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 
+<!-- PAYMENTS -->
 <div class="panel">
 <div class="section-title">
 <h2>▣ Payments</h2>
 <span class="muted" id="paymentCount">0 records</span>
 </div>
+
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>Customer ID</th><th>UTR</th><th>Screenshot</th>
-<th>Status</th><th>Action</th>
+<th>Payment ID</th>
+<th>Customer ID</th>
+<th>UTR</th>
+<th>Screenshot</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="payments">
-<tr><td colspan="5">No data loaded</td></tr>
+<tr><td colspan="6">Loading...</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 
+<!-- GENERATED CREDENTIALS -->
 <div class="panel">
-<div class="section-title">
-<h2>🔑 API Key Management</h2>
-<span class="muted" id="keyCount">0 keys</span>
-</div>
-<div id="keys">No API keys found</div>
-<div id="generatedKey"></div>
+<h2 style="color:var(--orange)">🔑 Client Activation Details</h2>
+<p class="muted">
+Payment approve करने के बाद Client ID, Temporary Password और API Key यहाँ दिखाई देंगे।
+इन्हें सुरक्षित रखें।
+</p>
+<div id="generatedKey">अभी कोई नया Client Activate नहीं हुआ है।</div>
 </div>
 
 <div class="panel">
-<h2 style="color:var(--orange)">Important Information</h2>
-<p class="muted">• Payment approval should be done only after checking the actual payment.</p>
-<p class="muted">• API keys are shown only once when generated. Save them securely.</p>
-<p class="muted">• Never share your Admin password or Supabase Secret Key.</p>
+<h2 style="color:var(--orange)">Important</h2>
+<p class="muted">• Payment approve करने से पहले अपने बैंक या UPI में वास्तविक भुगतान जाँचें।</p>
+<p class="muted">• Temporary Password और API Key Client को सुरक्षित तरीके से दें।</p>
+<p class="muted">• API Key WhatsApp Cloud API का Access Token नहीं है।</p>
 </div>
 
 </section>
@@ -406,30 +346,12 @@ main{padding:10px}
 <footer>♛ ADS GROWTH WHATSAPP API | Powered by ADS GROWTH</footer>
 
 <script>
-const SUPABASE_URL = "https://gzayipryvbdshshjidkd.supabase.co";
-const SUPABASE_KEY = "sb_publishable_Xw7tV8bUi4fHO7cfwEaPag__8Hf1dSe";
 const API = "https://ads-growth-whatsapp-api.onrender.com";
 
-const sb = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY,
-{
-auth:{
-persistSession:true,
-autoRefreshToken:true,
-detectSessionInUrl:true
-}
-}
-);
+let token = sessionStorage.getItem("ads_admin_token") || "";
 
-let token = "";
-
-function msg(text){
-document.getElementById("message").textContent=text;
-}
-
-function loginMessage(text){
-document.getElementById("loginMsg").textContent=text;
+function el(id){
+return document.getElementById(id);
 }
 
 function safe(value){
@@ -448,153 +370,154 @@ const d=new Date(value);
 return isNaN(d.getTime())?"":d.toLocaleString();
 }
 
+function loginMessage(text){
+el("loginMsg").textContent=text;
+}
+
+function message(text){
+el("message").textContent=text;
+}
+
 function showDashboard(){
-document.getElementById("login").classList.add("hidden");
-document.getElementById("dashboard").classList.remove("hidden");
+el("login").classList.add("hidden");
+el("dashboard").classList.remove("hidden");
 }
 
 function showLogin(){
-document.getElementById("dashboard").classList.add("hidden");
-document.getElementById("login").classList.remove("hidden");
+el("dashboard").classList.add("hidden");
+el("login").classList.remove("hidden");
 }
 
-async function verifyAdminSession(accessToken){
-const response=await fetch(API+"/api/admin/me",{
-headers:{"Authorization":"Bearer "+accessToken}
-});
-let result={};
-try{result=await response.json();}
-catch(e){throw new Error("Could not verify admin session");}
-if(!response.ok || !result.success){
-throw new Error(result.message||"Admin access denied");
-}
-return result;
+function statusPill(status){
+const s=String(status||"unknown").toLowerCase();
+return `<span class="pill ${safe(s)}">${safe(s.toUpperCase())}</span>`;
 }
 
-async function request(path,options={}){
-if(!token)throw new Error("Login session missing. Please login again.");
-
+async function apiRequest(path,options={}){
 const headers={
 "Authorization":"Bearer "+token,
 ...(options.headers||{})
 };
 
-if(options.body && !(options.body instanceof FormData)){
+if(options.body){
 headers["Content-Type"]="application/json";
 }
 
-const response=await fetch(API+path,{...options,headers});
+const response=await fetch(API+path,{
+...options,
+headers
+});
+
 let result={};
 
-try{result=await response.json();}
-catch(e){throw new Error("Server returned an invalid response");}
+try{
+result=await response.json();
+}catch(e){
+throw new Error("Server returned invalid response.");
+}
 
 if(!response.ok){
-if(response.status===401)throw new Error("Login session expired. Please login again.");
-throw new Error(result.message||"Request failed");
+if(response.status===401){
+logoutAdmin();
+throw new Error("Session expired. Please login again.");
 }
+throw new Error(result.message||"Request failed.");
+}
+
 return result;
 }
 
+/* ADMIN LOGIN */
 async function loginAdmin(){
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
-const button=document.getElementById("loginButton");
+
+const email=el("email").value.trim();
+const password=el("password").value;
+const button=el("loginButton");
 
 if(!email||!password){
-loginMessage("Please enter email and password.");
+loginMessage("Email and password required.");
 return;
 }
 
 button.disabled=true;
-loginMessage("Logging in...");
+loginMessage("Checking admin login...");
 
 try{
-const {data,error}=await sb.auth.signInWithPassword({email,password});
-if(error)throw error;
-if(!data.session)throw new Error("Login session not received");
 
-token=data.session.access_token;
-await verifyAdminSession(token);
+const response=await fetch(API+"/api/admin/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email,password})
+});
+
+let result={};
+
+try{
+result=await response.json();
+}catch(e){
+throw new Error("Backend response invalid. Check Render.");
+}
+
+if(!response.ok||!result.success){
+throw new Error(result.message||"Admin login failed.");
+}
+
+if(!result.token){
+throw new Error("Backend did not return login token.");
+}
+
+token=result.token;
+sessionStorage.setItem("ads_admin_token",token);
+
+el("password").value="";
+loginMessage("");
 
 showDashboard();
-loginMessage("");
-document.getElementById("password").value="";
 await loadData();
 
 }catch(error){
 token="";
+sessionStorage.removeItem("ads_admin_token");
 loginMessage("Login Error: "+error.message);
+console.error(error);
 }finally{
 button.disabled=false;
 }
 }
 
-// RESTORE SESSION AFTER RELOAD
-async function restoreAdminSession(){
-try{
-const {data,error}=await sb.auth.getSession();
-if(error)throw error;
-
-if(!data.session){
-token="";
-showLogin();
-loginMessage("Please login to continue.");
-return;
-}
-
-token=data.session.access_token;
-await verifyAdminSession(token);
-showDashboard();
-await loadData();
-
-}catch(error){
-console.error("SESSION RESTORE ERROR:",error);
-token="";
-await sb.auth.signOut();
-showLogin();
-loginMessage("Session expired or invalid. Please login again.");
-}
-}
-
-sb.auth.onAuthStateChange((event,session)=>{
-token=session?session.access_token:"";
-});
-
-function statusPill(status){
-const value=String(status||"unknown").toLowerCase();
-return `<span class="pill ${safe(value)}">${safe(value.toUpperCase())}</span>`;
-}
-
-// LOAD DASHBOARD DATA
+/* LOAD CUSTOMER AND PAYMENT DATA */
 async function loadData(){
+
+if(!token)return;
+
+message("Loading dashboard data...");
+
 try{
-msg("Loading dashboard data...");
 
-const data=await request("/api/admin/customers");
+const [customerResult,paymentResult]=await Promise.all([
+apiRequest("/api/admin/customers"),
+apiRequest("/api/admin/payments")
+]);
 
-const customers=data.customers||[];
-const payments=data.payments||[];
-const keys=data.api_keys||data.apiKeys||[];
+const customers=customerResult.customers||[];
+const payments=paymentResult.payments||[];
 
-document.getElementById("totalCustomers").textContent=customers.length;
-document.getElementById("totalPayments").textContent=payments.length;
-document.getElementById("activeKeys").textContent=keys.filter(k=>k.status==="active").length;
-document.getElementById("pendingPayments").textContent=payments.filter(p=>p.status==="pending").length;
+el("totalCustomers").textContent=customers.length;
+el("totalPayments").textContent=payments.length;
 
-document.getElementById("customerCount").textContent=customers.length+" records";
-document.getElementById("paymentCount").textContent=payments.length+" records";
-document.getElementById("keyCount").textContent=keys.length+" keys";
+el("approvedPayments").textContent=
+payments.filter(p=>p.status==="approved").length;
 
-// CUSTOMER TABLE
-document.getElementById("customers").innerHTML=
-customers.map(c=>{
-const keyButton=c.status==="approved"
-?`<button class="btn-green btn-small" onclick="generateKey('${safe(c.id)}')">GENERATE KEY</button>`
-:`<span class="muted">Approve payment first</span>`;
+el("pendingPayments").textContent=
+payments.filter(p=>p.status==="pending").length;
 
-return `
+el("customerCount").textContent=customers.length+" records";
+el("paymentCount").textContent=payments.length+" records";
+
+/* CUSTOMER TABLE */
+el("customers").innerHTML=customers.map(c=>`
 <tr>
+<td>${safe(c.id)}</td>
 <td>${safe(c.full_name)}</td>
 <td>${safe(c.phone)}</td>
 <td>${safe(c.email)}</td>
@@ -602,154 +525,228 @@ return `
 <td>₹${safe(c.amount)}</td>
 <td>${statusPill(c.status)}</td>
 <td>${safe(formatDate(c.created_at))}</td>
-<td>${keyButton}</td>
-</tr>`;
-}).join("")||"<tr><td colspan='8'>No customers found</td></tr>";
+</tr>
+`).join("")||"<tr><td colspan='8'>No customers found.</td></tr>";
 
-// PAYMENT TABLE
-document.getElementById("payments").innerHTML=
-payments.map(p=>`
+/* PAYMENT TABLE */
+el("payments").innerHTML=payments.map(p=>`
 <tr>
+<td>${safe(p.id)}</td>
 <td>${safe(p.customer_id)}</td>
 <td>${safe(p.utr)}</td>
 <td>
-${p.screenshot_path
-?`<button class="btn-blue btn-small" onclick="viewScreenshot('${safe(p.id)}')">VIEW</button>`
-:"No screenshot"}
+<button class="btn-blue btn-small"
+onclick="viewScreenshot('${safe(p.id)}')">
+VIEW
+</button>
 </td>
 <td>${statusPill(p.status)}</td>
 <td>
 ${p.status==="pending"?`
-<button class="btn-green btn-small" onclick="decision('${safe(p.id)}','approved')">APPROVE</button>
-<button class="btn-red btn-small" onclick="decision('${safe(p.id)}','rejected')">REJECT</button>
+<button class="btn-green btn-small"
+onclick="approvePayment('${safe(p.id)}')">
+APPROVE
+</button>
+<button class="btn-red btn-small"
+onclick="rejectPayment('${safe(p.id)}')">
+REJECT
+</button>
 `:"Processed"}
 </td>
 </tr>
-`).join("")||"<tr><td colspan='5'>No payments found</td></tr>";
+`).join("")||"<tr><td colspan='6'>No payments found.</td></tr>";
 
-// API KEY MANAGEMENT
-document.getElementById("keys").innerHTML=
-keys.map(k=>`
-<div class="key-card">
-<div class="key-info">
-<b>Customer ID:</b> ${safe(k.customer_id)}<br>
-<span class="muted">Status: ${statusPill(k.status)} &nbsp; Created: ${safe(formatDate(k.created_at))}</span>
-</div>
-<div class="key-actions">
-<button class="btn-green btn-small" onclick="changeKey('${safe(k.id)}','active')">ACTIVATE</button>
-<button class="btn-blue btn-small" onclick="changeKey('${safe(k.id)}','inactive')">DEACTIVATE</button>
-<button class="btn-red btn-small" onclick="changeKey('${safe(k.id)}','revoked')">REVOKE</button>
-</div>
-</div>
-`).join("")||"No API keys found";
-
-msg("Dashboard data loaded successfully.");
+message("Dashboard data loaded successfully.");
 
 }catch(error){
-console.error("LOAD DATA ERROR:",error);
-msg("Error: "+error.message);
+console.error(error);
+message("Error: "+error.message);
 }
 }
 
-// APPROVE OR REJECT PAYMENT
-async function decision(id,status){
-if(!confirm("Are you sure you want to "+status+" this payment?"))return;
-
-try{
-await request("/api/admin/payments/"+encodeURIComponent(id)+"/decision",{
-method:"POST",
-body:JSON.stringify({status})
-});
-alert("Payment updated successfully.");
-await loadData();
-}catch(error){alert(error.message);}
-}
-
-// VIEW PAYMENT SCREENSHOT
+/* VIEW PAYMENT SCREENSHOT */
 async function viewScreenshot(id){
+
 try{
-const result=await request("/api/admin/payments/"+encodeURIComponent(id)+"/screenshot");
-const url=result.url||result.signedUrl||result.signed_url;
-if(!url)throw new Error("Screenshot URL not returned");
-window.open(url,"_blank");
-}catch(error){alert(error.message);}
+
+const result=await apiRequest(
+"/api/admin/payment-image/"+encodeURIComponent(id)
+);
+
+if(!result.url){
+throw new Error("Screenshot URL not found.");
 }
 
-// GENERATE API KEY
-async function generateKey(customerId){
-if(!confirm("Generate a new API key for this approved customer?"))return;
+window.open(result.url,"_blank");
+
+}catch(error){
+alert(error.message);
+}
+}
+
+/* APPROVE PAYMENT */
+async function approvePayment(id){
+
+const confirmApprove=confirm(
+"क्या आपने बैंक/UPI में वास्तविक Payment Verify कर लिया है? Approve करने पर Client Activate होगा।"
+);
+
+if(!confirmApprove)return;
 
 try{
-const result=await request(
-"/api/admin/customers/"+encodeURIComponent(customerId)+"/api-key",
+
+message("Approving payment...");
+
+const result=await apiRequest(
+"/api/admin/approve/"+encodeURIComponent(id),
 {
 method:"POST",
 body:JSON.stringify({})
 }
 );
 
-if(!result.api_key)throw new Error("API key was not returned");
+if(!result.success){
+throw new Error(result.message||"Approval failed.");
+}
 
-const box=document.getElementById("generatedKey");
+showCredentials(result);
+
+alert("Client approved successfully. Credentials नीचे दिखाई दे रहे हैं।");
+
+await loadData();
+
+}catch(error){
+alert("Approval Error: "+error.message);
+}
+}
+
+/* SHOW CLIENT CREDENTIALS */
+function showCredentials(result){
+
+const box=el("generatedKey");
 box.innerHTML="";
 box.className="key-reveal";
 
-const title=document.createElement("p");
-title.textContent="NEW API KEY — SAVE IT NOW. It may not be shown again.";
+const heading=document.createElement("h3");
+heading.textContent="✅ CLIENT ACTIVATED";
 
-const value=document.createElement("div");
-value.textContent=result.api_key;
+const customer=document.createElement("p");
+customer.textContent="Customer ID: "+(result.customer_id||"");
 
-const copy=document.createElement("button");
-copy.className="btn-purple";
-copy.textContent="COPY API KEY";
-copy.onclick=()=>copyNewKey(result.api_key);
+const password=document.createElement("p");
+password.textContent="Temporary Password: "+
+(result.temporary_password||"पहले से बना हुआ है / दोबारा जारी नहीं हुआ");
 
-box.append(title,value,copy);
+const key=document.createElement("div");
+key.className="key-value";
+key.textContent="API KEY: "+
+(result.api_key||"पहले से Active API Key मौजूद है।");
 
-alert("API Key generated. Save it securely now.");
-await loadData();
+const note=document.createElement("p");
+note.className="muted";
+note.textContent="इन Details को सुरक्षित रखें। Temporary Password और API Key को दोबारा दिखाना संभव नहीं हो सकता।";
 
-}catch(error){alert(error.message);}
+const copyPassword=document.createElement("button");
+copyPassword.className="btn-blue";
+copyPassword.textContent="COPY PASSWORD";
+copyPassword.onclick=()=>{
+if(result.temporary_password){
+copyText(result.temporary_password);
+}else{
+alert("इस बार नया Password जारी नहीं हुआ।");
+}
+};
+
+const copyKey=document.createElement("button");
+copyKey.className="btn-green";
+copyKey.textContent="COPY API KEY";
+copyKey.onclick=()=>{
+if(result.api_key){
+copyText(result.api_key);
+}else{
+alert("इस बार नई API Key जारी नहीं हुई।");
+}
+};
+
+const copyId=document.createElement("button");
+copyId.className="btn-purple";
+copyId.textContent="COPY CUSTOMER ID";
+copyId.onclick=()=>copyText(result.customer_id||"");
+
+box.append(
+heading,customer,password,key,note,
+copyPassword,copyKey,copyId
+);
 }
 
-// COPY API KEY
-async function copyNewKey(key){
+/* COPY TEXT */
+async function copyText(value){
 try{
-await navigator.clipboard.writeText(key);
-alert("API key copied. Save it securely.");
+await navigator.clipboard.writeText(value);
+alert("Copied successfully.");
+}catch(e){
+prompt("Copy this text:",value);
+}
+}
+
+/* REJECT PAYMENT */
+async function rejectPayment(id){
+
+if(!confirm("क्या आप इस Payment को Reject करना चाहते हैं?")){
+return;
+}
+
+try{
+
+await apiRequest(
+"/api/admin/reject/"+encodeURIComponent(id),
+{
+method:"POST",
+body:JSON.stringify({})
+}
+);
+
+alert("Payment rejected.");
+await loadData();
+
 }catch(error){
-prompt("Copy your API key:",key);
+alert("Reject Error: "+error.message);
 }
 }
 
-// CHANGE API KEY STATUS
-async function changeKey(id,status){
-if(!confirm("Change API key status to "+status+"?"))return;
+/* LOGOUT */
+function logoutAdmin(){
 
-try{
-await request("/api/admin/api-keys/"+encodeURIComponent(id),{
-method:"PATCH",
-body:JSON.stringify({status})
-});
-alert("API key status updated.");
-await loadData();
-}catch(error){alert(error.message);}
-}
-
-// LOGOUT
-async function logoutAdmin(){
-try{await sb.auth.signOut();}
-catch(error){console.error(error);}
 token="";
+sessionStorage.removeItem("ads_admin_token");
+
 showLogin();
 loginMessage("You have logged out.");
+
+el("generatedKey").innerHTML=
+"अभी कोई नया Client Activate नहीं हुआ है।";
 }
 
-// START APP
-restoreAdminSession();
+/* RESTORE LOGIN */
+async function restoreLogin(){
+
+if(!token){
+showLogin();
+return;
+}
+
+try{
+showDashboard();
+await loadData();
+}catch(error){
+logoutAdmin();
+loginMessage("Please login again.");
+}
+}
+
+/* START */
+restoreLogin();
 </script>
 
 </body>
   </html>
-  
