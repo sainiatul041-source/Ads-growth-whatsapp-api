@@ -1,471 +1,300 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
-<title>ADS GROWTH | WhatsApp API</title>
-<meta name="description" content="ADS GROWTH WhatsApp API business automation services.">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:Arial,sans-serif;background:#080808;color:#fff;line-height:1.6}
-:root{--orange:#ff791b;--muted:#aaa}
-header{position:sticky;top:0;z-index:99;background:#101010;border-bottom:1px solid #292929;padding:15px 6%}
-nav{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:23px;font-weight:900;color:var(--orange)}
-nav a{color:#fff;text-decoration:none;margin-left:15px;font-size:14px}
-nav a:hover{color:var(--orange)}
-.hero{text-align:center;padding:90px 7%;background:radial-gradient(ellipse at top,#48200a,#080808 70%)}
-.tag{display:inline-block;color:var(--orange);border:1px solid var(--orange);padding:7px 17px;border-radius:30px;font-size:12px}
-h1{font-size:clamp(38px,7vw,68px);line-height:1.12;margin:25px 0}
-.orange{color:var(--orange)}
-.hero p{max-width:680px;margin:0 auto 25px;color:#ccc}
-.btn{display:inline-block;background:var(--orange);color:#080808;padding:13px 23px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer;margin:6px}
-.btn:hover{background:#ff9a50}
-.btn2{background:transparent;color:#fff;border:1px solid #777}
-section{padding:65px 7%}
-.heading{text-align:center;margin-bottom:35px}
-.heading h2{font-size:34px}
-.heading p{color:var(--muted);margin-top:8px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.card{background:#151515;border:1px solid #303030;padding:25px;border-radius:15px}
-.card h3{color:var(--orange);margin-bottom:12px}
-.card p,.card li{color:#bbb;font-size:14px}
-.card ul{padding-left:20px;margin:15px 0}
-.price{font-size:32px;font-weight:bold;margin:12px 0}
-.price small{font-size:13px;color:#aaa}
-.popular{border:1px solid var(--orange)}
-.feature{text-align:center}
-.symbol{font-size:35px;margin-bottom:10px}
-form{max-width:570px;margin:auto;background:#151515;padding:25px;border:1px solid #333;border-radius:15px}
-label{display:block;font-size:13px;color:#ddd;margin-top:12px}
-input,select,textarea{width:100%;padding:14px;margin-top:7px;background:#090909;border:1px solid #444;border-radius:7px;color:#fff;font-size:15px}
-input:focus,select:focus,textarea:focus{outline:1px solid var(--orange)}
-form button{width:100%;margin:18px 0 5px}
-.note{font-size:12px;color:#aaa;margin-top:12px}
-.payment-box{max-width:520px;margin:auto;text-align:center;background:#151515;border:1px solid #333;padding:25px;border-radius:15px}
-.qr{width:100%;max-width:260px;background:#fff;padding:10px;border-radius:10px;margin:18px auto;display:block}
-.result{display:none;background:#102b19;border:1px solid #238548;color:#b7ffca;padding:17px;border-radius:9px;margin-top:15px;overflow-wrap:anywhere}
-.error{display:none;background:#351515;border:1px solid #9e3939;color:#ffbaba;padding:15px;border-radius:9px;margin-top:15px;overflow-wrap:anywhere}
-.info{display:none;background:#17233b;border:1px solid #365b9c;color:#c8ddff;padding:15px;border-radius:9px;margin-top:15px;overflow-wrap:anywhere}
-.payment-box .btn{width:100%;margin:15px 0 0}
-details{background:#151515;border:1px solid #333;padding:17px;margin:10px 0;border-radius:9px}
-summary{cursor:pointer;font-weight:bold;color:var(--orange)}
-details p{color:#bbb;margin-top:10px}
-.faq{max-width:800px;margin:auto}
-footer{text-align:center;background:#111;padding:30px;color:#aaa;border-top:1px solid #333}
-footer b{color:var(--orange)}
-.hidden{display:none!important}
-button:disabled{opacity:.6;cursor:not-allowed}
-@media(max-width:650px){
-nav{flex-wrap:wrap}
-nav div:last-child{width:100%;display:flex;justify-content:center;flex-wrap:wrap}
-nav a{margin:5px 8px}
-.hero{padding:60px 6%}
-section{padding:48px 6%}
-}
-</style>
-</head>
-
-<body>
-<header>
-<nav>
-<div class="logo">ADS GROWTH</div>
-<div>
-<a href="#home">Home</a>
-<a href="#features">Features</a>
-<a href="#plans">Plans</a>
-<a href="#payment">Payment</a>
-<a href="#register">Join Now</a>
-</div>
-</nav>
-</header>
-
-<main>
-
-<div class="hero" id="home">
-<div class="tag">🚀 WHATSAPP BUSINESS AUTOMATION</div>
-<h1>Grow Your Business<br>With <span class="orange">WhatsApp API</span></h1>
-<p>Connect with customers, automate conversations and manage your business communication with WhatsApp Business API solutions.</p>
-<a class="btn" href="#register">JOIN NOW →</a>
-<a class="btn btn2" href="#plans">EXPLORE PLANS</a>
-<p style="margin-top:25px;font-size:12px">Business communication made simpler.</p>
-</div>
-
-<section id="features">
-<div class="heading">
-<h2>Our <span class="orange">Features</span></h2>
-<p>Tools and support for growing businesses</p>
-</div>
-<div class="grid">
-<div class="card feature"><div class="symbol">💬</div><h3>WhatsApp API</h3><p>Official WhatsApp Business Platform onboarding assistance.</p></div>
-<div class="card feature"><div class="symbol">⚡</div><h3>Automation</h3><p>Plan automated customer communication workflows.</p></div>
-<div class="card feature"><div class="symbol">📊</div><h3>Campaign Management</h3><p>Organize approved business messaging campaigns.</p></div>
-<div class="card feature"><div class="symbol">🔐</div><h3>Customer Support</h3><p>Get assistance with account setup and onboarding.</p></div>
-</div>
-</section>
-
-<section id="plans">
-<div class="heading">
-<h2>Choose Your <span class="orange">Plan</span></h2>
-<p>Select a plan and register your interest.</p>
-</div>
-<div class="grid">
-<div class="card">
-<h3>STARTER</h3><div class="price">₹4,999</div>
-<ul><li>Basic API onboarding assistance</li><li>Setup guidance</li><li>Customer support</li></ul>
-<a class="btn" href="#register" onclick="selectPlan('Starter')">SELECT PLAN</a>
-</div>
-<div class="card popular">
-<h3>BUSINESS ⭐</h3><div class="price">₹7,999</div>
-<ul><li>Business API onboarding</li><li>Campaign setup guidance</li><li>Priority support</li></ul>
-<a class="btn" href="#register" onclick="selectPlan('Business')">SELECT PLAN</a>
-</div>
-<div class="card">
-<h3>ENTERPRISE</h3><div class="price">₹9,999</div>
-<ul><li>Advanced setup assistance</li><li>Business onboarding guidance</li><li>Support assistance</li></ul>
-<a class="btn" href="#register" onclick="selectPlan('Enterprise')">SELECT PLAN</a>
-</div>
-</div>
-<p class="note" style="text-align:center">Prices shown in INR. Billing period and final service scope must be confirmed before payment.</p>
-</section>
-
-<section id="payment">
-<div class="heading">
-<h2>Payment <span class="orange">QR Code</span></h2>
-<p>Scan the QR code to pay for your selected plan.</p>
-</div>
-<div class="payment-box">
-<h3 class="orange">ADS GROWTH PAYMENT</h3>
-<img class="qr" src="Screenshot_20261107_093012_PhonePe.jpg" alt="ADS GROWTH Payment QR Code">
-<p>Scan using PhonePe, Google Pay or another UPI application.</p>
-<p class="note">Please verify recipient name and amount before payment. Never share your UPI PIN or OTP.</p>
-<a class="btn" href="#paymentForm">I HAVE PAID – SUBMIT DETAILS</a>
-</div>
-</section>
-
-<section id="register">
-<div class="heading">
-<h2>Customer <span class="orange">Registration</span></h2>
-<p>Register first to receive your Customer ID.</p>
-</div>
-<form id="joinForm">
-<label>Full Name *</label>
-<input id="name" type="text" placeholder="Enter your full name" maxlength="100" required>
-
-<label>Mobile Number *</label>
-<input id="phone" type="tel" placeholder="Enter mobile number with country code if needed" maxlength="15" required>
-
-<label>Email Address</label>
-<input id="email" type="email" placeholder="Enter email address" maxlength="150">
-
-<label>Select Plan *</label>
-<select id="plan" required>
-<option value="Starter">Starter - ₹4,999</option>
-<option value="Business">Business - ₹7,999</option>
-<option value="Enterprise">Enterprise - ₹9,999</option>
-</select>
-
-<label>Your Requirement</label>
-<textarea id="message" rows="3" maxlength="1000" placeholder="Tell us what you need"></textarea>
-
-<button class="btn" id="submitBtn" type="submit">SUBMIT REGISTRATION →</button>
-
-<div class="result" id="successBox">
-<h3>Registration Successful! ✅</h3>
-<p>Your registration has been received.</p>
-<p>Customer ID:</p>
-<strong id="customerId"></strong>
-<p style="margin-top:10px">Your Customer ID and phone number have been saved on this device for payment submission.</p>
-<a class="btn" href="#paymentForm">CONTINUE TO PAYMENT →</a>
-</div>
-
-<div class="error" id="errorBox" role="alert"></div>
-<p class="note">Registration does not confirm payment or activate an API account.</p>
-</form>
-</section>
-
-<section id="paymentForm">
-<div class="heading">
-<h2>Submit Payment <span class="orange">Details</span></h2>
-<p>After paying, submit your UTR and screenshot for manual verification.</p>
-</div>
-<form id="payForm">
-<label>Customer ID *</label>
-<input id="payCustomerId" type="text" placeholder="Register first to get Customer ID" required>
-
-<label>Registered Mobile Number *</label>
-<input id="payPhone" type="tel" placeholder="Enter the same registered mobile number" maxlength="15" required>
-
-<label>Payment UTR / Transaction Reference *</label>
-<input id="utr" type="text" placeholder="Enter UTR number" minlength="6" maxlength="30" required>
-
-<label>Payment Screenshot *</label>
-<input id="screenshot" type="file" accept="image/jpeg,image/png,image/webp" required>
-<p class="note">JPG, PNG or WEBP only. Maximum file size 5 MB.</p>
-
-<button class="btn" id="paymentBtn" type="submit">SUBMIT PAYMENT PROOF →</button>
-
-<div class="result" id="paymentSuccess">
-<h3>Payment Details Submitted! ✅</h3>
-<p id="paymentSuccessText">Your payment is pending manual verification.</p>
-<p>Payment ID:</p>
-<strong id="paymentId"></strong>
-<p style="margin-top:10px">Please wait for the Admin to verify your payment.</p>
-</div>
-<div class="error" id="paymentError" role="alert"></div>
-<p class="note">Do not submit fake or duplicate payment references. Payment is not automatically verified.</p>
-</form>
-</section>
-
-<section id="apiAccess">
-<div class="heading">
-<h2>API <span class="orange">Activation</span></h2>
-<p>How to receive your API access</p>
-</div>
-<div class="card" style="max-width:650px;margin:auto;text-align:center">
-<div class="symbol">🔐</div>
-<h3>Admin Verified API Access</h3>
-<p>After your payment is verified, the Admin will approve your account and generate your API key.</p>
-<p style="margin-top:12px">Your API key must be delivered securely by the Admin. Never share it publicly.</p>
-<p class="note">API key generation does not itself activate Meta WhatsApp Cloud API. Official Meta credentials and setup are also required.</p>
-</div>
-</section>
-
-<section id="faq">
-<div class="heading"><h2>Frequently Asked <span class="orange">Questions</span></h2></div>
-<div class="faq">
-<details><summary>How can I join ADS GROWTH?</summary><p>Select a plan and submit the customer registration form.</p></details>
-<details><summary>How do I submit payment?</summary><p>Scan the displayed QR code, pay the selected amount, then submit your UTR and screenshot.</p></details>
-<details><summary>Is payment automatically verified?</summary><p>No. Payment verification is manual. The Admin checks the actual payment before approval.</p></details>
-<details><summary>When will I receive API access?</summary><p>After payment approval, the Admin can generate an API key. Official WhatsApp setup and eligibility are also required.</p></details>
-<details><summary>What if I close the website after registration?</summary><p>Your Customer ID and phone number are saved on this device's browser. You can return to submit payment details from the same device and browser.</p></details>
-</div>
-</section>
-
-</main>
-
-<footer>
-<p><b>ADS GROWTH WHATSAPP API</b></p>
-<p>Business communication made simpler.</p>
-<p style="margin-top:12px">© <span id="year"></span> ADS GROWTH. All rights reserved.</p>
-</footer>
-
 <script>
+"use strict";
+
 const API_URL = "https://ads-growth-whatsapp-api.onrender.com";
 
-const getElement = id => document.getElementById(id);
-
-getElement("year").textContent = new Date().getFullYear();
+const $ = (id) => document.getElementById(id);
 
 const prices = {
- Starter:4999,
- Business:7999,
- Enterprise:9999
+  Starter: 4999,
+  Business: 7999,
+  Enterprise: 9999
 };
 
-function selectPlan(plan){
- getElement("plan").value=plan;
+/* Safe HTML element helpers */
+function setText(id, value) {
+  const el = $(id);
+  if (el) el.textContent = String(value ?? "");
 }
 
-/* SAFE MESSAGE FUNCTIONS: prevent null textContent errors */
-function showError(element,text){
- if(!element){
-  alert(text);
-  return;
- }
- element.textContent=text;
- element.style.display="block";
-}
-
-function hideMessage(element){
- if(!element) return;
- element.style.display="none";
- element.textContent="";
-}
-
-function showSuccess(element){
- if(!element) return;
- element.style.display="block";
-}
-
-/* Restore saved customer details */
-(function restoreCustomer(){
- try{
-  const saved=JSON.parse(localStorage.getItem("adsGrowthCustomer")||"null");
-  if(saved && saved.id && saved.phone){
-   getElement("payCustomerId").value=saved.id;
-   getElement("payPhone").value=saved.phone;
+function showBox(id, message) {
+  const el = $(id);
+  if (!el) {
+    alert(message);
+    return;
   }
- }catch(e){
-  console.error("Customer restore error:",e);
- }
+  if (message !== undefined) el.textContent = message;
+  el.style.display = "block";
+}
+
+function hideBox(id) {
+  const el = $(id);
+  if (!el) return;
+  el.style.display = "none";
+  el.textContent = "";
+}
+
+function selectPlan(plan) {
+  const el = $("plan");
+  if (el && prices[plan]) el.value = plan;
+}
+
+/* Read server response safely */
+async function readResponse(response) {
+  const text = await response.text();
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error(
+      "Server returned an invalid response. Please check Render logs."
+    );
+  }
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || "Request failed.");
+  }
+
+  return data;
+}
+
+/* Restore saved customer information */
+(function restoreCustomer() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem("adsGrowthCustomer") || "null"
+    );
+
+    if (saved && saved.id && saved.phone) {
+      if ($("payCustomerId")) $("payCustomerId").value = saved.id;
+      if ($("payPhone")) $("payPhone").value = saved.phone;
+    }
+  } catch (error) {
+    console.error("Restore error:", error);
+  }
 })();
 
-/* REGISTER CUSTOMER */
-getElement("joinForm").addEventListener("submit",async function(e){
- e.preventDefault();
+/* Set current year */
+setText("year", new Date().getFullYear());
 
- const name=getElement("name").value.trim();
- const phone=getElement("phone").value.trim();
- const email=getElement("email").value.trim();
- const plan=getElement("plan").value;
- const message=getElement("message").value.trim();
+/* CUSTOMER REGISTRATION */
+const joinForm = $("joinForm");
 
- const successBox=getElement("successBox");
- const errorBox=getElement("errorBox");
- const button=getElement("submitBtn");
+if (joinForm) {
+  joinForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
- hideMessage(successBox);
- hideMessage(errorBox);
+    hideBox("successBox");
+    hideBox("errorBox");
 
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-  showError(errorBox,"Please enter a valid mobile number.");
-  return;
- }
+    const name = $("name")?.value.trim() || "";
+    const phone = $("phone")?.value.trim() || "";
+    const email = $("email")?.value.trim() || "";
+    const plan = $("plan")?.value || "";
+    const message = $("message")?.value.trim() || "";
 
- button.disabled=true;
- button.textContent="PLEASE WAIT...";
+    const button = $("submitBtn");
 
- try{
-  const response=await fetch(API_URL+"/api/register",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    full_name:name,
-    phone:phone,
-    email:email,
-    plan:plan,
-    amount:prices[plan],
-    message:message
-   })
+    if (!name || !phone || !prices[plan]) {
+      showBox("errorBox", "Please complete all required fields.");
+      return;
+    }
+
+    if (!/^[0-9+\-\s]{10,15}$/.test(phone)) {
+      showBox("errorBox", "Please enter a valid mobile number.");
+      return;
+    }
+
+    if (!button) {
+      alert("Registration button is missing in HTML.");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "PLEASE WAIT...";
+
+    try {
+      const response = await fetch(API_URL + "/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          full_name: name,
+          phone: phone,
+          email: email,
+          plan: plan,
+          amount: prices[plan],
+          message: message
+        })
+      });
+
+      const result = await readResponse(response);
+
+      if (!result.customer || !result.customer.id) {
+        throw new Error("Server did not return Customer ID.");
+      }
+
+      const customer = {
+        id: result.customer.id,
+        phone: phone
+      };
+
+      localStorage.setItem(
+        "adsGrowthCustomer",
+        JSON.stringify(customer)
+      );
+
+      setText("customerId", customer.id);
+
+      if ($("payCustomerId")) {
+        $("payCustomerId").value = customer.id;
+      }
+
+      if ($("payPhone")) {
+        $("payPhone").value = phone;
+      }
+
+      showBox("successBox");
+
+      if ($("successBox")) {
+        $("successBox").scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      showBox(
+        "errorBox",
+        "Registration error: " + error.message
+      );
+
+    } finally {
+      button.disabled = false;
+      button.textContent = "SUBMIT REGISTRATION →";
+    }
   });
+}
 
-  const result=await response.json();
+/* PAYMENT SUBMISSION */
+const payForm = $("payForm");
 
-  if(!response.ok || !result.success){
-   throw new Error(result.message||"Registration failed.");
-  }
+if (payForm) {
+  payForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-  if(!result.customer || !result.customer.id){
-   throw new Error("Customer ID was not returned by server.");
-  }
+    hideBox("paymentSuccess");
+    hideBox("paymentError");
 
-  const customer={
-   id:result.customer.id,
-   phone:phone
-  };
+    const customerId = $("payCustomerId")?.value.trim() || "";
+    const phone = $("payPhone")?.value.trim() || "";
+    const utr = $("utr")?.value.trim() || "";
+    const screenshot = $("screenshot")?.files?.[0];
 
-  localStorage.setItem("adsGrowthCustomer",JSON.stringify(customer));
+    const button = $("paymentBtn");
 
-  getElement("customerId").textContent=customer.id;
-  getElement("payCustomerId").value=customer.id;
-  getElement("payPhone").value=phone;
+    if (!customerId) {
+      showBox("paymentError", "Please register first.");
+      return;
+    }
 
-  showSuccess(successBox);
-  successBox.scrollIntoView({behavior:"smooth",block:"center"});
+    if (!/^[0-9+\-\s]{10,15}$/.test(phone)) {
+      showBox("paymentError", "Enter your registered mobile number.");
+      return;
+    }
 
- }catch(error){
-  showError(errorBox,"Registration error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="SUBMIT REGISTRATION →";
- }
-});
+    if (!/^[A-Za-z0-9]{6,30}$/.test(utr)) {
+      showBox("paymentError", "Enter a valid UTR (6 to 30 characters).");
+      return;
+    }
 
-/* SUBMIT PAYMENT PROOF */
-getElement("payForm").addEventListener("submit",async function(e){
- e.preventDefault();
+    if (!screenshot) {
+      showBox("paymentError", "Please select your payment screenshot.");
+      return;
+    }
 
- const customerId=getElement("payCustomerId").value.trim();
- const phone=getElement("payPhone").value.trim();
- const utr=getElement("utr").value.trim();
- const screenshot=getElement("screenshot").files[0];
+    const allowed = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
 
- const successBox=getElement("paymentSuccess");
- const errorBox=getElement("paymentError");
- const button=getElement("paymentBtn");
+    if (!allowed.includes(screenshot.type)) {
+      showBox("paymentError", "Only JPG, PNG and WEBP are allowed.");
+      return;
+    }
 
- hideMessage(successBox);
- hideMessage(errorBox);
+    if (screenshot.size > 5 * 1024 * 1024) {
+      showBox("paymentError", "Screenshot must be below 5 MB.");
+      return;
+    }
 
- if(!customerId){
-  showError(errorBox,"Please register first and enter your Customer ID.");
-  return;
- }
+    if (!button) {
+      alert("Payment button is missing in HTML.");
+      return;
+    }
 
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-  showError(errorBox,"Please enter the registered mobile number.");
-  return;
- }
+    button.disabled = true;
+    button.textContent = "UPLOADING PAYMENT...";
 
- if(!/^[A-Za-z0-9]{6,30}$/.test(utr)){
-  showError(errorBox,"UTR must contain 6 to 30 letters or numbers without spaces.");
-  return;
- }
+    try {
+      const formData = new FormData();
 
- if(!screenshot){
-  showError(errorBox,"Please select your payment screenshot.");
-  return;
- }
+      formData.append("customer_id", customerId);
+      formData.append("phone", phone);
+      formData.append("utr", utr);
+      formData.append("screenshot", screenshot);
 
- const allowed=["image/jpeg","image/png","image/webp"];
+      const response = await fetch(
+        API_URL + "/api/payment-submit",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
 
- if(!allowed.includes(screenshot.type)){
-  showError(errorBox,"Only JPG, PNG and WEBP screenshots are allowed.");
-  return;
- }
+      const result = await readResponse(response);
 
- if(screenshot.size>5*1024*1024){
-  showError(errorBox,"Screenshot must be smaller than 5 MB.");
-  return;
- }
+      setText(
+        "paymentId",
+        result.payment?.id || "Submitted"
+      );
 
- button.disabled=true;
- button.textContent="UPLOADING PAYMENT...";
+      setText(
+        "paymentSuccessText",
+        result.message || "Payment submitted for manual verification."
+      );
 
- try{
-  const formData=new FormData();
-  formData.append("customer_id",customerId);
-  formData.append("phone",phone);
-  formData.append("utr",utr);
-  formData.append("screenshot",screenshot);
+      showBox("paymentSuccess");
 
-  const response=await fetch(API_URL+"/api/payment-submit",{
-   method:"POST",
-   body:formData
+      if ($("utr")) $("utr").value = "";
+      if ($("screenshot")) $("screenshot").value = "";
+
+      if ($("paymentSuccess")) {
+        $("paymentSuccess").scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+
+    } catch (error) {
+      console.error("Payment error:", error);
+
+      showBox(
+        "paymentError",
+        "Payment submission error: " + error.message
+      );
+
+    } finally {
+      button.disabled = false;
+      button.textContent = "SUBMIT PAYMENT PROOF →";
+    }
   });
+}
 
-  const result=await response.json();
-
-  if(!response.ok || !result.success){
-   throw new Error(result.message||"Payment submission failed.");
-  }
-
-  getElement("paymentId").textContent=
-   result.payment && result.payment.id ? result.payment.id : "Submitted";
-
-  getElement("paymentSuccessText").textContent=
-   result.message||"Your payment is pending manual verification.";
-
-  showSuccess(successBox);
-
-  getElement("utr").value="";
-  getElement("screenshot").value="";
-
-  successBox.scrollIntoView({behavior:"smooth",block:"center"});
-
- }catch(error){
-  showError(errorBox,"Payment submission error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="SUBMIT PAYMENT PROOF →";
- }
-});
-</script>
-</body>
- </html>
+ </script>
  
