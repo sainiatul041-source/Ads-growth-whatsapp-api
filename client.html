@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADS GROWTH Client Dashboard</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:white;font-family:Arial;padding:20px}
+main{max-width:700px;margin:auto}
+h1,h2{color:#ff791b}
+.box{background:#171717;border:1px solid #444;border-radius:12px;padding:20px;margin:15px 0}
+input{width:100%;padding:14px;margin:9px 0;background:#080808;color:white;border:1px solid #555;border-radius:7px}
+button{padding:12px 18px;background:#ff791b;border:0;border-radius:7px;font-weight:bold;margin:5px;cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#b7ffca}
+</style>
+</head>
+<body>
+<main>
+<h1>ADS GROWTH</h1>
+<div class="box" id="loginBox">
+<h2>Client Login</h2>
+<input id="customerId" placeholder="Customer ID">
+<input id="password" type="password" placeholder="Temporary password">
+<button onclick="login()">LOGIN</button>
+<p id="message"></p>
+</div>
+
+<div id="dashboard" hidden>
+<button onclick="loadDashboard()">REFRESH</button>
+<button onclick="logout()">LOGOUT</button>
+<div class="box">
+<h2>My Account</h2>
+<div id="profile"></div>
+</div>
+<div class="box">
+<h2>My API Keys</h2>
+<div id="keys"></div>
+<p>For security, the complete API key is shown only once by Admin at approval.</p>
+</div>
+</div>
+</main>
+
+<script>
+const API="https://ads-growth-whatsapp-api.onrender.com";
+let token=localStorage.getItem("agClientToken")||"";
+const $=id=>document.getElementById(id);
+
+async function request(path,options={}){
+ const r=await fetch(API+path,{
+  ...options,
+  headers:{
+   ...(options.headers||{}),
+   Authorization:"Bearer "+token
+  }
+ });
+ const d=await r.json();
+ if(!r.ok||!d.success)throw Error(d.message||"Request failed");
+ return d;
+}
+
+async function login(){
+ $("message").textContent="Please wait...";
+ try{
+  const r=await fetch(API+"/api/client/login",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    customer_id:$("customerId").value.trim(),
+    password:$("password").value
+   })
+  });
+  const d=await r.json();
+  if(!r.ok||!d.success)throw Error(d.message);
+  token=d.token;
+  localStorage.setItem("agClientToken",token);
+  $("loginBox").hidden=true;
+  $("dashboard").hidden=false;
+  await loadDashboard();
+ }catch(e){$("message").textContent=e.message}
+}
+
+async function loadDashboard(){
+ try{
+  const d=await request("/api/client/dashboard");
+  const c=d.customer;
+  $("profile").textContent=
+   "Name: "+c.full_name+
+   "\nPhone: "+c.phone+
+   "\nEmail: "+(c.email||"-")+
+   "\nPlan: "+c.plan+
+   "\nAmount: ₹"+c.amount+
+   "\nStatus: "+c.status+
+   "\nCustomer ID: "+c.id;
+
+  $("keys").innerHTML="";
+  for(const k of d.api_keys){
+   const div=document.createElement("div");
+   div.className="box";
+   const info=document.createElement("p");
+   info.textContent=
+    "Key: "+k.key_prefix+"...\nStatus: "+k.status+
+    "\nCreated: "+new Date(k.created_at).toLocaleString();
+   div.append(info);
+   if(k.status==="active"){
+    const btn=document.createElement("button");
+    btn.textContent="REVOKE KEY";
+    btn.onclick=()=>revokeKey(k.id);
+    div.append(btn);
+   }
+   $("keys").append(div);
+  }
+ }catch(e){
+  alert(e.message);
+  if(e.message.toLowerCase().includes("session")){
+   logout();
+  }
+ }
+}
+
+async function revokeKey(id){
+ if(!confirm("Revoke this API key?"))return;
+ try{
+  await request("/api/client/revoke-key/"+id,{method:"POST"});
+  alert("API key revoked.");
+  await loadDashboard();
+ }catch(e){alert(e.message)}
+}
+
+function logout(){
+ localStorage.removeItem("agClientToken");
+ token="";
+ location.reload();
+}
+
+if(token){
+ $("loginBox").hidden=true;
+ $("dashboard").hidden=false;
+ loadDashboard();
+}
+</script>
+</body>
+  </html>
+  
