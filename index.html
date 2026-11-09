@@ -6,41 +6,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080808">
 <title>ADS GROWTH | WhatsApp API</title>
+<meta name="description" content="ADS GROWTH WhatsApp Business API onboarding and automation assistance.">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial;background:#080808;color:white;line-height:1.6}
-:root{--orange:#ff791b}
-header{background:#101010;padding:18px 6%;position:sticky;top:0;z-index:9;border-bottom:1px solid #333}
+:root{--orange:#ff791b;--muted:#aaa}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#080808;color:#fff;line-height:1.6}
+header{background:#101010;padding:16px 6%;position:sticky;top:0;z-index:9;border-bottom:1px solid #333}
 nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:25px;font-weight:bold;color:var(--orange)}
-nav a{color:white;text-decoration:none;margin:5px 8px}
+.logo{font-size:25px;font-weight:900;color:var(--orange)}
+nav a{color:#fff;text-decoration:none;margin:5px 8px}
 .hero{text-align:center;padding:75px 6%;background:radial-gradient(ellipse at top,#48200a,#080808 70%)}
+.tag{color:var(--orange)}
 h1{font-size:clamp(36px,7vw,65px);line-height:1.2;margin:20px}
 .orange{color:var(--orange)}
-.hero p{color:#ccc;max-width:650px;margin:15px auto}
+.hero p{color:#ccc;max-width:680px;margin:15px auto}
 .btn{display:inline-block;background:var(--orange);color:#111;padding:13px 22px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer;margin:6px}
-.btn2{background:transparent;color:white;border:1px solid #777}
+.btn2{background:transparent;color:#fff;border:1px solid #777}
 section{padding:55px 6%}
 .heading{text-align:center;margin-bottom:30px}
 .heading h2{font-size:32px}
-.heading p{color:#aaa;margin-top:8px}
+.heading p{color:var(--muted);margin-top:8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
 .card,form,.payment-box{background:#151515;border:1px solid #333;padding:24px;border-radius:15px}
-.card h3{color:var(--orange)}
+.card h3{color:var(--orange);margin-bottom:8px}
 .card p,.card li{color:#bbb;font-size:14px}
 .card ul{padding-left:20px;margin:15px 0}
 .price{font-size:32px;font-weight:bold;margin:12px 0}
 .popular{border-color:var(--orange)}
 .feature{text-align:center}
-.symbol{font-size:35px}
+.symbol{font-size:35px;margin-bottom:8px}
 form{max-width:570px;margin:auto}
 label{display:block;margin-top:13px;font-size:14px;color:#ddd}
-input,select,textarea{width:100%;padding:14px;margin-top:7px;background:#090909;border:1px solid #444;border-radius:7px;color:white;font-size:15px}
+input,select,textarea{width:100%;padding:14px;margin-top:7px;background:#090909;border:1px solid #444;border-radius:7px;color:#fff;font-size:15px}
 button:disabled{opacity:.6}
 form button{width:100%;margin-top:18px}
-.note{font-size:12px;color:#aaa;margin-top:12px}
+.note{font-size:12px;color:var(--muted);margin-top:12px}
 .payment-box{max-width:520px;margin:auto;text-align:center}
-.qr{width:100%;max-width:260px;background:white;padding:10px;border-radius:10px;margin:18px auto;display:block}
+.qr{width:100%;max-width:260px;background:#fff;padding:10px;border-radius:10px;margin:18px auto;display:block}
 .result,.error{display:none;padding:16px;border-radius:9px;margin-top:15px;overflow-wrap:anywhere}
 .result{background:#102b19;border:1px solid #238548;color:#b7ffca}
 .error{background:#351515;border:1px solid #9e3939;color:#ffbaba}
@@ -58,8 +62,8 @@ section{padding:45px 5%}
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
 <nav>
 <div class="logo">ADS GROWTH</div>
@@ -74,10 +78,11 @@ section{padding:45px 5%}
 </header>
 
 <main>
+
 <div class="hero" id="home">
-<p>🚀 WHATSAPP BUSINESS AUTOMATION</p>
+<div class="tag">🚀 WHATSAPP BUSINESS AUTOMATION</div>
 <h1>Grow Your Business<br>With <span class="orange">WhatsApp API</span></h1>
-<p>Connect with customers, automate conversations and manage your business communication with WhatsApp Business API solutions.</p>
+<p>Connect with customers, automate conversations and manage your business communication with WhatsApp Business Platform solutions.</p>
 <a class="btn" href="#register">JOIN NOW →</a>
 <a class="btn btn2" href="#plans">EXPLORE PLANS</a>
 </div>
@@ -139,6 +144,7 @@ section{padding:45px 5%}
 <h2>Customer <span class="orange">Registration</span></h2>
 <p>Register first to receive your Customer ID.</p>
 </div>
+
 <form id="joinForm">
 <label>Full Name *</label>
 <input id="name" type="text" maxlength="100" required placeholder="Enter your full name">
@@ -168,6 +174,7 @@ section{padding:45px 5%}
 <p>Your details have been saved on this device.</p>
 <a class="btn" href="#paymentForm">CONTINUE TO PAYMENT →</a>
 </div>
+
 <div class="error" id="errorBox" role="alert"></div>
 <p class="note">Registration does not confirm payment or activate an API account.</p>
 </form>
@@ -178,6 +185,7 @@ section{padding:45px 5%}
 <h2>Submit Payment <span class="orange">Details</span></h2>
 <p>After paying, submit your UTR and screenshot.</p>
 </div>
+
 <form id="payForm">
 <label>Customer ID *</label>
 <input id="payCustomerId" required placeholder="Register first to get Customer ID">
@@ -200,6 +208,7 @@ section{padding:45px 5%}
 <p>Payment ID:</p>
 <strong id="paymentId"></strong>
 </div>
+
 <div class="error" id="paymentError" role="alert"></div>
 <p class="note">Do not submit fake or duplicate payment references. Payment is not automatically verified.</p>
 </form>
@@ -248,193 +257,242 @@ const prices = {
  Enterprise:9999
 };
 
-function selectPlan(plan){
- if($("plan") && prices[plan]) $("plan").value=plan;
+function selectPlan(plan) {
+ const el = $("plan");
+ if (el && prices[plan]) el.value = plan;
 }
 
-function showBox(id,message){
- const el=$(id);
- if(!el){alert(message || "Page element missing: "+id);return;}
- if(message !== undefined) el.textContent=message;
- el.style.display="block";
+function setText(id, value) {
+ const el = $(id);
+ if (el) el.textContent = String(value ?? "");
 }
 
-function hideBox(id){
- const el=$(id);
- if(!el)return;
- el.style.display="none";
- el.textContent="";
+/* IMPORTANT FIX:
+   Hide the box without deleting its child HTML. */
+function showBox(id, message) {
+ const el = $(id);
+ if (!el) {
+  alert(message || "Page element missing: " + id);
+  return;
+ }
+ if (message !== undefined) {
+  el.textContent = message;
+ }
+ el.style.display = "block";
 }
 
-async function readResponse(response){
- const text=await response.text();
+function hideBox(id) {
+ const el = $(id);
+ if (!el) return;
+ el.style.display = "none";
+}
+
+async function readResponse(response) {
+ const body = await response.text();
  let data;
- try{data=JSON.parse(text);}
- catch(e){throw new Error("Invalid server response. Check Render logs.");}
- if(!response.ok || !data.success){
+
+ try {
+  data = JSON.parse(body);
+ } catch (e) {
+  throw new Error("Server returned an invalid response. Check Render logs.");
+ }
+
+ if (!response.ok || !data.success) {
   throw new Error(data.message || "Request failed.");
  }
+
  return data;
 }
 
-$("year").textContent=new Date().getFullYear();
+setText("year", new Date().getFullYear());
 
 /* Restore saved customer */
-(function(){
- try{
-  const saved=JSON.parse(localStorage.getItem("adsGrowthCustomer")||"null");
-  if(saved && saved.id && saved.phone){
-   $("payCustomerId").value=saved.id;
-   $("payPhone").value=saved.phone;
-  }
- }catch(e){console.error(e);}
-})();
+try {
+ const saved = JSON.parse(localStorage.getItem("adsGrowthCustomer") || "null");
+
+ if (saved && saved.id && saved.phone) {
+  if ($("payCustomerId")) $("payCustomerId").value = saved.id;
+  if ($("payPhone")) $("payPhone").value = saved.phone;
+ }
+} catch (e) {
+ console.error("Restore error:", e);
+}
 
 /* Registration */
-$("joinForm").addEventListener("submit",async function(e){
- e.preventDefault();
- hideBox("successBox");
- hideBox("errorBox");
+const joinForm = $("joinForm");
 
- const name=$("name").value.trim();
- const phone=$("phone").value.trim();
- const email=$("email").value.trim();
- const plan=$("plan").value;
- const message=$("message").value.trim();
- const button=$("submitBtn");
+if (joinForm) {
+ joinForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
 
- if(!name || !prices[plan]){
-  showBox("errorBox","Please complete required fields.");
-  return;
- }
+  hideBox("successBox");
+  hideBox("errorBox");
 
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-  showBox("errorBox","Please enter a valid mobile number.");
-  return;
- }
+  const name = $("name")?.value.trim() || "";
+  const phone = $("phone")?.value.trim() || "";
+  const email = $("email")?.value.trim() || "";
+  const plan = $("plan")?.value || "";
+  const message = $("message")?.value.trim() || "";
+  const button = $("submitBtn");
 
- button.disabled=true;
- button.textContent="PLEASE WAIT...";
-
- try{
-  const response=await fetch(API_URL+"/api/register",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    full_name:name,
-    phone:phone,
-    email:email,
-    plan:plan,
-    amount:prices[plan],
-    message:message
-   })
-  });
-
-  const result=await readResponse(response);
-
-  if(!result.customer || !result.customer.id){
-   throw new Error("Customer ID was not returned by server.");
+  if (!name || !phone || !prices[plan]) {
+   showBox("errorBox", "Please complete all required fields.");
+   return;
   }
 
-  const customer={id:result.customer.id,phone:phone};
+  if (!/^[0-9+\-\s]{10,15}$/.test(phone)) {
+   showBox("errorBox", "Please enter a valid mobile number.");
+   return;
+  }
 
-  localStorage.setItem("adsGrowthCustomer",JSON.stringify(customer));
+  if (!button) {
+   showBox("errorBox", "Registration button is missing.");
+   return;
+  }
 
-  $("customerId").textContent=customer.id;
-  $("payCustomerId").value=customer.id;
-  $("payPhone").value=phone;
+  button.disabled = true;
+  button.textContent = "PLEASE WAIT...";
 
-  showBox("successBox");
-  $("successBox").scrollIntoView({behavior:"smooth",block:"center"});
+  try {
+   const response = await fetch(API_URL + "/api/register", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+     full_name: name,
+     phone: phone,
+     email: email,
+     plan: plan,
+     amount: prices[plan],
+     message: message
+    })
+   });
 
- }catch(error){
-  console.error("Registration error:",error);
-  showBox("errorBox","Registration error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="SUBMIT REGISTRATION →";
- }
-});
+   const result = await readResponse(response);
+
+   if (!result.customer || !result.customer.id) {
+    throw new Error("Server did not return Customer ID. Check Render logs.");
+   }
+
+   const customer = {
+    id: result.customer.id,
+    phone: phone
+   };
+
+   localStorage.setItem("adsGrowthCustomer", JSON.stringify(customer));
+
+   setText("customerId", customer.id);
+
+   if ($("payCustomerId")) $("payCustomerId").value = customer.id;
+   if ($("payPhone")) $("payPhone").value = phone;
+
+   showBox("successBox");
+
+   $("successBox")?.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+   });
+
+  } catch (error) {
+   console.error("Registration error:", error);
+   showBox("errorBox", "Registration error: " + error.message);
+  } finally {
+   button.disabled = false;
+   button.textContent = "SUBMIT REGISTRATION →";
+  }
+ });
+}
 
 /* Payment submission */
-$("payForm").addEventListener("submit",async function(e){
- e.preventDefault();
- hideBox("paymentSuccess");
- hideBox("paymentError");
+const payForm = $("payForm");
 
- const customerId=$("payCustomerId").value.trim();
- const phone=$("payPhone").value.trim();
- const utr=$("utr").value.trim();
- const screenshot=$("screenshot").files[0];
- const button=$("paymentBtn");
+if (payForm) {
+ payForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
 
- if(!customerId){
-  showBox("paymentError","Please register first.");
-  return;
- }
+  hideBox("paymentSuccess");
+  hideBox("paymentError");
 
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-  showBox("paymentError","Enter registered mobile number.");
-  return;
- }
+  const customerId = $("payCustomerId")?.value.trim() || "";
+  const phone = $("payPhone")?.value.trim() || "";
+  const utr = $("utr")?.value.trim() || "";
+  const screenshot = $("screenshot")?.files?.[0];
+  const button = $("paymentBtn");
 
- if(!/^[A-Za-z0-9]{6,30}$/.test(utr)){
-  showBox("paymentError","Enter valid UTR (6 to 30 characters).");
-  return;
- }
+  if (!customerId) {
+   showBox("paymentError", "Please register first.");
+   return;
+  }
 
- if(!screenshot){
-  showBox("paymentError","Please select payment screenshot.");
-  return;
- }
+  if (!/^[0-9+\-\s]{10,15}$/.test(phone)) {
+   showBox("paymentError", "Enter registered mobile number.");
+   return;
+  }
 
- if(!["image/jpeg","image/png","image/webp"].includes(screenshot.type)){
-  showBox("paymentError","Only JPG, PNG and WEBP are allowed.");
-  return;
- }
+  if (!/^[A-Za-z0-9]{6,30}$/.test(utr)) {
+   showBox("paymentError", "Enter valid UTR (6 to 30 characters).");
+   return;
+  }
 
- if(screenshot.size>5*1024*1024){
-  showBox("paymentError","Screenshot must be below 5 MB.");
-  return;
- }
+  if (!screenshot) {
+   showBox("paymentError", "Please select payment screenshot.");
+   return;
+  }
 
- button.disabled=true;
- button.textContent="UPLOADING PAYMENT...";
+  if (!["image/jpeg","image/png","image/webp"].includes(screenshot.type)) {
+   showBox("paymentError", "Only JPG, PNG and WEBP are allowed.");
+   return;
+  }
 
- try{
-  const formData=new FormData();
-  formData.append("customer_id",customerId);
-  formData.append("phone",phone);
-  formData.append("utr",utr);
-  formData.append("screenshot",screenshot);
+  if (screenshot.size > 5 * 1024 * 1024) {
+   showBox("paymentError", "Screenshot must be below 5 MB.");
+   return;
+  }
 
-  const response=await fetch(API_URL+"/api/payment-submit",{
-   method:"POST",
-   body:formData
-  });
+  if (!button) {
+   showBox("paymentError", "Payment button is missing.");
+   return;
+  }
 
-  const result=await readResponse(response);
+  button.disabled = true;
+  button.textContent = "UPLOADING PAYMENT...";
 
-  $("paymentId").textContent=result.payment?.id || "Submitted";
-  $("paymentSuccessText").textContent=result.message || "Pending manual verification.";
+  try {
+   const formData = new FormData();
+   formData.append("customer_id", customerId);
+   formData.append("phone", phone);
+   formData.append("utr", utr);
+   formData.append("screenshot", screenshot);
 
-  showBox("paymentSuccess");
+   const response = await fetch(API_URL + "/api/payment-submit", {
+    method: "POST",
+    body: formData
+   });
 
-  $("utr").value="";
-  $("screenshot").value="";
+   const result = await readResponse(response);
 
-  $("paymentSuccess").scrollIntoView({behavior:"smooth",block:"center"});
+   setText("paymentId", result.payment?.id || "Submitted");
+   setText("paymentSuccessText", result.message || "Pending manual verification.");
 
- }catch(error){
-  console.error("Payment error:",error);
-  showBox("paymentError","Payment submission error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="SUBMIT PAYMENT PROOF →";
- }
-});
+   showBox("paymentSuccess");
+
+   if ($("utr")) $("utr").value = "";
+   if ($("screenshot")) $("screenshot").value = "";
+
+   $("paymentSuccess")?.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+   });
+
+  } catch (error) {
+   console.error("Payment error:", error);
+   showBox("paymentError", "Payment submission error: " + error.message);
+  } finally {
+   button.disabled = false;
+   button.textContent = "SUBMIT PAYMENT PROOF →";
+  }
+ });
+}
 </script>
-
 </body>
-  </html>
-  
+                                                                             </html>
+ 
