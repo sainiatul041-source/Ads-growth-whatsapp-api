@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -28,6 +27,11 @@ for (const name of required) {
   }
 }
 
+if (process.env.JWT_SECRET.length < 32) {
+  console.error("JWT_SECRET must be at least 32 characters.");
+  process.exit(1);
+}
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -48,28 +52,40 @@ const prices = {
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map(x => x.trim())
+  : true;
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL
-    ? process.env.FRONTEND_URL.split(",").map(x => x.trim())
-    : true
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json({ limit: "100kb" }));
 
 app.use("/api", rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 100
+  limit: 100,
+  standardHeaders: "draft-7",
+  legacyHeaders: false
 }));
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter(req, file, cb) {
-    cb(null, [
+    const allowed = [
       "image/jpeg",
       "image/png",
       "image/webp"
-    ].includes(file.mimetype));
+    ];
+
+    if (!allowed.includes(file.mimetype)) {
+      return cb(new Error("Only JPG, PNG and WEBP files are allowed."));
+    }
+
+    cb(null, true);
   }
 });
 
@@ -81,7 +97,7 @@ function fail(res, status, message) {
 }
 
 function serverError(res, error) {
-  console.error(error);
+  console.error("SERVER ERROR:", error);
   return fail(res, 500, "Server error. Check Render logs.");
 }
 
@@ -93,31 +109,81 @@ function createToken(id, role) {
   );
 }
 
-function authenticate(req, res, next) {
+/*
+  AUTHENTICATION SUPPORT:
+  1. Our own ADS GROWTH JWT (client/admin)
+  2. Supabase Auth access token (Admin Page)
+
+  Supabase tokens are accepted only if the user is
+  present in public.admin_users.
+*/
+async function authenticate(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ")
-    ? header.slice(7)
+    ? header.slice(7).trim()
     : "";
 
-  if (!token) return fail(res, 401, "Please login first.");
+  if (!token) {
+    return fail(res, 401, "Please login first.");
+  }
 
+  // First try ADS GROWTH JWT
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
-    next();
-  } catch {
-    return fail(res, 401, "Session expired. Please login again.");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decoded && decoded.id && decoded.role) {
+      req.user = decoded;
+      return next();
+    }
+  } catch (error) {
+    // Not our JWT; try Supabase access token below.
+  }
+
+  // Then try Supabase Auth access token
+  try {
+    const { data, error } = await authClient.auth.getUser(token);
+
+    if (error || !data || !data.user) {
+      return fail(res, 401, "Invalid or expired login session.");
+    }
+
+    const { data: admin, error: adminError } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", data.user.id)
+      .maybeSingle();
+
+    if (adminError) {
+      console.error("Admin verification error:", adminError);
+      return fail(res, 500, "Could not verify admin account.");
+    }
+
+    if (!admin) {
+      return fail(res, 403, "Admin access required.");
+    }
+
+    req.user = {
+      id: data.user.id,
+      email: data.user.email,
+      role: "admin"
+    };
+
+    return next();
+  } catch (error) {
+    console.error("Authentication error:", error);
+    return fail(res, 401, "Could not verify login session.");
   }
 }
 
 function adminOnly(req, res, next) {
-  if (req.user.role !== "admin") {
+  if (!req.user || req.user.role !== "admin") {
     return fail(res, 403, "Admin access required.");
   }
   next();
 }
 
 function clientOnly(req, res, next) {
-  if (req.user.role !== "client") {
+  if (!req.user || req.user.role !== "client") {
     return fail(res, 403, "Client access required.");
   }
   next();
@@ -128,9 +194,12 @@ async function getActiveClient(id) {
     .from("customers")
     .select("id,status")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
-  if (error || !data || data.status !== "approved") return null;
+  if (error || !data || data.status !== "approved") {
+    return null;
+  }
+
   return data;
 }
 
@@ -162,7 +231,13 @@ app.post("/api/register", async (req, res) => {
       return fail(res, 400, "Invalid registration details.");
     }
 
+    const cleanName = String(full_name).trim();
     const cleanPhone = String(phone).trim();
+    const cleanEmail = email ? String(email).trim() : null;
+
+    if (!cleanName || cleanName.length > 100) {
+      return fail(res, 400, "Invalid name.");
+    }
 
     if (!/^[0-9+\-\s]{10,15}$/.test(cleanPhone)) {
       return fail(res, 400, "Invalid mobile number.");
@@ -171,9 +246,9 @@ app.post("/api/register", async (req, res) => {
     const { data, error } = await supabase
       .from("customers")
       .insert({
-        full_name: String(full_name).trim(),
+        full_name: cleanName,
         phone: cleanPhone,
-        email: email ? String(email).trim() : null,
+        email: cleanEmail,
         plan,
         amount: prices[plan],
         status: "pending"
@@ -183,13 +258,13 @@ app.post("/api/register", async (req, res) => {
 
     if (error) throw error;
 
-    res.json({
+    return res.json({
       success: true,
       customer: { id: data.id },
       message: "Registration successful."
     });
   } catch (error) {
-    serverError(res, error);
+    return serverError(res, error);
   }
 });
 
@@ -213,12 +288,11 @@ app.post(
         return fail(res, 400, "Invalid UTR.");
       }
 
-      const { data: customer, error: customerError } =
-        await supabase
-          .from("customers")
-          .select("id,phone,status")
-          .eq("id", customer_id)
-          .single();
+      const { data: customer, error: customerError } = await supabase
+        .from("customers")
+        .select("id,phone,status")
+        .eq("id", customer_id)
+        .maybeSingle();
 
       if (customerError || !customer) {
         return fail(res, 404, "Customer not found.");
@@ -228,11 +302,13 @@ app.post(
         return fail(res, 400, "Registered mobile number does not match.");
       }
 
-      const { data: duplicate } = await supabase
+      const { data: duplicate, error: duplicateError } = await supabase
         .from("payments")
         .select("id")
         .ilike("utr", cleanUtr)
         .maybeSingle();
+
+      if (duplicateError) throw duplicateError;
 
       if (duplicate) {
         return fail(res, 409, "This UTR has already been submitted.");
@@ -272,7 +348,7 @@ app.post(
 
       if (error) throw error;
 
-      res.json({
+      return res.json({
         success: true,
         payment: { id: payment.id },
         message: "Payment submitted. Waiting for manual verification."
@@ -283,13 +359,13 @@ app.post(
           .from("payment-screenshots")
           .remove([uploadedPath]);
       }
-      serverError(res, error);
+
+      return serverError(res, error);
     }
   }
 );
 
-/* ADMIN LOGIN: ADMIN MUST EXIST IN SUPABASE AUTH
-   AND admin_users.user_id MUST CONTAIN THEIR AUTH USER ID. */
+/* ADMIN LOGIN */
 app.post("/api/admin/login", async (req, res) => {
   try {
     const { email, password } = req.body || {};
@@ -298,11 +374,10 @@ app.post("/api/admin/login", async (req, res) => {
       return fail(res, 400, "Email and password are required.");
     }
 
-    const { data, error } = await authClient.auth
-      .signInWithPassword({
-        email: String(email).trim(),
-        password: String(password)
-      });
+    const { data, error } = await authClient.auth.signInWithPassword({
+      email: String(email).trim(),
+      password: String(password)
+    });
 
     if (error || !data.user) {
       return fail(res, 401, "Invalid admin login.");
@@ -314,52 +389,95 @@ app.post("/api/admin/login", async (req, res) => {
       .eq("user_id", data.user.id)
       .maybeSingle();
 
-    if (adminError || !admin) {
+    if (adminError) throw adminError;
+
+    if (!admin) {
       return fail(res, 403, "This user is not an authorized admin.");
     }
 
-    res.json({
+    return res.json({
       success: true,
-      token: createToken(data.user.id, "admin")
+      token: createToken(data.user.id, "admin"),
+      admin: {
+        id: data.user.id,
+        email: data.user.email
+      }
     });
   } catch (error) {
-    serverError(res, error);
+    return serverError(res, error);
+  }
+});
+
+/* ADMIN SESSION CHECK - REQUIRED BY ADMIN PAGE */
+app.get("/api/admin/me", authenticate, adminOnly, async (req, res) => {
+  try {
+    const { data: admin, error } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", req.user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!admin) {
+      return fail(res, 403, "Admin access has been removed.");
+    }
+
+    return res.json({
+      success: true,
+      admin: {
+        id: req.user.id,
+        email: req.user.email || null
+      }
+    });
+  } catch (error) {
+    return serverError(res, error);
   }
 });
 
 /* ADMIN: CUSTOMER LIST */
-app.get("/api/admin/customers", authenticate, adminOnly, async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("customers")
-      .select("id,full_name,phone,email,plan,amount,status,created_at")
-      .order("created_at", { ascending: false });
+app.get(
+  "/api/admin/customers",
+  authenticate,
+  adminOnly,
+  async (req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from("customers")
+        .select("id,full_name,phone,email,plan,amount,status,created_at")
+        .order("created_at", { ascending: false });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({ success: true, customers: data });
-  } catch (error) {
-    serverError(res, error);
+      return res.json({ success: true, customers: data });
+    } catch (error) {
+      return serverError(res, error);
+    }
   }
-});
+);
 
 /* ADMIN: PAYMENT LIST */
-app.get("/api/admin/payments", authenticate, adminOnly, async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("payments")
-      .select("id,customer_id,utr,screenshot_path,status,created_at,verified_at")
-      .order("created_at", { ascending: false });
+app.get(
+  "/api/admin/payments",
+  authenticate,
+  adminOnly,
+  async (req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from("payments")
+        .select("id,customer_id,utr,screenshot_path,status,created_at,verified_at")
+        .order("created_at", { ascending: false });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({ success: true, payments: data });
-  } catch (error) {
-    serverError(res, error);
+      return res.json({ success: true, payments: data });
+    } catch (error) {
+      return serverError(res, error);
+    }
   }
-});
+);
 
-/* ADMIN: SECURE SCREENSHOT URL */
+/* ADMIN: PAYMENT SCREENSHOT */
 app.get(
   "/api/admin/payment-image/:id",
   authenticate,
@@ -370,9 +488,10 @@ app.get(
         .from("payments")
         .select("screenshot_path")
         .eq("id", req.params.id)
-        .single();
+        .maybeSingle();
 
-      if (error || !payment) return fail(res, 404, "Payment not found.");
+      if (error) throw error;
+      if (!payment) return fail(res, 404, "Payment not found.");
 
       const { data, error: urlError } = await supabase.storage
         .from("payment-screenshots")
@@ -380,54 +499,50 @@ app.get(
 
       if (urlError) throw urlError;
 
-      res.json({ success: true, url: data.signedUrl });
+      return res.json({
+        success: true,
+        url: data.signedUrl
+      });
     } catch (error) {
-      serverError(res, error);
+      return serverError(res, error);
     }
   }
 );
 
-/* ADMIN: APPROVE PAYMENT
-   First approval creates a temporary client password.
-   Admin must securely give it to the client. */
+/* ADMIN: APPROVE PAYMENT AND CREATE CLIENT LOGIN/API KEY */
 app.post(
   "/api/admin/approve/:id",
   authenticate,
   adminOnly,
   async (req, res) => {
     try {
-      const { data: payment, error: paymentError } =
-        await supabase
-          .from("payments")
-          .select("id,customer_id,status")
-          .eq("id", req.params.id)
-          .single();
+      const { data: payment, error: paymentError } = await supabase
+        .from("payments")
+        .select("id,customer_id,status")
+        .eq("id", req.params.id)
+        .maybeSingle();
 
-      if (paymentError || !payment) {
-        return fail(res, 404, "Payment not found.");
-      }
+      if (paymentError) throw paymentError;
+      if (!payment) return fail(res, 404, "Payment not found.");
 
       if (payment.status === "approved") {
         return fail(res, 409, "Payment is already approved.");
       }
 
-      const { data: customer, error: customerError } =
-        await supabase
-          .from("customers")
-          .select("id,password_hash")
-          .eq("id", payment.customer_id)
-          .single();
+      const { data: customer, error: customerError } = await supabase
+        .from("customers")
+        .select("id,password_hash")
+        .eq("id", payment.customer_id)
+        .maybeSingle();
 
-      if (customerError || !customer) {
-        return fail(res, 404, "Customer not found.");
-      }
+      if (customerError) throw customerError;
+      if (!customer) return fail(res, 404, "Customer not found.");
 
-      const { data: activeKeys, error: keyReadError } =
-        await supabase
-          .from("api_keys")
-          .select("id")
-          .eq("customer_id", customer.id)
-          .eq("status", "active");
+      const { data: activeKeys, error: keyReadError } = await supabase
+        .from("api_keys")
+        .select("id")
+        .eq("customer_id", customer.id)
+        .eq("status", "active");
 
       if (keyReadError) throw keyReadError;
 
@@ -435,12 +550,9 @@ app.post(
       let rawKey = null;
 
       if (!customer.password_hash) {
-        temporaryPassword = crypto.randomBytes(9).toString("base64url");
+        temporaryPassword = crypto.randomBytes(12).toString("base64url");
 
-        const passwordHash = await bcrypt.hash(
-          temporaryPassword,
-          12
-        );
+        const passwordHash = await bcrypt.hash(temporaryPassword, 12);
 
         const { error } = await supabase
           .from("customers")
@@ -487,7 +599,7 @@ app.post(
 
       if (paymentUpdateError) throw paymentUpdateError;
 
-      res.json({
+      return res.json({
         success: true,
         message: "Client approved successfully.",
         customer_id: customer.id,
@@ -496,7 +608,7 @@ app.post(
         note: "Save credentials securely. They are not shown again."
       });
     } catch (error) {
-      serverError(res, error);
+      return serverError(res, error);
     }
   }
 );
@@ -515,12 +627,12 @@ app.post(
 
       if (error) throw error;
 
-      res.json({
+      return res.json({
         success: true,
         message: "Payment rejected."
       });
     } catch (error) {
-      serverError(res, error);
+      return serverError(res, error);
     }
   }
 );
@@ -538,7 +650,7 @@ app.post("/api/client/login", async (req, res) => {
       .from("customers")
       .select("id,password_hash,status")
       .eq("id", customer_id)
-      .single();
+      .maybeSingle();
 
     if (
       error ||
@@ -554,14 +666,16 @@ app.post("/api/client/login", async (req, res) => {
       customer.password_hash
     );
 
-    if (!valid) return fail(res, 401, "Incorrect password.");
+    if (!valid) {
+      return fail(res, 401, "Incorrect password.");
+    }
 
-    res.json({
+    return res.json({
       success: true,
       token: createToken(customer.id, "client")
     });
   } catch (error) {
-    serverError(res, error);
+    return serverError(res, error);
   }
 });
 
@@ -574,7 +688,9 @@ app.get(
     try {
       const customer = await getActiveClient(req.user.id);
 
-      if (!customer) return fail(res, 403, "Client access is disabled.");
+      if (!customer) {
+        return fail(res, 403, "Client access is disabled.");
+      }
 
       const { data: profile, error } = await supabase
         .from("customers")
@@ -592,18 +708,18 @@ app.get(
 
       if (keyError) throw keyError;
 
-      res.json({
+      return res.json({
         success: true,
         customer: profile,
         api_keys: keys
       });
     } catch (error) {
-      serverError(res, error);
+      return serverError(res, error);
     }
   }
 );
 
-/* CLIENT: REVOKE OWN KEY */
+/* CLIENT: REVOKE OWN API KEY */
 app.post(
   "/api/client/revoke-key/:id",
   authenticate,
@@ -616,9 +732,10 @@ app.post(
         .eq("id", req.params.id)
         .eq("customer_id", req.user.id)
         .eq("status", "active")
-        .single();
+        .maybeSingle();
 
-      if (findError || !key) return fail(res, 404, "Active key not found.");
+      if (findError) throw findError;
+      if (!key) return fail(res, 404, "Active key not found.");
 
       const { error } = await supabase
         .from("api_keys")
@@ -627,21 +744,20 @@ app.post(
 
       if (error) throw error;
 
-      res.json({
+      return res.json({
         success: true,
         message: "API key revoked."
       });
     } catch (error) {
-      serverError(res, error);
+      return serverError(res, error);
     }
   }
 );
 
-/* API KEY AUTHENTICATION CHECK.
-   This validates keys only; it does not send WhatsApp messages. */
+/* API KEY VALIDATION ONLY - DOES NOT SEND WHATSAPP MESSAGES */
 app.post("/api/key/validate", async (req, res) => {
   try {
-    const rawKey = String(req.body.api_key || "");
+    const rawKey = String((req.body || {}).api_key || "");
 
     if (!rawKey.startsWith("ag_live_")) {
       return fail(res, 401, "Invalid API key.");
@@ -664,19 +780,33 @@ app.post("/api/key/validate", async (req, res) => {
 
     const customer = await getActiveClient(key.customer_id);
 
-    if (!customer) return fail(res, 403, "Client is not active.");
+    if (!customer) {
+      return fail(res, 403, "Client is not active.");
+    }
 
-    res.json({
+    return res.json({
       success: true,
       message: "API key is valid.",
       customer_id: key.customer_id
     });
   } catch (error) {
-    serverError(res, error);
+    return serverError(res, error);
   }
+});
+
+/* MULTER / UPLOAD ERROR HANDLER */
+app.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    return fail(res, 400, "File upload error: " + error.message);
+  }
+
+  if (error) {
+    return fail(res, 400, error.message || "Request error.");
+  }
+
+  next();
 });
 
 app.listen(PORT, () => {
   console.log("ADS GROWTH server running on port " + PORT);
 });
-                                              
