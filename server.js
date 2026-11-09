@@ -13,880 +13,455 @@ const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const BUCKET = "payment-screenshots";
 
-const required = [
-  "SUPABASE_URL",
-  "SUPABASE_SERVICE_ROLE_KEY",
-  "SUPABASE_ANON_KEY",
-  "JWT_SECRET"
-];
-
-for (const name of required) {
-  if (!process.env[name]) {
-    console.error("Missing environment variable:", name);
+for (const k of ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_ANON_KEY", "JWT_SECRET"]) {
+  if (!process.env[k]) {
+    console.error("Missing environment variable:", k);
     process.exit(1);
   }
 }
-
 if (process.env.JWT_SECRET.length < 32) {
-  console.error("JWT_SECRET must be at least 32 characters.");
+  console.error("JWT_SECRET must be at least 32 characters");
   process.exit(1);
 }
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false
-    }
-  }
-);
+const db = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+  auth: { persistSession: false }
+});
+const authDB = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
+  auth: { persistSession: false }
+});
 
-const authClient = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false
-    }
-  }
-);
-
-const prices = {
-  Starter: 4999,
-  Business: 7999,
-  Enterprise: 9999
-};
-
-app.use(helmet({
-  crossOriginResourcePolicy: false
-}));
-
+app.set("trust proxy", 1);
+app.use(helmet());
 app.use(cors({
   origin: process.env.FRONTEND_URL
     ? process.env.FRONTEND_URL.split(",").map(x => x.trim())
     : true,
-  methods: ["GET", "POST", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  credentials: true
 }));
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json({ limit: "100kb" }));
-
-app.use("/api", rateLimit({
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 100,
-  standardHeaders: "draft-7",
+  limit: 20,
+  standardHeaders: true,
   legacyHeaders: false
-}));
+});
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024
-  },
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter(req, file, cb) {
-    const allowed = [
-      "image/jpeg",
-      "image/png",
-      "image/webp"
-    ];
-
-    if (!allowed.includes(file.mimetype)) {
-      return cb(
-        new Error("Only JPG, PNG and WEBP files are allowed.")
-      );
-    }
-
-    cb(null, true);
+    cb(null, ["image/jpeg", "image/png", "image/webp"].includes(file.mimetype));
   }
 });
 
-/* COMMON FUNCTIONS */
+const clean = v => String(v || "").trim();
+const token = data => jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "7d" });
+const hashKey = key => crypto.createHash("sha256").update(key).digest("hex");
+const newKey = () => "ag_live_" + crypto.randomBytes(32).toString("hex");
+const newPassword = () => crypto.randomBytes(6).toString("hex");
 
-function fail(res, status, message) {
-  return res.status(status).json({
-    success: false,
-    message
-  });
+function fail(res, err, message) {
+  console.error(message, err?.message || err);
+  return res.status(500).json({ success: false, message });
 }
 
-function serverError(res, error) {
-  console.error("SERVER ERROR:", error);
-
-  return fail(
-    res,
-    500,
-    "Server error. Please check Render logs."
-  );
-}
-
-function createToken(id, role) {
-  return jwt.sign(
-    { id, role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-}
-
-function generateApiKey() {
-  return "ag_live_" + crypto.randomBytes(32).toString("hex");
-}
-
-function hashApiKey(key) {
-  return crypto
-    .createHash("sha256")
-    .update(key)
-    .digest("hex");
-}
-
-async function getActiveKey(customerId) {
-  const { data, error } = await supabase
-    .from("api_keys")
-    .select("id,key_prefix,status,created_at")
-    .eq("customer_id", customerId)
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (error) throw error;
-  return data;
-}
-
-/* AUTHENTICATION */
-
-async function authenticate(req, res, next) {
-  const header = req.headers.authorization || "";
-
-  const token = header.startsWith("Bearer ")
-    ? header.slice(7).trim()
-    : "";
-
-  if (!token) {
-    return fail(res, 401, "Please login first.");
-  }
-
+function auth(req, res, next) {
+  const h = req.headers.authorization || "";
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
-
-    if (
-      decoded.id &&
-      ["admin", "client"].includes(decoded.role)
-    ) {
-      req.user = decoded;
-      return next();
-    }
-  } catch (error) {
-    // Try Supabase admin session below.
+    if (!h.startsWith("Bearer ")) throw new Error();
+    req.user = jwt.verify(h.slice(7), process.env.JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ success: false, message: "Login required or expired." });
   }
+}
 
+const admin = (req, res, next) => req.user?.role === "admin"
+  ? next()
+  : res.status(403).json({ success: false, message: "Admin access required." });
+
+const client = (req, res, next) => req.user?.role === "client"
+  ? next()
+  : res.status(403).json({ success: false, message: "Customer access required." });
+
+/* HEALTH */
+
+app.get("/", (req, res) => res.json({
+  success: true, service: "ADS GROWTH", status: "running"
+}));
+app.get("/health", (req, res) => res.json({ success: true, status: "healthy" }));
+
+/* REGISTER */
+
+app.post("/api/register", limiter, async (req, res) => {
   try {
-    const { data, error } =
-      await authClient.auth.getUser(token);
+    const full_name = clean(req.body.full_name);
+    const phone = clean(req.body.phone);
+    const email = clean(req.body.email).toLowerCase();
+    const plan = clean(req.body.plan);
+    const prices = { Starter: 4999, Business: 7999, Enterprise: 9999 };
 
-    if (error || !data.user) {
-      return fail(res, 401, "Invalid or expired session.");
+    if (!full_name || !phone || !email || !prices[plan]) {
+      return res.status(400).json({ success: false, message: "Enter all details and a valid plan." });
     }
 
-    const { data: admin, error: adminError } =
-      await supabase
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", data.user.id)
-        .maybeSingle();
+    const { data: old, error: e1 } = await db.from("customers")
+      .select("id").or(`email.eq.${email},phone.eq.${phone}`).limit(1);
+    if (e1) throw e1;
+    if (old?.length) return res.status(409).json({ success: false, message: "Email or phone already registered." });
 
-    if (adminError) throw adminError;
-
-    if (!admin) {
-      return fail(res, 403, "Admin access required.");
-    }
-
-    req.user = {
-      id: data.user.id,
-      email: data.user.email,
-      role: "admin"
-    };
-
-    return next();
-  } catch (error) {
-    console.error("AUTH ERROR:", error);
-    return fail(res, 401, "Could not verify login session.");
-  }
-}
-
-function adminOnly(req, res, next) {
-  if (!req.user || req.user.role !== "admin") {
-    return fail(res, 403, "Admin access required.");
-  }
-
-  next();
-}
-
-function clientOnly(req, res, next) {
-  if (!req.user || req.user.role !== "client") {
-    return fail(res, 403, "Client access required.");
-  }
-
-  next();
-}
-
-/* SERVER STATUS */
-
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    service: "ADS GROWTH",
-    status: "running"
-  });
-});
-
-/* CUSTOMER REGISTRATION */
-
-app.post("/api/register", async (req, res) => {
-  try {
-    const {
-      full_name,
-      phone,
-      email,
-      plan,
-      amount
-    } = req.body || {};
-
-    if (
-      !full_name ||
-      !phone ||
-      !prices[plan] ||
-      Number(amount) !== prices[plan]
-    ) {
-      return fail(res, 400, "Invalid registration details.");
-    }
-
-    const cleanName = String(full_name).trim();
-    const cleanPhone = String(phone).trim();
-
-    if (!cleanName || cleanName.length > 100) {
-      return fail(res, 400, "Invalid name.");
-    }
-
-    if (!/^[0-9+\-\s]{10,15}$/.test(cleanPhone)) {
-      return fail(res, 400, "Invalid mobile number.");
-    }
-
-    const { data, error } = await supabase
-      .from("customers")
-      .insert({
-        full_name: cleanName,
-        phone: cleanPhone,
-        email: email ? String(email).trim() : null,
-        plan,
-        amount: prices[plan],
-        status: "pending"
-      })
-      .select("id")
-      .single();
-
+    const { data, error } = await db.from("customers").insert({
+      full_name, phone, email, plan, amount: prices[plan], status: "pending"
+    }).select("id,full_name,phone,email,plan,amount,status,created_at").single();
     if (error) throw error;
 
-    return res.json({
-      success: true,
-      customer: { id: data.id },
-      message: "Registration successful."
-    });
-  } catch (error) {
-    return serverError(res, error);
-  }
+    res.status(201).json({ success: true, message: "Registration successful.", customer: data });
+  } catch (e) { fail(res, e, "Registration failed."); }
 });
 
-/* PAYMENT SUBMISSION */
+/* PAYMENT UPLOAD */
 
-app.post(
-  "/api/payment-submit",
-  upload.single("screenshot"),
-  async (req, res) => {
-    let uploadedPath = null;
-
-    try {
-      const { customer_id, phone, utr } = req.body || {};
-
-      if (!customer_id || !phone || !utr || !req.file) {
-        return fail(res, 400, "All payment details are required.");
-      }
-
-      const cleanUtr = String(utr).trim();
-
-      if (!/^[A-Za-z0-9]{6,30}$/.test(cleanUtr)) {
-        return fail(res, 400, "Invalid UTR.");
-      }
-
-      const { data: customer, error: customerError } =
-        await supabase
-          .from("customers")
-          .select("id,phone,status")
-          .eq("id", customer_id)
-          .maybeSingle();
-
-      if (customerError) throw customerError;
-
-      if (!customer) {
-        return fail(res, 404, "Customer not found.");
-      }
-
-      if (customer.phone.trim() !== String(phone).trim()) {
-        return fail(res, 400, "Registered mobile number does not match.");
-      }
-
-      if (customer.status === "approved") {
-        return fail(res, 409, "This customer is already approved.");
-      }
-
-      const { data: duplicate, error: duplicateError } =
-        await supabase
-          .from("payments")
-          .select("id")
-          .ilike("utr", cleanUtr)
-          .limit(1)
-          .maybeSingle();
-
-      if (duplicateError) throw duplicateError;
-
-      if (duplicate) {
-        return fail(res, 409, "This UTR has already been submitted.");
-      }
-
-      const extension = {
-        "image/jpeg": "jpg",
-        "image/png": "png",
-        "image/webp": "webp"
-      }[req.file.mimetype];
-
-      if (!extension) {
-        return fail(res, 400, "Only JPG, PNG and WEBP are allowed.");
-      }
-
-      uploadedPath = `${crypto.randomUUID()}.${extension}`;
-
-      const { error: storageError } = await supabase.storage
-        .from("payment-screenshots")
-        .upload(uploadedPath, req.file.buffer, {
-          contentType: req.file.mimetype,
-          upsert: false
-        });
-
-      if (storageError) throw storageError;
-
-      const { data: payment, error } = await supabase
-        .from("payments")
-        .insert({
-          customer_id,
-          utr: cleanUtr,
-          screenshot_path: uploadedPath,
-          status: "pending"
-        })
-        .select("id")
-        .single();
-
-      if (error) throw error;
-
-      return res.json({
-        success: true,
-        payment: { id: payment.id },
-        message: "Payment submitted. Waiting for verification."
-      });
-    } catch (error) {
-      if (uploadedPath) {
-        await supabase.storage
-          .from("payment-screenshots")
-          .remove([uploadedPath]);
-      }
-
-      return serverError(res, error);
+async function paymentUpload(req, res) {
+  try {
+    const customer_id = clean(req.body.customer_id);
+    const utr = clean(req.body.utr);
+    if (!customer_id || !utr || !req.file) {
+      return res.status(400).json({ success: false, message: "Customer ID, UTR and screenshot required." });
     }
-  }
-);
+
+    const { data: customer, error: ce } = await db.from("customers")
+      .select("id,status").eq("id", customer_id).maybeSingle();
+    if (ce) throw ce;
+    if (!customer) return res.status(404).json({ success: false, message: "Customer not found." });
+    if (customer.status === "approved") return res.status(400).json({ success: false, message: "Customer already approved." });
+
+    const { data: duplicate, error: de } = await db.from("payments")
+      .select("id").eq("utr", utr).limit(1);
+    if (de) throw de;
+    if (duplicate?.length) return res.status(409).json({ success: false, message: "UTR already submitted." });
+
+    const ext = req.file.mimetype === "image/png" ? "png" :
+      req.file.mimetype === "image/webp" ? "webp" : "jpg";
+    const path = customer_id + "/" + Date.now() + "-" + crypto.randomBytes(5).toString("hex") + "." + ext;
+
+    const { error: se } = await db.storage.from(BUCKET).upload(path, req.file.buffer, {
+      contentType: req.file.mimetype, upsert: false
+    });
+    if (se) throw se;
+
+    const { data, error } = await db.from("payments").insert({
+      customer_id, utr, screenshot_path: path, status: "pending"
+    }).select("id,customer_id,utr,status,created_at").single();
+
+    if (error) {
+      await db.storage.from(BUCKET).remove([path]);
+      throw error;
+    }
+    res.status(201).json({ success: true, message: "Payment submitted.", payment: data });
+  } catch (e) { fail(res, e, "Payment upload failed."); }
+}
+
+app.post("/api/payment/upload", upload.single("screenshot"), paymentUpload);
+app.post("/api/payments/upload", upload.single("screenshot"), paymentUpload);
 
 /* ADMIN LOGIN */
 
-app.post("/api/admin/login", async (req, res) => {
+app.post("/api/admin/login", limiter, async (req, res) => {
   try {
-    const { email, password } = req.body || {};
+    const email = clean(req.body.email).toLowerCase();
+    const password = clean(req.body.password);
+    if (!email || !password) return res.status(400).json({ success: false, message: "Email and password required." });
 
-    if (!email || !password) {
-      return fail(res, 400, "Email and password are required.");
-    }
+    const { data: a, error: ae } = await authDB.auth.signInWithPassword({ email, password });
+    if (ae || !a?.user) return res.status(401).json({ success: false, message: "Invalid admin login." });
 
-    const { data, error } = await authClient.auth.signInWithPassword({
-      email: String(email).trim(),
-      password: String(password)
-    });
+    const { data: row, error } = await db.from("admin_users")
+      .select("user_id").eq("user_id", a.user.id).maybeSingle();
+    if (error) throw error;
+    if (!row) return res.status(403).json({ success: false, message: "Admin not authorized." });
 
-    if (error || !data.user) {
-      return fail(res, 401, "Invalid admin login.");
-    }
-
-    const { data: admin, error: adminError } = await supabase
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id", data.user.id)
-      .maybeSingle();
-
-    if (adminError) throw adminError;
-
-    if (!admin) {
-      return fail(res, 403, "This user is not an authorized admin.");
-    }
-
-    return res.json({
+    res.json({
       success: true,
-      token: createToken(data.user.id, "admin"),
-      admin: {
-        id: data.user.id,
-        email: data.user.email
-      }
+      token: token({ id: a.user.id, email: a.user.email, role: "admin" }),
+      admin: { id: a.user.id, email: a.user.email }
     });
-  } catch (error) {
-    return serverError(res, error);
-  }
+  } catch (e) { fail(res, e, "Admin login failed."); }
 });
 
-/* ADMIN SESSION CHECK */
+app.get("/api/admin/me", auth, admin, (req, res) => {
+  res.json({ success: true, admin: { id: req.user.id, email: req.user.email } });
+});
 
-app.get(
-  "/api/admin/me",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const { data: admin, error } = await supabase
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", req.user.id)
-        .maybeSingle();
+/* ADMIN CUSTOMERS */
 
-      if (error) throw error;
+app.get("/api/admin/customers", auth, admin, async (req, res) => {
+  try {
+    const { data, error } = await db.from("customers")
+      .select("id,full_name,phone,email,plan,amount,status,created_at")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    res.json({ success: true, customers: data || [] });
+  } catch (e) { fail(res, e, "Could not load customers."); }
+});
 
-      if (!admin) {
-        return fail(res, 403, "Admin access has been removed.");
+/* ADMIN PAYMENTS */
+
+app.get("/api/admin/payments", auth, admin, async (req, res) => {
+  try {
+    const { data, error } = await db.from("payments")
+      .select("id,customer_id,utr,screenshot_path,status,created_at,verified_at")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+
+    const payments = await Promise.all((data || []).map(async p => {
+      let screenshot_url = null;
+      if (p.screenshot_path) {
+        const { data: signed } = await db.storage.from(BUCKET)
+          .createSignedUrl(p.screenshot_path, 3600);
+        screenshot_url = signed?.signedUrl || null;
       }
+      return { ...p, screenshot_url };
+    }));
+    res.json({ success: true, payments });
+  } catch (e) { fail(res, e, "Could not load payments."); }
+});
 
-      return res.json({
-        success: true,
-        admin: {
-          id: req.user.id,
-          email: req.user.email || null
-        }
-      });
-    } catch (error) {
-      return serverError(res, error);
-    }
-  }
-);
+/* APPROVE PAYMENT */
 
-/* ADMIN DASHBOARD DATA */
+app.post("/api/admin/payments/:id/approve", auth, admin, async (req, res) => {
+  try {
+    const { data: p, error: pe } = await db.from("payments")
+      .select("id,customer_id").eq("id", req.params.id).maybeSingle();
+    if (pe) throw pe;
+    if (!p) return res.status(404).json({ success: false, message: "Payment not found." });
 
-app.get(
-  "/api/admin/customers",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const [customerResult, paymentResult, keyResult] =
-        await Promise.all([
-          supabase
-            .from("customers")
-            .select("id,full_name,phone,email,plan,amount,status,created_at")
-            .order("created_at", { ascending: false }),
+    const { error: e1 } = await db.from("payments").update({
+      status: "approved", verified_at: new Date().toISOString()
+    }).eq("id", p.id);
+    if (e1) throw e1;
 
-          supabase
-            .from("payments")
-            .select("id,customer_id,utr,screenshot_path,status,created_at,verified_at")
-            .order("created_at", { ascending: false }),
+    const { error: e2 } = await db.from("customers")
+      .update({ status: "approved" }).eq("id", p.customer_id);
+    if (e2) throw e2;
 
-          supabase
-            .from("api_keys")
-            .select("id,customer_id,key_prefix,status,created_at")
-            .order("created_at", { ascending: false })
-        ]);
+    res.json({ success: true, message: "Payment approved." });
+  } catch (e) { fail(res, e, "Payment approval failed."); }
+});
 
-      if (customerResult.error) throw customerResult.error;
-      if (paymentResult.error) throw paymentResult.error;
-      if (keyResult.error) throw keyResult.error;
+/* REJECT PAYMENT */
 
-      return res.json({
-        success: true,
-        customers: customerResult.data || [],
-        payments: paymentResult.data || [],
-        api_keys: keyResult.data || []
-      });
-    } catch (error) {
-      return serverError(res, error);
-    }
-  }
-);
+app.post("/api/admin/payments/:id/reject", auth, admin, async (req, res) => {
+  try {
+    const { data, error } = await db.from("payments")
+      .update({ status: "rejected" }).eq("id", req.params.id)
+      .select("id").maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(404).json({ success: false, message: "Payment not found." });
+    res.json({ success: true, message: "Payment rejected." });
+  } catch (e) { fail(res, e, "Payment rejection failed."); }
+});
 
-/* ADMIN PAYMENT LIST */
+/* ADMIN GENERATE API KEY AND PASSWORD */
 
-app.get(
-  "/api/admin/payments",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const { data, error } = await supabase
-        .from("payments")
-        .select("*")
-        .order("created_at", { ascending: false });
+app.post("/api/admin/customers/:id/api-key", auth, admin, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { data: c, error: ce } = await db.from("customers")
+      .select("id,full_name,email,status,password_hash").eq("id", id).maybeSingle();
+    if (ce) throw ce;
+    if (!c) return res.status(404).json({ success: false, message: "Customer not found." });
+    if (c.status !== "approved") return res.status(400).json({ success: false, message: "Payment not approved." });
 
+    const { data: active, error: ke } = await db.from("api_keys")
+      .select("id").eq("customer_id", id).eq("status", "active").limit(1);
+    if (ke) throw ke;
+    if (active?.length) return res.status(409).json({ success: false, message: "Active key already exists. Revoke it first." });
+
+    let temporary_password = null;
+    if (!c.password_hash) {
+      temporary_password = newPassword();
+      const { error } = await db.from("customers").update({
+        password_hash: await bcrypt.hash(temporary_password, 12)
+      }).eq("id", id);
       if (error) throw error;
-
-      return res.json({
-        success: true,
-        payments: data || []
-      });
-    } catch (error) {
-      return serverError(res, error);
     }
-  }
-);
+
+    const api_key = newKey();
+    const { data: key, error } = await db.from("api_keys").insert({
+      customer_id: id,
+      key_hash: hashKey(api_key),
+      key_prefix: api_key.slice(0, 16),
+      status: "active"
+    }).select("id,customer_id,key_prefix,status,created_at").single();
+    if (error) throw error;
+
+    res.status(201).json({
+      success: true,
+      message: "API key generated. Save it securely.",
+      customer_id: id,
+      customer_name: c.full_name,
+      api_key,
+      temporary_password,
+      key
+    });
+  } catch (e) { fail(res, e, "API key generation failed."); }
+});
 
 /* ADMIN API KEY LIST */
 
-app.get(
-  "/api/admin/api-keys",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const { data, error } = await supabase
-        .from("api_keys")
-        .select("id,customer_id,key_prefix,status,created_at")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-
-      return res.json({
-        success: true,
-        api_keys: data || []
-      });
-    } catch (error) {
-      return serverError(res, error);
-    }
-  }
-);
-
-/* PAYMENT SCREENSHOT */
-
-async function sendPaymentImage(req, res) {
+app.get("/api/admin/api-keys", auth, admin, async (req, res) => {
   try {
-    const { data: payment, error } = await supabase
-      .from("payments")
-      .select("screenshot_path")
-      .eq("id", req.params.id)
-      .maybeSingle();
-
+    const { data, error } = await db.from("api_keys")
+      .select("id,customer_id,key_prefix,status,created_at")
+      .order("created_at", { ascending: false });
     if (error) throw error;
-
-    if (!payment) {
-      return fail(res, 404, "Payment not found.");
-    }
-
-    const { data, error: urlError } = await supabase.storage
-      .from("payment-screenshots")
-      .createSignedUrl(payment.screenshot_path, 120);
-
-    if (urlError) throw urlError;
-
-    return res.json({
-      success: true,
-      url: data.signedUrl
-    });
-  } catch (error) {
-    return serverError(res, error);
-  }
-}
-
-app.get(
-  "/api/admin/payment-image/:id",
-  authenticate,
-  adminOnly,
-  sendPaymentImage
-);
-
-app.get(
-  "/api/admin/payments/:id/screenshot",
-  authenticate,
-  adminOnly,
-  sendPaymentImage
-);
-
-/* APPROVE OR REJECT PAYMENT */
-
-async function decidePayment(req, res, status) {
-  try {
-    const { data: payment, error: paymentError } = await supabase
-      .from("payments")
-      .select("id,customer_id,status")
-      .eq("id", req.params.id)
-      .maybeSingle();
-
-    if (paymentError) throw paymentError;
-
-    if (!payment) {
-      return fail(res, 404, "Payment not found.");
-    }
-
-    const { error: updatePaymentError } = await supabase
-      .from("payments")
-      .update({
-        status,
-        verified_at: status === "approved"
-          ? new Date().toISOString()
-          : null
-      })
-      .eq("id", payment.id);
-
-    if (updatePaymentError) throw updatePaymentError;
-
-    const { error: updateCustomerError } = await supabase
-      .from("customers")
-      .update({ status })
-      .eq("id", payment.customer_id);
-
-    if (updateCustomerError) throw updateCustomerError;
-
-    return res.json({
-      success: true,
-      message: `Payment ${status} successfully.`,
-      customer_id: payment.customer_id
-    });
-  } catch (error) {
-    return serverError(res, error);
-  }
-}
-
-app.post(
-  "/api/admin/payments/:id/decision",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    const status = String((req.body || {}).status || "").toLowerCase();
-
-    if (!["approved", "rejected"].includes(status)) {
-      return fail(res, 400, "Status must be approved or rejected.");
-    }
-
-    return decidePayment(req, res, status);
-  }
-);
-
-app.post(
-  "/api/admin/approve/:id",
-  authenticate,
-  adminOnly,
-  async (req, res) => decidePayment(req, res, "approved")
-);
-
-app.post(
-  "/api/admin/reject/:id",
-  authenticate,
-  adminOnly,
-  async (req, res) => decidePayment(req, res, "rejected")
-);
-
-/* ADMIN GENERATE API KEY AND CLIENT PASSWORD */
-
-app.post(
-  "/api/admin/customers/:id/api-key",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const customerId = req.params.id;
-
-      const { data: customer, error: customerError } = await supabase
-        .from("customers")
-        .select("id,status,password_hash")
-        .eq("id", customerId)
-        .maybeSingle();
-
-      if (customerError) throw customerError;
-
-      if (!customer) {
-        return fail(res, 404, "Customer not found.");
-      }
-
-      if (customer.status !== "approved") {
-        return fail(res, 400, "Approve the customer's payment first.");
-      }
-
-      const { data: existing, error: existingError } = await supabase
-        .from("api_keys")
-        .select("id")
-        .eq("customer_id", customerId)
-        .eq("status", "active")
-        .limit(1);
-
-      if (existingError) throw existingError;
-
-      if (existing && existing.length) {
-        return fail(
-          res,
-          409,
-          "This customer already has an active API key. Revoke it first."
-        );
-      }
-
-      let temporaryPassword = null;
-
-      if (!customer.password_hash) {
-        temporaryPassword = crypto.randomBytes(12).toString("base64url");
-
-        const passwordHash = await bcrypt.hash(temporaryPassword, 12);
-
-        const { error: passwordError } = await supabase
-          .from("customers")
-          .update({ password_hash: passwordHash })
-          .eq("id", customerId);
-
-        if (passwordError) throw passwordError;
-      }
-
-      const rawKey = generateApiKey();
-
-      const { data: savedKey, error: keyError } = await supabase
-        .from("api_keys")
-        .insert({
-          customer_id: customerId,
-          key_hash: hashApiKey(rawKey),
-          key_prefix: rawKey.slice(0, 15),
-          status: "active"
-        })
-        .select("id,customer_id,key_prefix,status,created_at")
-        .single();
-
-      if (keyError) throw keyError;
-
-      return res.json({
-        success: true,
-        message: "API key generated successfully.",
-        api_key: rawKey,
-        temporary_password: temporaryPassword,
-        key: savedKey,
-        note: "Save the API key and password securely. They cannot be displayed again."
-      });
-    } catch (error) {
-      return serverError(res, error);
-    }
-  }
-);
-
-/* CHANGE API KEY STATUS */
-
-app.patch(
-  "/api/admin/api-keys/:id",
-  authenticate,
-  adminOnly,
-  async (req, res) => {
-    try {
-      const status = String((req.body || {}).status || "").toLowerCase();
-
-      if (!["active", "inactive", "revoked"].includes(status)) {
-        return fail(res, 400, "Invalid API key status.");
-      }
-
-      const { data, error } = await supabase
-        .from("api_keys")
-        .update({ status })
-        .eq("id", req.params.id)
-        .select("id,status")
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (!data) {
-        return fail(res, 404, "API key not found.");
-      }
-
-      return res.json({
-        success: true,
-        message: "API key status updated.",
-        key: data
-      });
-    } catch (error) {
-      return serverError(res, error);
-    }
-  }
-);
-
-/* CLIENT LOGIN */
-
-app.post("/api/client/login", async (req, res) => {
-  try {
-    const { customer_id, password } = req.body || {};
-
-    if (!customer_id || !password) {
-      return fail(res, 400, "Customer ID and password are required.");
-    }
-
-    const { data: customer, error } = await supabase
-      .from("customers")
-      .select("id,full_name,phone,email,plan,status,password_hash")
-      .eq("id", customer_id)
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (!customer || !customer.password_hash) {
-      return fail(res, 401, "Invalid Customer ID or password.");
-    }
-
-    const passwordOk = await bcrypt.compare(
-      String(password),
-      customer.password_hash
-    );
-
-    if (!passwordOk) {
-      return fail(res, 401, "Invalid Customer ID or password.");
-    }
-
-    if (customer.status !== "approved") {
-      return fail(res, 403, "Your payment is not approved yet.");
-    }
-
-    return res.json({
-      success: true,
-      token: createToken(customer.id, "client"),
-      customer: {
-        id: customer.id,
-        full_name: customer.full_name,
-        phone: customer.phone,
-        email: customer.email,
-        plan: customer.plan,
-        status: customer.status
-      }
-    });
-  } catch (error) {
-    return serverError(res, error);
-  }
+    res.json({ success: true, api_keys: data || [] });
+  } catch (e) { fail(res, e, "Could not load API keys."); }
 });
 
-/* CLIENT DASHBOARD */
+/* ADMIN CHANGE KEY STATUS */
 
-app.get(
-  "/api/client/dashboard",
-  authenticate,
-  clientOnly,
-  async (req, res) => {
-    try {
-      const { data: customer, error } = await supabase
-        .from("customers")
-        .select("id,full_name,phone,email,plan,amount,status,created_at")
-        .eq("id", req.user.id)
-        .maybeSingle();
+app.patch("/api/admin/api-keys/:id/status", auth, admin, async (req, res) => {
+  try {
+    const status = clean(req.body.status);
+    if (!["active", "revoked"].includes(status)) {
+      return res.status(400).json({ success: false, message: "Invalid status." });
+    }
+    const { data, error } = await db.from("api_keys").update({ status })
+      .eq("id", req.params.id)
+      .select("id,customer_id,key_prefix,status,created_at").single();
+    if (error) throw error;
+    res.json({ success: true, key: data });
+  } catch (e) { fail(res, e, "API key status update failed."); }
+});
 
-      if (err
+/* CUSTOMER LOGIN */
+
+app.post("/api/client/login", limiter, async (req, res) => {
+  try {
+    const login = clean(req.body.email || req.body.phone).toLowerCase();
+    const password = clean(req.body.password);
+    if (!login || !password) return res.status(400).json({ success: false, message: "Email/phone and password required." });
+
+    const column = login.includes("@") ? "email" : "phone";
+    const { data: c, error } = await db.from("customers")
+      .select("id,full_name,email,phone,status,password_hash")
+      .eq(column, login).maybeSingle();
+    if (error) throw error;
+    if (!c?.password_hash || !await bcrypt.compare(password, c.password_hash)) {
+      return res.status(401).json({ success: false, message: "Invalid login or password." });
+    }
+    if (c.status !== "approved") return res.status(403).json({ success: false, message: "Account not approved." });
+
+    res.json({
+      success: true,
+      token: token({ id: c.id, role: "client" }),
+      customer: { id: c.id, full_name: c.full_name, email: c.email, phone: c.phone, status: c.status }
+    });
+  } catch (e) { fail(res, e, "Customer login failed."); }
+});
+
+/* CUSTOMER DASHBOARD */
+
+app.get("/api/client/dashboard", auth, client, async (req, res) => {
+  try {
+    const { data: customer, error: e1 } = await db.from("customers")
+      .select("id,full_name,phone,email,plan,amount,status,created_at")
+      .eq("id", req.user.id).maybeSingle();
+    if (e1) throw e1;
+    if (!customer) return res.status(404).json({ success: false, message: "Customer not found." });
+
+    const { data: payments, error: e2 } = await db.from("payments")
+      .select("id,utr,status,created_at,verified_at")
+      .eq("customer_id", req.user.id).order("created_at", { ascending: false });
+    if (e2) throw e2;
+
+    const { data: api_keys, error: e3 } = await db.from("api_keys")
+      .select("id,key_prefix,status,created_at")
+      .eq("customer_id", req.user.id).order("created_at", { ascending: false });
+    if (e3) throw e3;
+
+    res.json({ success: true, customer, payments: payments || [], api_keys: api_keys || [] });
+  } catch (e) { fail(res, e, "Could not load dashboard."); }
+});
+
+/* CUSTOMER GENERATE API KEY */
+
+app.post("/api/client/generate-key", auth, client, async (req, res) => {
+  try {
+    const { data: active, error: ae } = await db.from("api_keys")
+      .select("id").eq("customer_id", req.user.id).eq("status", "active").limit(1);
+    if (ae) throw ae;
+    if (active?.length) return res.status(409).json({ success: false, message: "Active key already exists." });
+
+    const api_key = newKey();
+    const { data: key, error } = await db.from("api_keys").insert({
+      customer_id: req.user.id,
+      key_hash: hashKey(api_key),
+      key_prefix: api_key.slice(0, 16),
+      status: "active"
+    }).select("id,customer_id,key_prefix,status,created_at").single();
+    if (error) throw error;
+    res.status(201).json({ success: true, api_key, key });
+  } catch (e) { fail(res, e, "Could not generate API key."); }
+});
+
+/* CUSTOMER REVOKE API KEY */
+
+app.post("/api/client/revoke-key/:id", auth, client, async (req, res) => {
+  try {
+    const { data, error } = await db.from("api_keys").update({ status: "revoked" })
+      .eq("id", req.params.id).eq("customer_id", req.user.id)
+      .select("id,status").maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(404).json({ success: false, message: "API key not found." });
+    res.json({ success: true, message: "API key revoked." });
+  } catch (e) { fail(res, e, "Could not revoke API key."); }
+});
+
+/* API KEY VALIDATION */
+
+app.post("/api/keys/validate", async (req, res) => {
+  try {
+    const keyValue = clean(req.body.api_key || req.headers["x-api-key"]);
+    if (!keyValue) return res.status(400).json({ success: false, message: "API key required." });
+
+    const { data, error } = await db.from("api_keys")
+      .select("id,customer_id,key_prefix,status")
+      .eq("key_hash", hashKey(keyValue)).maybeSingle();
+    if (error) throw error;
+    if (!data || data.status !== "active") {
+      return res.status(401).json({ success: false, valid: false, message: "Invalid or inactive API key." });
+    }
+    res.json({ success: true, valid: true, customer_id: data.customer_id, key_prefix: data.key_prefix });
+  } catch (e) { fail(res, e, "API key validation failed."); }
+});
+
+/* NOT FOUND */
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "API route not found.",
+    path: req.originalUrl
+  });
+});
+
+/* ERROR HANDLER */
+
+app.use((err, req, res, next) => {
+  console.error("Application error:", err?.message || err);
+  if (res.headersSent) return next(err);
+  res.status(400).json({ success: false, message: err?.message || "Request failed." });
+});
+
+/* START SERVER */
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("ADS GROWTH server running on port " + PORT);
+});
