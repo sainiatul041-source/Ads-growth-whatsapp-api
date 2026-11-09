@@ -44,7 +44,7 @@ form{max-width:570px;margin:auto;background:#151515;padding:25px;border:1px soli
 label{display:block;font-size:13px;color:#ddd;margin-top:12px}
 input,select,textarea{width:100%;padding:14px;margin-top:7px;background:#090909;border:1px solid #444;border-radius:7px;color:#fff;font-size:15px}
 input:focus,select:focus,textarea:focus{outline:1px solid var(--orange)}
-form button{width:100%;margin:18px 0 5px;font-size:16px}
+form button{width:100%;margin:18px 0 5px}
 .note{font-size:12px;color:#aaa;margin-top:12px}
 .payment-box{max-width:520px;margin:auto;text-align:center;background:#151515;border:1px solid #333;padding:25px;border-radius:15px}
 .qr{width:100%;max-width:260px;background:#fff;padding:10px;border-radius:10px;margin:18px auto;display:block}
@@ -59,6 +59,7 @@ details p{color:#bbb;margin-top:10px}
 footer{text-align:center;background:#111;padding:30px;color:#aaa;border-top:1px solid #333}
 footer b{color:var(--orange)}
 .hidden{display:none!important}
+button:disabled{opacity:.6;cursor:not-allowed}
 @media(max-width:650px){
 nav{flex-wrap:wrap}
 nav div:last-child{width:100%;display:flex;justify-content:center;flex-wrap:wrap}
@@ -70,7 +71,6 @@ section{padding:48px 6%}
 </head>
 
 <body>
-
 <header>
 <nav>
 <div class="logo">ADS GROWTH</div>
@@ -101,26 +101,10 @@ section{padding:48px 6%}
 <p>Tools and support for growing businesses</p>
 </div>
 <div class="grid">
-<div class="card feature">
-<div class="symbol">💬</div>
-<h3>WhatsApp API</h3>
-<p>Official WhatsApp Business Platform onboarding assistance.</p>
-</div>
-<div class="card feature">
-<div class="symbol">⚡</div>
-<h3>Automation</h3>
-<p>Plan automated customer communication workflows.</p>
-</div>
-<div class="card feature">
-<div class="symbol">📊</div>
-<h3>Campaign Management</h3>
-<p>Organize approved business messaging campaigns.</p>
-</div>
-<div class="card feature">
-<div class="symbol">🔐</div>
-<h3>Customer Support</h3>
-<p>Get assistance with account setup and onboarding.</p>
-</div>
+<div class="card feature"><div class="symbol">💬</div><h3>WhatsApp API</h3><p>Official WhatsApp Business Platform onboarding assistance.</p></div>
+<div class="card feature"><div class="symbol">⚡</div><h3>Automation</h3><p>Plan automated customer communication workflows.</p></div>
+<div class="card feature"><div class="symbol">📊</div><h3>Campaign Management</h3><p>Organize approved business messaging campaigns.</p></div>
+<div class="card feature"><div class="symbol">🔐</div><h3>Customer Support</h3><p>Get assistance with account setup and onboarding.</p></div>
 </div>
 </section>
 
@@ -129,72 +113,45 @@ section{padding:48px 6%}
 <h2>Choose Your <span class="orange">Plan</span></h2>
 <p>Select a plan and register your interest.</p>
 </div>
-
 <div class="grid">
 <div class="card">
-<h3>STARTER</h3>
-<div class="price">₹4,999</div>
-<ul>
-<li>Basic API onboarding assistance</li>
-<li>Setup guidance</li>
-<li>Customer support</li>
-</ul>
+<h3>STARTER</h3><div class="price">₹4,999</div>
+<ul><li>Basic API onboarding assistance</li><li>Setup guidance</li><li>Customer support</li></ul>
 <a class="btn" href="#register" onclick="selectPlan('Starter')">SELECT PLAN</a>
 </div>
-
 <div class="card popular">
-<h3>BUSINESS ⭐</h3>
-<div class="price">₹7,999</div>
-<ul>
-<li>Business API onboarding</li>
-<li>Campaign setup guidance</li>
-<li>Priority support</li>
-</ul>
+<h3>BUSINESS ⭐</h3><div class="price">₹7,999</div>
+<ul><li>Business API onboarding</li><li>Campaign setup guidance</li><li>Priority support</li></ul>
 <a class="btn" href="#register" onclick="selectPlan('Business')">SELECT PLAN</a>
 </div>
-
 <div class="card">
-<h3>ENTERPRISE</h3>
-<div class="price">₹9,999</div>
-<ul>
-<li>Advanced setup assistance</li>
-<li>Business onboarding guidance</li>
-<li>Support assistance</li>
-</ul>
+<h3>ENTERPRISE</h3><div class="price">₹9,999</div>
+<ul><li>Advanced setup assistance</li><li>Business onboarding guidance</li><li>Support assistance</li></ul>
 <a class="btn" href="#register" onclick="selectPlan('Enterprise')">SELECT PLAN</a>
 </div>
 </div>
-
-<p class="note" style="text-align:center">
-Prices shown in INR. Billing period and final service scope must be confirmed before payment.
-</p>
+<p class="note" style="text-align:center">Prices shown in INR. Billing period and final service scope must be confirmed before payment.</p>
 </section>
 
-<!-- PAYMENT QR -->
 <section id="payment">
 <div class="heading">
 <h2>Payment <span class="orange">QR Code</span></h2>
 <p>Scan the QR code to pay for your selected plan.</p>
 </div>
-
 <div class="payment-box">
 <h3 class="orange">ADS GROWTH PAYMENT</h3>
-<img class="qr"
-src="Screenshot_20261107_093012_PhonePe.jpg"
-alt="ADS GROWTH Payment QR Code">
+<img class="qr" src="Screenshot_20261107_093012_PhonePe.jpg" alt="ADS GROWTH Payment QR Code">
 <p>Scan using PhonePe, Google Pay or another UPI application.</p>
 <p class="note">Please verify recipient name and amount before payment. Never share your UPI PIN or OTP.</p>
 <a class="btn" href="#paymentForm">I HAVE PAID – SUBMIT DETAILS</a>
 </div>
 </section>
 
-<!-- REGISTRATION -->
 <section id="register">
 <div class="heading">
 <h2>Customer <span class="orange">Registration</span></h2>
 <p>Register first to receive your Customer ID.</p>
 </div>
-
 <form id="joinForm">
 <label>Full Name *</label>
 <input id="name" type="text" placeholder="Enter your full name" maxlength="100" required>
@@ -225,18 +182,17 @@ alt="ADS GROWTH Payment QR Code">
 <p style="margin-top:10px">Your Customer ID and phone number have been saved on this device for payment submission.</p>
 <a class="btn" href="#paymentForm">CONTINUE TO PAYMENT →</a>
 </div>
-<div class="error" id="errorBox"></div>
+
+<div class="error" id="errorBox" role="alert"></div>
 <p class="note">Registration does not confirm payment or activate an API account.</p>
 </form>
 </section>
 
-<!-- PAYMENT SUBMISSION -->
 <section id="paymentForm">
 <div class="heading">
 <h2>Submit Payment <span class="orange">Details</span></h2>
 <p>After paying, submit your UTR and screenshot for manual verification.</p>
 </div>
-
 <form id="payForm">
 <label>Customer ID *</label>
 <input id="payCustomerId" type="text" placeholder="Register first to get Customer ID" required>
@@ -260,13 +216,11 @@ alt="ADS GROWTH Payment QR Code">
 <strong id="paymentId"></strong>
 <p style="margin-top:10px">Please wait for the Admin to verify your payment.</p>
 </div>
-<div class="error" id="paymentError"></div>
-
+<div class="error" id="paymentError" role="alert"></div>
 <p class="note">Do not submit fake or duplicate payment references. Payment is not automatically verified.</p>
 </form>
 </section>
 
-<!-- CLIENT API INFORMATION -->
 <section id="apiAccess">
 <div class="heading">
 <h2>API <span class="orange">Activation</span></h2>
@@ -282,30 +236,13 @@ alt="ADS GROWTH Payment QR Code">
 </section>
 
 <section id="faq">
-<div class="heading">
-<h2>Frequently Asked <span class="orange">Questions</span></h2>
-</div>
+<div class="heading"><h2>Frequently Asked <span class="orange">Questions</span></h2></div>
 <div class="faq">
-<details>
-<summary>How can I join ADS GROWTH?</summary>
-<p>Select a plan and submit the customer registration form.</p>
-</details>
-<details>
-<summary>How do I submit payment?</summary>
-<p>Scan the displayed QR code, pay the selected amount, then submit your UTR and screenshot.</p>
-</details>
-<details>
-<summary>Is payment automatically verified?</summary>
-<p>No. Payment verification is manual. The Admin checks the actual payment before approval.</p>
-</details>
-<details>
-<summary>When will I receive API access?</summary>
-<p>After payment approval, the Admin can generate an API key. Official WhatsApp setup and eligibility are also required.</p>
-</details>
-<details>
-<summary>What if I close the website after registration?</summary>
-<p>Your Customer ID and phone number are saved on this device's browser. You can return to submit payment details from the same device and browser.</p>
-</details>
+<details><summary>How can I join ADS GROWTH?</summary><p>Select a plan and submit the customer registration form.</p></details>
+<details><summary>How do I submit payment?</summary><p>Scan the displayed QR code, pay the selected amount, then submit your UTR and screenshot.</p></details>
+<details><summary>Is payment automatically verified?</summary><p>No. Payment verification is manual. The Admin checks the actual payment before approval.</p></details>
+<details><summary>When will I receive API access?</summary><p>After payment approval, the Admin can generate an API key. Official WhatsApp setup and eligibility are also required.</p></details>
+<details><summary>What if I close the website after registration?</summary><p>Your Customer ID and phone number are saved on this device's browser. You can return to submit payment details from the same device and browser.</p></details>
 </div>
 </section>
 
@@ -320,7 +257,9 @@ alt="ADS GROWTH Payment QR Code">
 <script>
 const API_URL = "https://ads-growth-whatsapp-api.onrender.com";
 
-document.getElementById("year").textContent = new Date().getFullYear();
+const getElement = id => document.getElementById(id);
+
+getElement("year").textContent = new Date().getFullYear();
 
 const prices = {
  Starter:4999,
@@ -329,43 +268,56 @@ const prices = {
 };
 
 function selectPlan(plan){
- document.getElementById("plan").value=plan;
+ getElement("plan").value=plan;
 }
 
+/* SAFE MESSAGE FUNCTIONS: prevent null textContent errors */
 function showError(element,text){
+ if(!element){
+  alert(text);
+  return;
+ }
  element.textContent=text;
  element.style.display="block";
 }
 
 function hideMessage(element){
+ if(!element) return;
  element.style.display="none";
  element.textContent="";
 }
 
-// Restore saved customer details on this browser
+function showSuccess(element){
+ if(!element) return;
+ element.style.display="block";
+}
+
+/* Restore saved customer details */
 (function restoreCustomer(){
  try{
   const saved=JSON.parse(localStorage.getItem("adsGrowthCustomer")||"null");
   if(saved && saved.id && saved.phone){
-   document.getElementById("payCustomerId").value=saved.id;
-   document.getElementById("payPhone").value=saved.phone;
+   getElement("payCustomerId").value=saved.id;
+   getElement("payPhone").value=saved.phone;
   }
- }catch(e){}
+ }catch(e){
+  console.error("Customer restore error:",e);
+ }
 })();
 
-// REGISTER CUSTOMER
-document.getElementById("joinForm").addEventListener("submit",async function(e){
+/* REGISTER CUSTOMER */
+getElement("joinForm").addEventListener("submit",async function(e){
  e.preventDefault();
 
- const name=document.getElementById("name").value.trim();
- const phone=document.getElementById("phone").value.trim();
- const email=document.getElementById("email").value.trim();
- const plan=document.getElementById("plan").value;
- const message=document.getElementById("message").value.trim();
+ const name=getElement("name").value.trim();
+ const phone=getElement("phone").value.trim();
+ const email=getElement("email").value.trim();
+ const plan=getElement("plan").value;
+ const message=getElement("message").value.trim();
 
- const successBox=document.getElementById("successBox");
- const errorBox=document.getElementById("errorBox");
- const button=document.getElementById("submitBtn");
+ const successBox=getElement("successBox");
+ const errorBox=getElement("errorBox");
+ const button=getElement("submitBtn");
 
  hideMessage(successBox);
  hideMessage(errorBox);
@@ -409,12 +361,11 @@ document.getElementById("joinForm").addEventListener("submit",async function(e){
 
   localStorage.setItem("adsGrowthCustomer",JSON.stringify(customer));
 
-  document.getElementById("customerId").textContent=customer.id;
-  document.getElementById("payCustomerId").value=customer.id;
-  document.getElementById("payPhone").value=phone;
+  getElement("customerId").textContent=customer.id;
+  getElement("payCustomerId").value=customer.id;
+  getElement("payPhone").value=phone;
 
-  successBox.style.display="block";
-
+  showSuccess(successBox);
   successBox.scrollIntoView({behavior:"smooth",block:"center"});
 
  }catch(error){
@@ -425,18 +376,18 @@ document.getElementById("joinForm").addEventListener("submit",async function(e){
  }
 });
 
-// SUBMIT PAYMENT PROOF
-document.getElementById("payForm").addEventListener("submit",async function(e){
+/* SUBMIT PAYMENT PROOF */
+getElement("payForm").addEventListener("submit",async function(e){
  e.preventDefault();
 
- const customerId=document.getElementById("payCustomerId").value.trim();
- const phone=document.getElementById("payPhone").value.trim();
- const utr=document.getElementById("utr").value.trim();
- const screenshot=document.getElementById("screenshot").files[0];
+ const customerId=getElement("payCustomerId").value.trim();
+ const phone=getElement("payPhone").value.trim();
+ const utr=getElement("utr").value.trim();
+ const screenshot=getElement("screenshot").files[0];
 
- const successBox=document.getElementById("paymentSuccess");
- const errorBox=document.getElementById("paymentError");
- const button=document.getElementById("paymentBtn");
+ const successBox=getElement("paymentSuccess");
+ const errorBox=getElement("paymentError");
+ const button=getElement("paymentBtn");
 
  hideMessage(successBox);
  hideMessage(errorBox);
@@ -462,6 +413,7 @@ document.getElementById("payForm").addEventListener("submit",async function(e){
  }
 
  const allowed=["image/jpeg","image/png","image/webp"];
+
  if(!allowed.includes(screenshot.type)){
   showError(errorBox,"Only JPG, PNG and WEBP screenshots are allowed.");
   return;
@@ -493,16 +445,16 @@ document.getElementById("payForm").addEventListener("submit",async function(e){
    throw new Error(result.message||"Payment submission failed.");
   }
 
-  document.getElementById("paymentId").textContent=
+  getElement("paymentId").textContent=
    result.payment && result.payment.id ? result.payment.id : "Submitted";
 
-  document.getElementById("paymentSuccessText").textContent=
+  getElement("paymentSuccessText").textContent=
    result.message||"Your payment is pending manual verification.";
 
-  successBox.style.display="block";
+  showSuccess(successBox);
 
-  document.getElementById("utr").value="";
-  document.getElementById("screenshot").value="";
+  getElement("utr").value="";
+  getElement("screenshot").value="";
 
   successBox.scrollIntoView({behavior:"smooth",block:"center"});
 
@@ -514,7 +466,6 @@ document.getElementById("payForm").addEventListener("submit",async function(e){
  }
 });
 </script>
-
 </body>
  </html>
  
