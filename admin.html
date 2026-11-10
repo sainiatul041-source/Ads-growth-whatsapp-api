@@ -1,106 +1,175 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
-<title>ADS GROWTH | Admin Panel</title>
+<title>ADS GROWTH | Admin Dashboard</title>
 
 <style>
 *{box-sizing:border-box}
 body{
  margin:0;
  font-family:Arial,sans-serif;
- background:#07111f;
- color:#fff;
+ background:#070b18;
+ color:#f1f5f9;
 }
 header{
- background:#101f35;
- padding:16px;
+ background:linear-gradient(120deg,#101d38,#142b42,#063c38);
+ padding:18px;
  display:flex;
  justify-content:space-between;
  align-items:center;
- border-bottom:1px solid #263b55;
+ border-bottom:1px solid #1eaa8a;
+ box-shadow:0 5px 25px #0008;
+ position:sticky;
+ top:0;
+ z-index:10;
 }
-h2{margin:0;color:#36d6a3}
-button{
- border:0;
- padding:11px 15px;
- border-radius:7px;
- background:#16bd8b;
- color:#06151b;
- font-weight:bold;
- cursor:pointer;
-}
-input,select{
- width:100%;
- padding:12px;
- margin:7px 0 13px;
- border:1px solid #354a62;
- border-radius:7px;
- background:#0c1b2d;
- color:white;
+header h2{
+ color:#39e6b1;
+ font-size:21px;
+ letter-spacing:1px;
+ margin:0;
 }
 .container{
- max-width:1100px;
+ max-width:1250px;
  margin:auto;
- padding:16px;
+ padding:20px;
 }
 .card{
- background:#102139;
- border:1px solid #263e5a;
- border-radius:12px;
- padding:17px;
- margin-bottom:16px;
+ background:linear-gradient(145deg,#121d33,#0c1729);
+ border:1px solid #263c58;
+ border-radius:15px;
+ padding:20px;
+ margin-bottom:18px;
+ box-shadow:0 10px 30px #0004;
 }
-.hidden{display:none}
+h2,h3{margin-top:0}
+h3{color:#45ddb1}
+button{
+ border:0;
+ padding:12px 16px;
+ border-radius:9px;
+ background:linear-gradient(135deg,#20d5a0,#0ca77d);
+ color:#031b17;
+ font-weight:bold;
+ cursor:pointer;
+ transition:.2s;
+ margin:3px;
+}
+button:hover{
+ transform:translateY(-2px);
+ box-shadow:0 5px 18px #16bd8b55;
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:#263e5d;color:white}
+.danger{background:#df4055;color:white}
+input,select{
+ width:100%;
+ padding:13px;
+ margin:8px 0 15px;
+ border:1px solid #344b68;
+ border-radius:9px;
+ background:#091326;
+ color:white;
+ outline:none;
+}
+input:focus{
+ border-color:#26d9a3;
+ box-shadow:0 0 10px #26d9a344;
+}
+label{font-size:14px;color:#c5d3e2}
 .grid{
  display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:12px;
+ grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+ gap:16px;
 }
 .stat{
- background:#0a192b;
- padding:17px;
- border-radius:9px;
+ background:linear-gradient(145deg,#142b42,#0a1c30);
+ border:1px solid #28516a;
+ padding:22px;
+ border-radius:14px;
 }
 .stat strong{
  display:block;
- font-size:25px;
- color:#36d6a3;
- margin-top:8px;
+ color:#39e6b1;
+ font-size:32px;
+ margin-top:12px;
 }
 nav{
  display:flex;
  gap:8px;
  flex-wrap:wrap;
- margin-bottom:15px;
+ margin-bottom:20px;
 }
-nav button{background:#263c55;color:white}
-nav button.active{background:#16bd8b;color:#06151b}
+nav button{
+ background:#192b45;
+ color:#d8e7f5;
+ border:1px solid #344d69;
+}
+nav button.active{
+ background:linear-gradient(135deg,#20d5a0,#0ca77d);
+ color:#031b17;
+ border:0;
+}
 table{
  width:100%;
  border-collapse:collapse;
- min-width:600px;
+ min-width:650px;
 }
-th,td{
- border-bottom:1px solid #30445c;
- padding:11px;
+th{
+ background:#19314b;
+ color:#45ddb1;
+ padding:14px;
  text-align:left;
+}
+td{
+ padding:13px;
+ border-bottom:1px solid #263b53;
+ color:#d6e2ef;
  font-size:13px;
 }
-.table-wrap{overflow-x:auto}
-.small{font-size:12px;color:#a9bbce}
-.danger{background:#e34b59;color:white}
-.secondary{background:#344b67;color:white}
-.success{color:#36d6a3}
-.error{color:#ff7272}
+tr:hover td{background:#172940}
+.table-wrap{overflow-x:auto;border-radius:10px}
+.small{color:#9eb2c8;font-size:13px}
+.success{color:#39e6b1}
+.error{color:#ff6978}
+.hidden{display:none!important}
 .keybox{
+ background:#071321;
+ border:1px solid #20b88f;
+ border-radius:10px;
+ padding:15px;
  word-break:break-all;
- background:#06111e;
- padding:12px;
- border-radius:8px;
- margin-top:10px;
+ margin-top:15px;
+}
+hr{border:0;border-top:1px solid #30445c;margin:22px 0}
+.status{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ background:#263e5d;
+ font-size:12px;
+}
+.empty{
+ text-align:center;
+ padding:25px;
+ color:#9eb2c8;
+}
+#loginSection{
+ max-width:450px;
+ margin:55px auto;
+}
+#loginSection h2{color:#39e6b1}
+@media(max-width:600px){
+ .container{padding:12px}
+ header{padding:14px}
+ header h2{font-size:17px}
+ .card{padding:15px}
+ .stat strong{font-size:26px}
+ nav button{flex:1}
 }
 </style>
 </head>
@@ -114,23 +183,25 @@ th,td{
 
 <div class="container">
 
-<!-- LOGIN -->
+<!-- ADMIN LOGIN -->
 <section id="loginSection" class="card">
  <h2>Admin Login</h2>
 
  <label>Email</label>
  <input id="email" type="email"
- placeholder="Admin email">
+ placeholder="Admin email"
+ autocomplete="username">
 
  <label>Password</label>
  <input id="password" type="password"
- placeholder="Admin password">
+ placeholder="Admin password"
+ autocomplete="current-password">
 
- <button id="loginBtn">Login</button>
+ <button id="loginBtn">Login to Dashboard</button>
  <p id="loginMessage" class="small"></p>
 </section>
 
-<!-- DASHBOARD -->
+<!-- ADMIN DASHBOARD -->
 <section id="dashboardSection" class="hidden">
 
  <nav>
@@ -140,9 +211,17 @@ th,td{
   <button data-tab="keys">API Keys</button>
  </nav>
 
+ <!-- DASHBOARD HOME -->
  <div id="dashboardTab">
 
+  <div class="card">
+   <h2>Welcome to ADS GROWTH</h2>
+   <p id="adminEmail" class="small">Admin Panel</p>
+   <p>Manage your customers, payments and API keys.</p>
+  </div>
+
   <div class="grid">
+
    <div class="stat">
     Total Customers
     <strong id="totalCustomers">0</strong>
@@ -162,20 +241,30 @@ th,td{
     Total API Keys
     <strong id="totalKeys">0</strong>
    </div>
+
   </div>
 
-  <div class="card">
-   <h3>Admin Information</h3>
-   <p id="adminEmail"></p>
-   <p class="small">ADS GROWTH Management Panel</p>
+  <div class="card" style="margin-top:20px">
+   <h3>Quick Actions</h3>
+   <button data-open-tab="customers">Manage Customers</button>
+   <button data-open-tab="payments">Check Payments</button>
+   <button data-open-tab="keys">Manage API Keys</button>
   </div>
 
  </div>
 
+ <!-- CUSTOMERS -->
  <div id="customersTab" class="hidden card">
+
   <h3>Customers Management</h3>
-  <button id="refreshCustomers">Refresh</button>
-  <div id="customersMessage" class="small"></div>
+
+  <input id="customerSearch"
+   placeholder="Search name, email or phone">
+
+  <button id="refreshCustomers">Refresh Customers</button>
+
+  <p id="customersMessage" class="small"></p>
+
   <div class="table-wrap">
    <table>
     <thead>
@@ -190,17 +279,25 @@ th,td{
     <tbody id="customersBody"></tbody>
    </table>
   </div>
+
  </div>
 
+ <!-- PAYMENTS -->
  <div id="paymentsTab" class="hidden card">
+
   <h3>Payment Management</h3>
-  <button id="refreshPayments">Refresh</button>
+
+  <button id="refreshPayments">Refresh Payments</button>
+
+  <p id="paymentsMessage" class="small"></p>
+
   <div class="table-wrap">
    <table>
     <thead>
      <tr>
-      <th>Customer</th>
+      <th>Customer ID</th>
       <th>Amount</th>
+      <th>Transaction ID</th>
       <th>Status</th>
       <th>Proof</th>
       <th>Action</th>
@@ -209,16 +306,19 @@ th,td{
     <tbody id="paymentsBody"></tbody>
    </table>
   </div>
+
  </div>
 
+ <!-- API KEYS -->
  <div id="keysTab" class="hidden card">
+
   <h3>API Key Management</h3>
 
   <label>Customer ID</label>
   <input id="keyCustomerId"
    placeholder="Enter customer ID">
 
-  <label>Key Name</label>
+  <label>API Key Name</label>
   <input id="keyName"
    placeholder="Example: WhatsApp API">
 
@@ -226,9 +326,11 @@ th,td{
 
   <div id="generatedKey" class="keybox hidden"></div>
 
-  <hr style="border-color:#30445c;margin:20px 0">
+  <hr>
 
-  <button id="refreshKeys">Refresh Keys</button>
+  <button id="refreshKeys" class="secondary">
+   Refresh API Keys
+  </button>
 
   <div class="table-wrap">
    <table>
@@ -243,403 +345,519 @@ th,td{
     <tbody id="keysBody"></tbody>
    </table>
   </div>
+
  </div>
 
 </section>
-    </div>
+</div>
+
 <script>
-const API = "https://ads-growth-whatsapp-api.onrender.com";
+const API="https://ads-growth-whatsapp-api.onrender.com";
 
-let token = localStorage.getItem("ads_admin_token") || "";
+let token=localStorage.getItem("ads_admin_token")||"";
+let allCustomers=[];
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
-async function request(path, options = {}) {
-  const response = await fetch(API + path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: "Bearer " + token } : {}),
-      ...(options.headers || {})
-    }
-  });
+async function request(path,options={}){
 
-  const data = await response.json().catch(() => ({}));
+ const headers={
+  ...(token?{Authorization:"Bearer "+token}:{}),
+  ...(options.headers||{})
+ };
 
-  if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Request failed");
-  }
+ if(options.body && !(options.body instanceof FormData)){
+  headers["Content-Type"]="application/json";
+ }
 
-  return data;
+ const response=await fetch(API+path,{
+  ...options,
+  headers
+ });
+
+ const data=await response.json().catch(()=>({}));
+
+ if(!response.ok || data.success===false){
+  throw new Error(data.message||"Request failed");
+ }
+
+ return data;
 }
 
-function showMessage(id, message, error = false) {
-  $(id).textContent = message;
-  $(id).className = error ? "error" : "success";
+function showMessage(id,text,error=false){
+ $(id).textContent=text;
+ $(id).className=error?"error":"success";
 }
 
-function showDashboard() {
-  $("loginSection").classList.add("hidden");
-  $("dashboardSection").classList.remove("hidden");
-  $("logoutBtn").classList.remove("hidden");
-  loadAll();
+function showLogin(){
+ $("loginSection").classList.remove("hidden");
+ $("dashboardSection").classList.add("hidden");
+ $("logoutBtn").classList.add("hidden");
 }
 
-function showLogin() {
-  $("loginSection").classList.remove("hidden");
-  $("dashboardSection").classList.add("hidden");
-  $("logoutBtn").classList.add("hidden");
+function showDashboard(){
+ $("loginSection").classList.add("hidden");
+ $("dashboardSection").classList.remove("hidden");
+ $("logoutBtn").classList.remove("hidden");
+ loadAll();
 }
 
-$("loginBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
+function switchTab(tab){
+ document.querySelectorAll("nav button[data-tab]").forEach(b=>{
+  b.classList.toggle("active",b.dataset.tab===tab);
+ });
 
-  if (!email || !password) {
-    showMessage("loginMessage", "Email and password required.", true);
-    return;
-  }
+ ["dashboard","customers","payments","keys"].forEach(name=>{
+  $(name+"Tab").classList.toggle("hidden",name!==tab);
+ });
+}
 
-  $("loginBtn").disabled = true;
-
-  try {
-    const data = await request("/api/admin/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password })
-    });
-
-    token = data.token;
-
-    if (!token) throw new Error("Login token missing.");
-
-    localStorage.setItem("ads_admin_token", token);
-    showMessage("loginMessage", "Login successful.");
-    showDashboard();
-
-  } catch (error) {
-    showMessage("loginMessage", error.message, true);
-  } finally {
-    $("loginBtn").disabled = false;
-  }
+document.querySelectorAll("nav button[data-tab]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  switchTab(button.dataset.tab);
+ });
 });
 
-$("logoutBtn").addEventListener("click", () => {
-  token = "";
+document.querySelectorAll("[data-open-tab]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  switchTab(button.dataset.openTab);
+ });
+});
+
+// ADMIN LOGIN
+$("loginBtn").addEventListener("click",async()=>{
+
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!email||!password){
+  showMessage("loginMessage","Email and password required.",true);
+  return;
+ }
+
+ $("loginBtn").disabled=true;
+
+ try{
+  const data=await request("/api/admin/login",{
+   method:"POST",
+   body:JSON.stringify({email,password})
+  });
+
+  if(!data.token){
+   throw new Error("Login token missing.");
+  }
+
+  token=data.token;
+  localStorage.setItem("ads_admin_token",token);
+  localStorage.setItem("ads_admin_email",email);
+
+  showMessage("loginMessage","Login successful.");
+  showDashboard();
+
+ }catch(error){
+  showMessage("loginMessage",error.message,true);
+ }finally{
+  $("loginBtn").disabled=false;
+ }
+});
+
+// LOGOUT
+$("logoutBtn").addEventListener("click",()=>{
+ token="";
+ localStorage.removeItem("ads_admin_token");
+ localStorage.removeItem("ads_admin_email");
+ showLogin();
+});
+
+// LOAD ALL DATA
+async function loadAll(){
+
+ $("adminEmail").textContent=
+ "Admin: "+(localStorage.getItem("ads_admin_email")||"Logged in");
+
+ await Promise.allSettled([
+  loadCustomers(),
+  loadPayments(),
+  loadKeys()
+ ]);
+}
+
+// CUSTOMERS
+async function loadCustomers(){
+
+ try{
+  const data=await request("/api/admin/customers");
+  allCustomers=data.customers||[];
+  renderCustomers(allCustomers);
+
+  $("totalCustomers").textContent=allCustomers.length;
+
+  $("approvedCustomers").textContent=
+   allCustomers.filter(c=>c.status==="approved").length;
+
+  showMessage("customersMessage","Customers loaded.");
+
+ }catch(error){
+  showMessage("customersMessage",error.message,true);
+ }
+}
+
+function renderCustomers(customers){
+
+ const body=$("customersBody");
+ body.innerHTML="";
+
+ if(!customers.length){
+  body.innerHTML='<tr><td colspan="5" class="empty">No customers found.</td></tr>';
+  return;
+ }
+
+ customers.forEach(customer=>{
+
+  const tr=document.createElement("tr");
+
+  const values=[
+   customer.name||"Customer",
+   customer.email||"-",
+   customer.phone||"-",
+   customer.status||"pending"
+  ];
+
+  values.forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=value;
+   tr.appendChild(td);
+  });
+
+  const action=document.createElement("td");
+
+  const approve=document.createElement("button");
+  approve.textContent="Approve";
+  approve.addEventListener("click",()=>{
+   updateCustomer(customer.id,"approve");
+  });
+
+  const reject=document.createElement("button");
+  reject.textContent="Reject";
+  reject.className="danger";
+  reject.addEventListener("click",()=>{
+   updateCustomer(customer.id,"reject");
+  });
+
+  const reset=document.createElement("button");
+  reset.textContent="Reset Password";
+  reset.className="secondary";
+  reset.addEventListener("click",()=>{
+   resetCustomerPassword(customer.id);
+  });
+
+  action.append(approve,reject,reset);
+  tr.appendChild(action);
+  body.appendChild(tr);
+ });
+}
+
+$("customerSearch").addEventListener("input",()=>{
+ const q=$("customerSearch").value.toLowerCase();
+
+ const filtered=allCustomers.filter(c=>
+  [c.name,c.email,c.phone,c.status]
+   .some(v=>String(v||"").toLowerCase().includes(q))
+ );
+
+ renderCustomers(filtered);
+});
+
+async function updateCustomer(id,action){
+
+ if(!confirm("Are you sure?"))return;
+
+ try{
+  await request("/api/admin/customers/"+encodeURIComponent(id)+"/"+action,{
+   method:"POST"
+  });
+
+  alert("Customer updated successfully.");
+  await loadCustomers();
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+async function resetCustomerPassword(id){
+
+ const password=prompt("Enter new customer password:");
+
+ if(!password||password.length<6){
+  alert("Password must be at least 6 characters.");
+  return;
+ }
+
+ try{
+  const data=await request(
+   "/api/admin/customers/"+encodeURIComponent(id)+"/reset-password",
+   {
+    method:"POST",
+    body:JSON.stringify({password})
+   }
+  );
+
+  alert(data.message||"Password updated.");
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+// PAYMENTS
+async function loadPayments(){
+
+ try{
+  const data=await request("/api/admin/payments");
+  const payments=data.payments||[];
+
+  const body=$("paymentsBody");
+  body.innerHTML="";
+
+  if(!payments.length){
+   body.innerHTML='<tr><td colspan="6" class="empty">No payments found.</td></tr>';
+  }
+
+  payments.forEach(payment=>{
+
+   const tr=document.createElement("tr");
+
+   const customer=document.createElement("td");
+   customer.textContent=payment.customer_id||"-";
+
+   const amount=document.createElement("td");
+   amount.textContent=payment.amount||"-";
+
+   const transaction=document.createElement("td");
+   transaction.textContent=payment.transaction_id||"-";
+
+   const status=document.createElement("td");
+   status.textContent=payment.status||"pending";
+
+   const proof=document.createElement("td");
+
+   if(payment.proof_url){
+    const link=document.createElement("a");
+    link.href=payment.proof_url;
+    link.target="_blank";
+    link.rel="noopener noreferrer";
+    link.textContent="View Proof";
+    proof.appendChild(link);
+   }else{
+    proof.textContent="-";
+   }
+
+   const action=document.createElement("td");
+
+   const approve=document.createElement("button");
+   approve.textContent="Approve";
+   approve.addEventListener("click",()=>{
+    updatePayment(payment.id,"approve");
+   });
+
+   const reject=document.createElement("button");
+   reject.textContent="Reject";
+   reject.className="danger";
+   reject.addEventListener("click",()=>{
+    updatePayment(payment.id,"reject");
+   });
+
+   action.append(approve,reject);
+   tr.append(customer,amount,transaction,status,proof,action);
+
+   body.appendChild(tr);
+  });
+
+  $("pendingPayments").textContent=
+   payments.filter(p=>p.status==="pending").length;
+
+  showMessage("paymentsMessage","Payments loaded.");
+
+ }catch(error){
+  showMessage("paymentsMessage",error.message,true);
+ }
+}
+
+async function updatePayment(id,action){
+
+ if(!confirm("Are you sure?"))return;
+
+ try{
+  await request("/api/admin/payments/"+encodeURIComponent(id)+"/"+action,{
+   method:"POST"
+  });
+
+  alert("Payment updated.");
+  await loadPayments();
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+// API KEYS
+async function loadKeys(){
+
+ try{
+  const data=await request("/api/admin/keys");
+  const keys=data.keys||[];
+
+  const body=$("keysBody");
+  body.innerHTML="";
+
+  if(!keys.length){
+   body.innerHTML='<tr><td colspan="4" class="empty">No API keys found.</td></tr>';
+  }
+
+  keys.forEach(key=>{
+
+   const tr=document.createElement("tr");
+
+   const customer=document.createElement("td");
+   customer.textContent=key.customer_id||"-";
+
+   const name=document.createElement("td");
+   name.textContent=key.name||"API Key";
+
+   const status=document.createElement("td");
+   status.textContent=key.status||"active";
+
+   const action=document.createElement("td");
+
+   const reveal=document.createElement("button");
+   reveal.textContent="Reveal";
+   reveal.addEventListener("click",()=>{
+    revealKey(key.id);
+   });
+
+   const revoke=document.createElement("button");
+   revoke.textContent="Revoke";
+   revoke.className="danger";
+   revoke.addEventListener("click",()=>{
+    revokeKey(key.id);
+   });
+
+   action.append(reveal,revoke);
+   tr.append(customer,name,status,action);
+
+   body.appendChild(tr);
+  });
+
+  $("totalKeys").textContent=keys.length;
+
+ }catch(error){
+  console.error("API keys:",error.message);
+ }
+}
+
+$("generateKeyBtn").addEventListener("click",async()=>{
+
+ const customer_id=$("keyCustomerId").value.trim();
+ const name=$("keyName").value.trim();
+
+ if(!customer_id||!name){
+  alert("Customer ID and key name required.");
+  return;
+ }
+
+ try{
+  const data=await request("/api/admin/keys",{
+   method:"POST",
+   body:JSON.stringify({customer_id,name})
+  });
+
+  const key=data.key||data.api_key;
+
+  $("generatedKey").classList.remove("hidden");
+  $("generatedKey").textContent=key
+   ?"Generated API Key: "+key
+   :"Key created. Use Reveal to view it.";
+
+  await loadKeys();
+
+ }catch(error){
+  alert(error.message);
+ }
+});
+
+async function revealKey(id){
+
+ try{
+  const data=await request(
+   "/api/admin/keys/"+encodeURIComponent(id)+"/reveal",
+   {method:"POST"}
+  );
+
+  const key=data.key||data.api_key;
+
+  if(!key)throw new Error("Key not found.");
+
+  $("generatedKey").classList.remove("hidden");
+  $("generatedKey").textContent="API Key: "+key;
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+async function revokeKey(id){
+
+ if(!confirm("Are you sure you want to revoke this API key?"))return;
+
+ try{
+  await request(
+   "/api/admin/keys/"+encodeURIComponent(id)+"/revoke",
+   {method:"POST"}
+  );
+
+  alert("API key revoked.");
+  await loadKeys();
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+// REFRESH BUTTONS
+$("refreshCustomers").addEventListener("click",loadCustomers);
+$("refreshPayments").addEventListener("click",loadPayments);
+$("refreshKeys").addEventListener("click",loadKeys);
+
+// RESTORE ADMIN SESSION
+async function restoreSession(){
+
+ if(!token){
+  showLogin();
+  return;
+ }
+
+ try{
+  const data=await request("/api/admin/me");
+
+  const admin=data.admin||data.user||{};
+
+  if(admin.email){
+   localStorage.setItem("ads_admin_email",admin.email);
+  }
+
+  showDashboard();
+
+ }catch(error){
+  token="";
   localStorage.removeItem("ads_admin_token");
   showLogin();
-});
-
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll("nav button").forEach(b =>
-      b.classList.remove("active")
-    );
-
-    button.classList.add("active");
-
-    [
-      "dashboardTab",
-      "customersTab",
-      "paymentsTab",
-      "keysTab"
-    ].forEach(id => $(id).classList.add("hidden"));
-
-    $(button.dataset.tab + "Tab").classList.remove("hidden");
-  });
-});
-
-async function loadAll() {
-  try {
-    await loadCustomers();
-    await loadPayments();
-    await loadKeys();
-    $("adminEmail").textContent = "Admin: " + $("email").value;
-  } catch (error) {
-    console.error(error);
-  }
+ }
 }
 
-async function loadCustomers() {
-  const data = await request("/api/admin/customers");
-  const customers = data.customers || [];
-
-  $("customersBody").innerHTML = "";
-
-  customers.forEach(customer => {
-    const tr = document.createElement("tr");
-
-    const values = [
-      customer.name || "Customer",
-      customer.email || "-",
-      customer.phone || "-",
-      customer.status || "pending"
-    ];
-
-    values.forEach(value => {
-      const td = document.createElement("td");
-      td.textContent = value;
-      tr.appendChild(td);
-    });
-
-    const action = document.createElement("td");
-
-    const approve = document.createElement("button");
-    approve.textContent = "Approve";
-    approve.addEventListener("click", () =>
-      updateCustomer(customer.id, "approve")
-    );
-
-    const reject = document.createElement("button");
-    reject.textContent = "Reject";
-    reject.className = "danger";
-    reject.style.marginLeft = "5px";
-    reject.addEventListener("click", () =>
-      updateCustomer(customer.id, "reject")
-    );
-
-    const reset = document.createElement("button");
-    reset.textContent = "Reset Password";
-    reset.className = "secondary";
-    reset.style.marginLeft = "5px";
-    reset.addEventListener("click", () =>
-      resetCustomerPassword(customer.id)
-    );
-
-    action.append(approve, reject, reset);
-    tr.appendChild(action);
-
-    $("customersBody").appendChild(tr);
-  });
-
-  $("totalCustomers").textContent = customers.length;
-  $("approvedCustomers").textContent =
-    customers.filter(c => c.status === "approved").length;
-}
-
-async function updateCustomer(id, action) {
-  try {
-    await request("/api/admin/customers/" + id + "/" + action, {
-      method: "POST"
-    });
-
-    alert("Customer updated successfully.");
-    await loadCustomers();
-
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-async function resetCustomerPassword(id) {
-  const password = prompt("Enter new customer password:");
-
-  if (!password || password.length < 6) {
-    alert("Password must be at least 6 characters.");
-    return;
-  }
-
-  try {
-    const data = await request(
-      "/api/admin/customers/" + id + "/reset-password",
-      {
-        method: "POST",
-        body: JSON.stringify({ password })
-      }
-    );
-
-    alert(data.message || "Password updated.");
-
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-async function loadPayments() {
-  const data = await request("/api/admin/payments");
-  const payments = data.payments || [];
-
-  $("paymentsBody").innerHTML = "";
-
-  payments.forEach(payment => {
-    const tr = document.createElement("tr");
-
-    const customer = document.createElement("td");
-    customer.textContent = payment.customer_id || "-";
-
-    const amount = document.createElement("td");
-    amount.textContent = payment.amount || "-";
-
-    const status = document.createElement("td");
-    status.textContent = payment.status || "pending";
-
-    const proof = document.createElement("td");
-
-    if (payment.proof_url) {
-      const link = document.createElement("a");
-      link.href = payment.proof_url;
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.textContent = "View Proof";
-      proof.appendChild(link);
-    } else {
-      proof.textContent = "-";
-    }
-
-    const action = document.createElement("td");
-
-    const approve = document.createElement("button");
-    approve.textContent = "Approve";
-    approve.addEventListener("click", () =>
-      updatePayment(payment.id, "approve")
-    );
-
-    const reject = document.createElement("button");
-    reject.textContent = "Reject";
-    reject.className = "danger";
-    reject.style.marginLeft = "5px";
-    reject.addEventListener("click", () =>
-      updatePayment(payment.id, "reject")
-    );
-
-    action.append(approve, reject);
-    tr.append(customer, amount, status, proof, action);
-
-    $("paymentsBody").appendChild(tr);
-  });
-
-  $("pendingPayments").textContent =
-    payments.filter(p => p.status === "pending").length;
-}
-
-async function updatePayment(id, action) {
-  try {
-    await request("/api/admin/payments/" + id + "/" + action, {
-      method: "POST"
-    });
-
-    alert("Payment updated.");
-    await loadPayments();
-
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-async function loadKeys() {
-  const data = await request("/api/admin/keys");
-  const keys = data.keys || [];
-
-  $("keysBody").innerHTML = "";
-
-  keys.forEach(key => {
-    const tr = document.createElement("tr");
-
-    const customer = document.createElement("td");
-    customer.textContent = key.customer_id || "-";
-
-    const name = document.createElement("td");
-    name.textContent = key.name || "API Key";
-
-    const status = document.createElement("td");
-    status.textContent = key.status || "active";
-
-    const action = document.createElement("td");
-
-    const reveal = document.createElement("button");
-    reveal.textContent = "Reveal";
-    reveal.addEventListener("click", () => revealKey(key.id));
-
-    const revoke = document.createElement("button");
-    revoke.textContent = "Revoke";
-    revoke.className = "danger";
-    revoke.style.marginLeft = "5px";
-    revoke.addEventListener("click", () => revokeKey(key.id));
-
-    action.append(reveal, revoke);
-    tr.append(customer, name, status, action);
-
-    $("keysBody").appendChild(tr);
-  });
-
-  $("totalKeys").textContent = keys.length;
-}
-
-$("generateKeyBtn").addEventListener("click", async () => {
-  const customer_id = $("keyCustomerId").value.trim();
-  const name = $("keyName").value.trim();
-
-  if (!customer_id || !name) {
-    alert("Customer ID and key name required.");
-    return;
-  }
-
-  try {
-    const data = await request("/api/admin/keys", {
-      method: "POST",
-      body: JSON.stringify({ customer_id, name })
-    });
-
-    $("generatedKey").classList.remove("hidden");
-    $("generatedKey").textContent =
-      "Generated API Key: " + (data.key || "Check server response");
-
-    await loadKeys();
-
-  } catch (error) {
-    alert(error.message);
-  }
-});
-
-async function revealKey(id) {
-  try {
-    const data = await request("/api/admin/keys/" + id + "/reveal", {
-      method: "POST"
-    });
-
-    const key = data.key || data.api_key;
-
-    if (!key) throw new Error("Key not found in server response.");
-
-    $("generatedKey").classList.remove("hidden");
-    $("generatedKey").textContent = "API Key: " + key;
-
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-async function revokeKey(id) {
-  if (!confirm("Are you sure you want to revoke this API key?")) return;
-
-  try {
-    await request("/api/admin/keys/" + id + "/revoke", {
-      method: "POST"
-    });
-
-    alert("API key revoked.");
-    await loadKeys();
-
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-$("refreshCustomers").addEventListener("click", loadCustomers);
-$("refreshPayments").addEventListener("click", loadPayments);
-$("refreshKeys").addEventListener("click", loadKeys);
-
-if (token) {
-  request("/api/admin/me")
-    .then(showDashboard)
-    .catch(() => {
-      token = "";
-      localStorage.removeItem("ads_admin_token");
-      showLogin();
-    });
-} else {
-  showLogin();
-}
+restoreSession();
 </script>
 
 </body>
-</html>
+   </html>
+ 
