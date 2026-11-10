@@ -6,220 +6,199 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#08783e">
 <title>ADS GROWTH AGENCY | WhatsApp Cloud API</title>
-<meta name="description" content="ADS GROWTH AGENCY - WhatsApp Cloud API, bulk messaging, automation and campaign management.">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#07843e;--dark:#064b2c;--navy:#102b25;--light:#f5fbf7}
+:root{--green:#07843e;--dark:#064b2c}
 body{font-family:Arial,sans-serif;color:#172b24;background:#fff;line-height:1.6}
 a{text-decoration:none;color:inherit}
-button{font:inherit;cursor:pointer}
-header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;background:#fff;position:sticky;top:0;z-index:10;box-shadow:0 2px 15px #0000000c}
-.logo{font-size:21px;font-weight:900;color:var(--dark);letter-spacing:-.5px}
+header{padding:18px 7%;display:flex;align-items:center;justify-content:space-between;background:white;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px #0001}
+.logo{font-size:21px;font-weight:900;color:var(--dark)}
 .logo span{color:var(--green)}
-nav{display:flex;gap:25px;align-items:center;font-size:14px;font-weight:700}
-nav a:hover{color:var(--green)}
-.btn{display:inline-block;padding:13px 23px;border-radius:9px;background:var(--green);color:white;font-weight:700;border:0}
-.btn:hover{background:var(--dark);transform:translateY(-2px)}
-.btn-outline{background:white;color:var(--green);border:1px solid var(--green)}
-.hero{padding:85px 7% 75px;background:linear-gradient(135deg,#f5fff8,#fff 55%,#e9f8ee);display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:45px}
-.tag{display:inline-block;padding:8px 14px;background:#e0f5e8;color:var(--dark);border-radius:30px;font-size:13px;font-weight:800;margin-bottom:20px}
-h1{font-size:clamp(42px,6vw,76px);line-height:1.05;color:var(--dark);letter-spacing:-2px}
+nav{display:flex;align-items:center;gap:20px;font-weight:bold;font-size:14px}
+.btn{display:inline-block;padding:13px 22px;background:var(--green);color:white;border-radius:9px;font-weight:bold}
+.btn:hover{background:var(--dark)}
+.outline{background:white;color:var(--green);border:1px solid var(--green)}
+.hero{padding:80px 7%;display:grid;grid-template-columns:1.1fr .9fr;gap:35px;align-items:center;background:linear-gradient(135deg,#effcf3,#fff,#e7f8ed)}
+.tag{display:inline-block;background:#dff4e6;color:var(--dark);padding:8px 15px;border-radius:30px;font-weight:bold;margin-bottom:20px}
+h1{font-size:clamp(42px,6vw,72px);line-height:1.08;color:var(--dark)}
 h1 span{color:var(--green)}
-.hero p{font-size:18px;color:#52645b;margin:22px 0 28px;max-width:570px}
-.hero-actions{display:flex;gap:13px;flex-wrap:wrap}
-.hero-art{background:linear-gradient(145deg,#07552f,#079849);border-radius:28px;padding:35px;color:#fff;box-shadow:0 25px 60px #08783e30;position:relative;overflow:hidden}
-.hero-art:before{content:"";position:absolute;width:240px;height:240px;border:35px solid #ffffff15;border-radius:50%;right:-80px;top:-90px}
-.phone{position:relative;background:#fff;border-radius:25px;padding:25px 20px;color:#143c2a;max-width:310px;margin:auto;box-shadow:0 15px 35px #0003;text-align:center}
-.phone-icon{width:90px;height:90px;margin:12px auto 20px;border-radius:50%;background:#0b9b50;color:#fff;display:grid;place-items:center;font-size:45px;font-weight:bold}
-.phone h3{font-size:23px}
-.phone p{font-size:14px;margin:7px 0;color:#567}
-.phone small{display:inline-block;background:#e5f8ec;color:#08783e;padding:8px 13px;border-radius:30px;font-weight:bold}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:25px 7%;background:#064b2c;color:#fff;text-align:center}
-.stats strong{font-size:20px;display:block}
-.stats span{font-size:13px;color:#c7ead5}
+.hero p{font-size:18px;color:#607168;margin:22px 0 28px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.visual{background:linear-gradient(145deg,#064b2c,#0a9b4e);padding:35px;border-radius:25px;box-shadow:0 20px 45px #08783e30}
+.phone{background:white;border-radius:25px;padding:35px 20px;text-align:center;color:var(--dark)}
+.whatsapp{height:100px;width:100px;border-radius:50%;background:#0b9b50;color:white;display:grid;place-items:center;margin:auto auto 20px;font-size:50px}
+.phone h2{font-size:24px}
+.phone p{font-size:14px;margin:10px}
+.phone small{color:var(--green);font-weight:bold}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--dark);color:white;text-align:center;padding:25px 7%;gap:15px}
+.stats strong{font-size:22px;display:block}
+.stats span{font-size:13px;color:#cce8d5}
 section{padding:75px 7%}
-.section-head{text-align:center;max-width:720px;margin:0 auto 42px}
-.section-head h2{font-size:36px;color:var(--dark);line-height:1.2}
-.section-head p{color:#66766d;margin-top:12px}
-.features{background:#f7fbf8}
+.heading{text-align:center;margin:0 auto 40px;max-width:700px}
+.heading h2{font-size:36px;color:var(--dark)}
+.heading p{color:#66766d;margin-top:10px}
+.features{background:#f6fbf7}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:#fff;border:1px solid #e5eee8;border-radius:17px;padding:26px;box-shadow:0 8px 25px #12351b08;transition:.2s}
-.card:hover{transform:translateY(-5px);box-shadow:0 15px 35px #12351b12}
-.ico{width:52px;height:52px;border-radius:14px;background:#e5f7eb;color:var(--green);display:grid;place-items:center;font-size:25px;margin-bottom:16px}
-.card h3{font-size:19px;color:var(--dark);margin-bottom:8px}
+.card{background:white;border:1px solid #e2eee6;border-radius:17px;padding:25px;transition:.2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 30px #0001}
+.icon{font-size:28px;background:#e3f6e9;color:var(--green);width:55px;height:55px;display:grid;place-items:center;border-radius:14px;margin-bottom:15px}
+.card h3{color:var(--dark);margin-bottom:8px}
 .card p{font-size:14px;color:#64746a}
-.pricing{background:#fff}
-.price-wrap{max-width:850px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.price-card{border:1px solid #dcebe1;border-radius:20px;padding:32px;text-align:center}
-.price-card.featured{background:linear-gradient(145deg,#07552f,#078b46);color:#fff;border:0;transform:scale(1.02)}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:850px;margin:auto}
+.price-card{padding:35px;border:1px solid #dcebe1;border-radius:20px;text-align:center}
+.price-card.primary{background:linear-gradient(145deg,#064b2c,#078b46);color:white}
 .price-card h3{font-size:18px}
-.price{font-size:46px;font-weight:900;margin:12px 0;color:var(--green)}
-.featured .price{color:#fff}
-.price-card p{font-size:14px;color:#66766d}
-.featured p{color:#d5f1df}
-.price-card .btn{margin-top:22px}
-.price-card.featured .btn{background:#fff;color:#08783e}
-.price-note{text-align:center;font-size:12px;color:#78877e;margin:25px auto 0;max-width:700px}
-.steps{background:#f7fbf8}
-.step{display:flex;gap:15px;align-items:flex-start}
-.step-no{background:#e2f5e9;color:var(--green);font-weight:900;border-radius:50%;min-width:42px;height:42px;display:grid;place-items:center}
-.cta{background:#064b2c;color:white;text-align:center;border-radius:25px;padding:55px 25px}
-.cta h2{font-size:34px}
-.cta p{color:#d2e9db;margin:12px auto 25px;max-width:600px}
-.cta .btn{background:#fff;color:#08783e}
-footer{background:#09271c;color:#d8e9de;padding:40px 7% 20px}
-.footer-row{display:flex;justify-content:space-between;gap:25px;flex-wrap:wrap}
-footer .logo{color:#fff}
-footer p{font-size:13px;color:#a9c3b2;margin-top:10px}
-footer a{font-size:13px;margin-left:15px}
-.copy{text-align:center;border-top:1px solid #ffffff20;margin-top:28px;padding-top:18px;font-size:12px;color:#a9c3b2}
-.mobile-menu{display:none}
-@media(max-width:800px){
- header{padding:0 5%;height:68px}
- nav{gap:12px;font-size:12px}
- nav .nav-extra{display:none}
- .hero{grid-template-columns:1fr;padding:60px 6%}
- .hero-art{max-width:480px;width:100%;margin:auto}
- .stats{grid-template-columns:repeat(2,1fr);gap:20px}
- section{padding:60px 6%}
- .grid{grid-template-columns:repeat(2,1fr)}
+.price{font-size:45px;font-weight:900;color:var(--green);margin:15px}
+.primary .price{color:white}
+.price-card p{color:#68776e;font-size:14px}
+.primary p{color:#d5f1df}
+.price-card .btn{margin-top:20px}
+.primary .btn{background:white;color:var(--green)}
+.note{text-align:center;color:#78877e;font-size:12px;max-width:700px;margin:22px auto}
+.steps{background:#f6fbf7}
+.cta{background:var(--dark);color:white;border-radius:22px;text-align:center;padding:55px 25px}
+.cta h2{font-size:32px}
+.cta p{color:#d5e9dc;margin:15px auto 25px}
+.cta .btn{background:white;color:var(--green)}
+footer{background:#09271c;color:white;padding:40px 7% 20px}
+footer p{font-size:13px;color:#b6cfbf;margin-top:10px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px;font-size:13px}
+.copy{text-align:center;border-top:1px solid #ffffff25;margin-top:25px;padding-top:18px;font-size:12px;color:#b6cfbf}
+@media(max-width:750px){
+header{padding:15px 5%;flex-wrap:wrap;gap:12px}
+nav{gap:12px;flex-wrap:wrap;font-size:12px}
+.hero{grid-template-columns:1fr;padding:55px 6%}
+.stats{grid-template-columns:repeat(2,1fr)}
+section{padding:55px 6%}
+.grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:520px){
- .logo{font-size:17px}
- nav{gap:8px}
- nav a{font-size:11px}
- nav .btn{padding:10px 12px}
- .hero{padding-top:48px}
- h1{font-size:46px}
- .hero p{font-size:16px}
- .grid,.price-wrap{grid-template-columns:1fr}
- .price-card.featured{transform:none}
- .section-head h2{font-size:29px}
- .cta h2{font-size:27px}
+.logo{font-size:17px}
+nav{width:100%;justify-content:space-between}
+nav a{font-size:11px}
+.grid,.price-grid{grid-template-columns:1fr}
+.heading h2{font-size:29px}
+.cta h2{font-size:26px}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="#">ADS GROWTH <span>AGENCY</span></a>
-  <nav>
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a class="nav-extra" href="#how">How It Works</a>
-    <a href="client.html">Login</a>
-    <a class="btn" href="client.html">Get Started</a>
-  </nav>
+<a class="logo" href="#">ADS GROWTH <span>AGENCY</span></a>
+<nav>
+<a href="#features">Features</a>
+<a href="#pricing">Pricing</a>
+<a href="#how">How It Works</a>
+<a href="client.html">Login</a>
+<a class="btn" href="client.html">Join Now</a>
+</nav>
 </header>
 
 <main>
-<section class="hero">
-  <div>
-    <div class="tag">● WHATSAPP CLOUD API PLATFORM</div>
-    <h1>WhatsApp<br><span>Cloud API</span></h1>
-    <p>Power your business communication with smart messaging, automation and campaign management from ADS GROWTH AGENCY.</p>
-    <div class="hero-actions">
-      <a class="btn" href="client.html">Start Your Account →</a>
-      <a class="btn btn-outline" href="#features">Explore Features</a>
-    </div>
-  </div>
-  <div class="hero-art">
-    <div class="phone">
-      <div class="phone-icon">☎</div>
-      <h3>WhatsApp Cloud API</h3>
-      <p>Business messaging platform</p>
-      <small>Official Meta Cloud API integration</small>
-    </div>
-  </div>
-</section>
+<div class="hero">
+<div>
+<div class="tag">● WHATSAPP CLOUD API PLATFORM</div>
+<h1>WhatsApp<br><span>Cloud API</span></h1>
+<p>Power your business communication with smart messaging, automation and campaign management from ADS GROWTH AGENCY.</p>
+<div class="actions">
+<a class="btn" href="client.html">Start Your Account →</a>
+<a class="btn outline" href="#features">Explore Features</a>
+</div>
+</div>
+<div class="visual">
+<div class="phone">
+<div class="whatsapp">☎</div>
+<h2>WhatsApp Cloud API</h2>
+<p>Business Messaging Platform</p>
+<small>Official Meta Cloud API Integration</small>
+</div>
+</div>
+</div>
 
 <div class="stats">
-  <div><strong>Bulk</strong><span>Messaging</span></div>
-  <div><strong>24/7</strong><span>Automation</span></div>
-  <div><strong>Live</strong><span>Campaign Control</span></div>
-  <div><strong>Smart</strong><span>Analytics</span></div>
+<div><strong>Bulk</strong><span>Messaging</span></div>
+<div><strong>24/7</strong><span>Automation</span></div>
+<div><strong>Smart</strong><span>Campaigns</span></div>
+<div><strong>Live</strong><span>Analytics</span></div>
 </div>
 
 <section class="features" id="features">
-  <div class="section-head">
-    <h2>Powerful Features for Your Business</h2>
-    <p>Manage your WhatsApp business communication with one simple platform.</p>
-  </div>
-  <div class="grid">
-    <article class="card"><div class="ico">➤</div><h3>Bulk Messaging</h3><p>Organize customer contacts and send approved WhatsApp template campaigns.</p></article>
-    <article class="card"><div class="ico">🤖</div><h3>Automation & Chatbot</h3><p>Build smart replies and automate customer communication workflows.</p></article>
-    <article class="card"><div class="ico">📣</div><h3>Campaign Management</h3><p>Create, schedule and manage your marketing campaigns.</p></article>
-    <article class="card"><div class="ico">🔒</div><h3>Secure Platform</h3><p>Account access and API credentials managed with security controls.</p></article>
-    <article class="card"><div class="ico">📊</div><h3>Real-Time Analytics</h3><p>View available delivery, read and response information.</p></article>
-    <article class="card"><div class="ico">🔑</div><h3>API Key Management</h3><p>Manage your API keys from your customer dashboard.</p></article>
-    <article class="card"><div class="ico">📱</div><h3>Number Management</h3><p>Manage your connected WhatsApp business phone number.</p></article>
-    <article class="card"><div class="ico">🧾</div><h3>Payment Records</h3><p>Submit payment details and view payment approval status.</p></article>
-    <article class="card"><div class="ico">🎧</div><h3>Customer Support</h3><p>Get assistance with setup and platform usage.</p></article>
-  </div>
+<div class="heading">
+<h2>Powerful Features for Your Business</h2>
+<p>Manage your WhatsApp business communication with one platform.</p>
+</div>
+<div class="grid">
+<div class="card"><div class="icon">➤</div><h3>Bulk Messaging</h3><p>Organize contacts and send approved WhatsApp template campaigns.</p></div>
+<div class="card"><div class="icon">🤖</div><h3>Automation & Chatbot</h3><p>Smart replies and automated customer communication workflows.</p></div>
+<div class="card"><div class="icon">📣</div><h3>Campaign Management</h3><p>Create, schedule and manage marketing campaigns.</p></div>
+<div class="card"><div class="icon">🔒</div><h3>Secure Platform</h3><p>Secure account access and API credential management.</p></div>
+<div class="card"><div class="icon">📊</div><h3>Real-Time Analytics</h3><p>View available delivery, read and response information.</p></div>
+<div class="card"><div class="icon">🔑</div><h3>API Key Management</h3><p>Manage API keys from your customer dashboard.</p></div>
+<div class="card"><div class="icon">📱</div><h3>Number Management</h3><p>Manage connected WhatsApp business numbers.</p></div>
+<div class="card"><div class="icon">🧾</div><h3>Payment Records</h3><p>Submit payment details and view approval status.</p></div>
+<div class="card"><div class="icon">🎧</div><h3>Customer Support</h3><p>Get help with platform setup and usage.</p></div>
+</div>
 </section>
 
 <section id="pricing">
-  <div class="section-head">
-    <h2>Simple & Affordable Pricing</h2>
-    <p>Choose the setup plan and start managing your business communication.</p>
-  </div>
-  <div class="price-wrap">
-    <div class="price-card featured">
-      <h3>ONE-TIME SETUP</h3>
-      <div class="price">₹7,999</div>
-      <p>One-time platform setup charge</p>
-      <a class="btn" href="client.html">Get Started Now</a>
-    </div>
-    <div class="price-card">
-      <h3>MARKETING MESSAGE</h3>
-      <div class="price">₹0.15</div>
-      <p>Per marketing message</p>
-      <a class="btn" href="client.html">Create Account</a>
-    </div>
-  </div>
-  <p class="price-note">Message pricing and applicable Meta/WhatsApp charges, taxes and provider fees must be confirmed in your service agreement before payment.</p>
+<div class="heading">
+<h2>Simple & Affordable Pricing</h2>
+<p>Start your WhatsApp business communication with ADS GROWTH AGENCY.</p>
+</div>
+<div class="price-grid">
+<div class="price-card primary">
+<h3>ONE-TIME SETUP</h3>
+<div class="price">₹7,999</div>
+<p>One-time platform setup charge</p>
+<a class="btn" href="client.html">Get Started Now</a>
+</div>
+<div class="price-card">
+<h3>MARKETING MESSAGE</h3>
+<div class="price">₹0.15</div>
+<p>Per marketing message</p>
+<a class="btn" href="client.html">Create Account</a>
+</div>
+</div>
+<p class="note">Applicable Meta/WhatsApp charges, taxes and provider fees may be additional. Confirm final charges before payment.</p>
 </section>
 
 <section class="steps" id="how">
-  <div class="section-head">
-    <h2>Get Started in 3 Simple Steps</h2>
-    <p>Start your journey with ADS GROWTH AGENCY.</p>
-  </div>
-  <div class="grid">
-    <div class="card step"><div class="step-no">1</div><div><h3>Create Account</h3><p>Register your customer account on our platform.</p></div></div>
-    <div class="card step"><div class="step-no">2</div><div><h3>Complete Setup</h3><p>Submit your setup and WhatsApp Cloud API details for configuration.</p></div></div>
-    <div class="card step"><div class="step-no">3</div><div><h3>Start Messaging</h3><p>Use approved templates and connected API features.</p></div></div>
-  </div>
+<div class="heading">
+<h2>Get Started in 3 Simple Steps</h2>
+<p>Start your journey with ADS GROWTH AGENCY.</p>
+</div>
+<div class="grid">
+<div class="card"><div class="icon">1</div><h3>Create Account</h3><p>Register your customer account.</p></div>
+<div class="card"><div class="icon">2</div><h3>Complete Setup</h3><p>Submit your setup and WhatsApp API details.</p></div>
+<div class="card"><div class="icon">3</div><h3>Start Messaging</h3><p>Use approved templates and connected API features.</p></div>
+</div>
 </section>
 
 <section>
-  <div class="cta">
-    <h2>Grow Your Business with WhatsApp</h2>
-    <p>Take control of your customer communication with ADS GROWTH AGENCY.</p>
-    <a class="btn" href="client.html">Register Your Account →</a>
-  </div>
+<div class="cta">
+<h2>Grow Your Business with WhatsApp</h2>
+<p>Take control of your customer communication with ADS GROWTH AGENCY.</p>
+<a class="btn" href="client.html">Register Your Account →</a>
+</div>
 </section>
 </main>
 
 <footer>
-  <div class="footer-row">
-    <div>
-      <div class="logo">ADS GROWTH <span>AGENCY</span></div>
-      <p>WhatsApp Cloud API business communication platform.</p>
-    </div>
-    <div>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="client.html">Client Login</a>
-      <a href="admin.html">Admin</a>
-    </div>
-  </div>
-  <div class="copy">© <span id="year"></span> ADS GROWTH AGENCY. All rights reserved.</div>
+<div class="logo">ADS GROWTH <span>AGENCY</span></div>
+<p>WhatsApp Cloud API Business Communication Platform.</p>
+<div class="footer-links">
+<a href="#features">Features</a>
+<a href="#pricing">Pricing</a>
+<a href="client.html">Client Login</a>
+<a href="admin.html">Admin</a>
+</div>
+<div class="copy">© <span id="year"></span> ADS GROWTH AGENCY. All rights reserved.</div>
 </footer>
 
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 </body>
  </html>
-     
+ 
