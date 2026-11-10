@@ -1,755 +1,400 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b19">
-<title>ADS GROWTH | Admin Dashboard</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADS GROWTH Admin</title>
 <style>
-:root{
---bg:#070a16;
---panel:#101a34;
---line:#293b68;
---orange:#ff9a18;
---green:#00d68b;
---red:#f32650;
---blue:#1677ff;
---white:#f7f8ff;
---muted:#aab5d1;
-}
 *{box-sizing:border-box}
-body{
-margin:0;
-background:radial-gradient(ellipse at 50% -20%,#38207855,transparent 45%),var(--bg);
-color:var(--white);
-font-family:Arial,sans-serif;
-}
-header{
-padding:18px;
-background:linear-gradient(110deg,#17102e,#080d22 65%,#201044);
-border-bottom:3px solid var(--orange);
-}
-.head{
-max-width:1250px;
-margin:auto;
-display:flex;
-align-items:center;
-gap:15px;
-}
-.logo{
-width:55px;height:55px;
-border-radius:15px;
-display:grid;place-items:center;
-background:linear-gradient(145deg,#05c879,#087c5a);
-font-size:30px;
-}
-.brand{flex:1}
-h1{margin:0;font-size:25px}
-h1 span{color:var(--orange)}
-.subtitle{color:#c0c9e1;margin-top:5px;font-size:13px}
-.online{
-border:1px solid var(--green);
-color:var(--green);
-padding:9px 12px;
-border-radius:25px;
-font-size:12px;
-font-weight:bold;
-}
-main{max-width:1250px;margin:auto;padding:16px}
-.hidden{display:none!important}
-.panel{
-background:linear-gradient(145deg,#101a34,#0b1225);
-border:1px solid var(--line);
-border-radius:16px;
-padding:17px;
-margin:15px 0;
-box-shadow:0 9px 25px #0005;
-}
-.login-box{max-width:450px;margin:45px auto}
-.login-box h2{color:var(--orange)}
-input{
-width:100%;
-padding:15px;
-margin:8px 0;
-border:1px solid #34466f;
-border-radius:10px;
-background:#080f20;
-color:white;
-font-size:16px;
-}
-button{
-border:0;
-border-radius:10px;
-padding:12px 15px;
-font-size:13px;
-font-weight:bold;
-cursor:pointer;
-margin:3px;
-}
-button:disabled{opacity:.5;cursor:not-allowed}
-.btn-orange{background:linear-gradient(135deg,#ffbd24,#ff7900);color:#1c1200}
-.btn-green{background:linear-gradient(135deg,#20e6a0,#009c6c);color:#03251a}
-.btn-red{background:linear-gradient(135deg,#ff4265,#d90035);color:white}
-.btn-blue{background:linear-gradient(135deg,#31a5ff,#0759e8);color:white}
-.btn-purple{background:linear-gradient(135deg,#b14cff,#6520e8);color:white}
-.btn-small{padding:8px 10px;font-size:11px}
-.muted{color:var(--muted);font-size:13px}
-#loginMsg,#message{
-padding:10px;
-color:#ffc77c;
-overflow-wrap:anywhere;
-}
-.welcome{
-display:flex;
-align-items:center;
-gap:15px;
-flex-wrap:wrap;
-}
-.welcome-copy{flex:1}
-.welcome-copy h2{margin:0 0 7px}
-.stats{
-display:grid;
-grid-template-columns:repeat(4,minmax(0,1fr));
-gap:12px;
-margin:15px 0;
-}
-.stat{
-background:#101a35;
-border:1px solid var(--line);
-border-radius:14px;
-padding:15px;
-}
-.stat span{font-size:13px;color:#d4dcf0}
-.stat strong{display:block;font-size:27px;margin-top:8px}
-.stat.blue strong{color:#45a9ff}
-.stat.green strong{color:#19e6a2}
-.stat.orange strong{color:#ffb33c}
-.stat.red strong{color:#ff6688}
-.section-title{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
-margin-bottom:12px;
-}
-.section-title h2{margin:0;color:var(--orange);font-size:21px}
-.table-wrap{
-overflow-x:auto;
-border:1px solid #26365e;
-border-radius:10px;
-}
-table{
-border-collapse:collapse;
-width:100%;
-min-width:900px;
-}
-th{
-background:linear-gradient(90deg,#21164a,#17274b);
-color:#f4c4ff;
-text-align:left;
-font-size:12px;
-}
-th,td{
-padding:12px;
-border-bottom:1px solid #1e2c4d;
-font-size:12px;
-white-space:nowrap;
-}
-td{color:#e4eaf8}
-.pill{
-display:inline-block;
-padding:5px 9px;
-border-radius:20px;
-font-size:10px;
-font-weight:bold;
-background:#263451;
-}
-.approved,.active{background:#064b39;color:#64ffbf}
-.pending{background:#56370b;color:#ffd37b}
-.rejected,.revoked{background:#54172b;color:#ff8da6}
-.key-reveal{
-background:#050a16;
-border:1px solid var(--orange);
-padding:15px;
-border-radius:10px;
-overflow-wrap:anywhere;
-margin-top:12px;
-}
-.key-value{
-color:#ffd27e;
-font-size:13px;
-overflow-wrap:anywhere;
-margin:10px 0;
-}
-footer{text-align:center;color:#7886a8;padding:22px;font-size:12px}
-@media(max-width:750px){
-.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:480px){
-header{padding:13px}
-h1{font-size:20px}
-main{padding:9px}
-.panel{padding:12px}
-.stat{padding:11px}
-.stat strong{font-size:23px}
-}
+body{margin:0;background:#080808;color:#fff;font-family:Arial,sans-serif}
+header{padding:18px;background:#151515;display:flex;align-items:center;gap:15px;border-bottom:1px solid #333}
+button{border:0;padding:12px 16px;border-radius:8px;background:#ff7900;color:#111;font-weight:bold;cursor:pointer}
+input{width:100%;padding:13px;margin:8px 0 16px;background:#090909;color:#fff;border:1px solid #555;border-radius:8px}
+h1{color:#ff7900}
+.container{max-width:1100px;margin:auto;padding:20px}
+.card{background:#171717;border:1px solid #333;border-radius:12px;padding:18px;margin:15px 0}
+.hidden{display:none}
+.menu{display:none;background:#171717;padding:12px}
+.menu button{margin:5px}
+.item{border-bottom:1px solid #444;padding:15px 0;overflow-wrap:anywhere}
+.small{background:#333;color:#fff;margin:4px}
+.danger{background:#b92d2d;color:#fff}
+.green{background:#178448;color:#fff}
+#message{color:#ff9b44;overflow-wrap:anywhere}
 </style>
 </head>
-
 <body>
 
 <header>
-<div class="head">
-<div class="logo">✆</div>
-<div class="brand">
-<h1>ADS GROWTH <span>ADMIN</span></h1>
-<div class="subtitle">Customer, Payment & API Key Management</div>
-</div>
-<div class="online">● ONLINE</div>
-</div>
+<button onclick="toggleMenu()">☰</button>
+<h2 style="color:#ff7900">ADS GROWTH ADMIN</h2>
 </header>
 
-<main>
+<div id="menu" class="menu hidden">
+<button onclick="showSection('dashboard')">Dashboard</button>
+<button onclick="showSection('customers')">Customers</button>
+<button onclick="showSection('payments')">Payments</button>
+<button onclick="logout()">Logout</button>
+</div>
 
-<section id="login" class="panel login-box">
+<div class="container">
+
+<div id="loginBox" class="card">
 <h2>Admin Login</h2>
-<p class="muted">Sign in to manage customers and payments.</p>
+<input id="email" type="email" placeholder="Admin email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="adminLogin()">LOGIN</button>
+<p id="loginMessage"></p>
+</div>
 
-<input id="email" type="email" placeholder="Admin Email" autocomplete="username">
-<input id="password" type="password" placeholder="Admin Password" autocomplete="current-password">
+<div id="panel" class="hidden">
+<h1>Dashboard</h1>
+<p id="message"></p>
 
-<button class="btn-orange" id="loginButton" onclick="loginAdmin()" style="width:100%">
-LOGIN
-</button>
-
-<div id="loginMsg"></div>
+<section id="dashboard" class="card">
+<h2>ADS GROWTH Dashboard</h2>
+<button onclick="loadCustomers()">Refresh Customers</button>
+<button onclick="loadPayments()">Refresh Payments</button>
 </section>
 
-<section id="dashboard" class="hidden">
-
-<div class="panel">
-<div class="welcome">
-<div style="font-size:42px">♛</div>
-<div class="welcome-copy">
-<h2>Welcome Admin</h2>
-<div class="muted">Manage customers, payments and API activation.</div>
-</div>
-<button class="btn-orange" onclick="loadData()">↻ REFRESH</button>
-<button class="btn-red" onclick="logoutAdmin()">LOGOUT</button>
-</div>
-<div id="message"></div>
-</div>
-
-<div class="stats">
-<div class="stat blue">
-<span>Total Customers</span>
-<strong id="totalCustomers">0</strong>
-</div>
-<div class="stat green">
-<span>Total Payments</span>
-<strong id="totalPayments">0</strong>
-</div>
-<div class="stat orange">
-<span>Approved Payments</span>
-<strong id="approvedPayments">0</strong>
-</div>
-<div class="stat red">
-<span>Pending Payments</span>
-<strong id="pendingPayments">0</strong>
-</div>
-</div>
-
-<div class="panel">
-<div class="section-title">
-<h2>👥 Customers</h2>
-<span class="muted" id="customerCount">0 records</span>
-</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Customer ID</th>
-<th>Name</th>
-<th>Phone</th>
-<th>Email</th>
-<th>Plan</th>
-<th>Amount</th>
-<th>Status</th>
-<th>Joined</th>
-<th>API ACTION</th>
-</tr>
-</thead>
-<tbody id="customers">
-<tr><td colspan="9">Loading...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div class="panel">
-<div class="section-title">
-<h2>▣ Payments</h2>
-<span class="muted" id="paymentCount">0 records</span>
-</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Payment ID</th>
-<th>Customer ID</th>
-<th>UTR</th>
-<th>Screenshot</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody id="payments">
-<tr><td colspan="6">Loading...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div class="panel">
-<h2 style="color:var(--orange)">🔑 Client Activation Details</h2>
-<p class="muted">Generate API Key दबाने के बाद Temporary Password और API Key यहाँ दिखाई देंगे। इन्हें सुरक्षित रखें।</p>
-<div id="generatedKey">अभी कोई नया Client Activate नहीं हुआ है।</div>
-</div>
-
-<div class="panel">
-<h2 style="color:var(--orange)">Important</h2>
-<p class="muted">• Payment approve करने से पहले बैंक या UPI में वास्तविक भुगतान जाँचें।</p>
-<p class="muted">• Temporary Password और API Key Client को सुरक्षित तरीके से दें।</p>
-<p class="muted">• API Key WhatsApp Cloud API का Access Token नहीं है।</p>
-</div>
-
+<section id="customers" class="card hidden">
+<h2>Customers</h2>
+<div id="customerList"></div>
 </section>
-</main>
 
-<footer>♛ ADS GROWTH WHATSAPP API | Powered by ADS GROWTH</footer>
+<section id="payments" class="card hidden">
+<h2>Payments</h2>
+<div id="paymentList"></div>
+</section>
+</div>
+</div>
 
 <script>
 const API = "https://ads-growth-whatsapp-api.onrender.com";
+let adminToken = localStorage.getItem("ads_admin_token") || "";
 
-let token = sessionStorage.getItem("ads_admin_token") || "";
-
-function el(id){
-return document.getElementById(id);
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("hidden");
 }
 
-function safe(value){
-return String(value ?? "").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
-}
-
-function formatDate(value){
-if(!value)return "";
-const d=new Date(value);
-return isNaN(d.getTime())?"":d.toLocaleString();
-}
-
-function loginMessage(text){
-el("loginMsg").textContent=text;
+function showSection(id){
+  ["dashboard","customers","payments"].forEach(x=>{
+    document.getElementById(x).classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+  document.getElementById("menu").classList.add("hidden");
 }
 
 function message(text){
-el("message").textContent=text;
+  document.getElementById("message").textContent = text;
 }
 
-function showDashboard(){
-el("login").classList.add("hidden");
-el("dashboard").classList.remove("hidden");
+async function request(path,method="GET",body=null){
+  const response = await fetch(API+path,{
+    method,
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+adminToken
+    },
+    body:body ? JSON.stringify(body) : null
+  });
+
+  const data = await response.json();
+
+  if(!response.ok || !data.success){
+    throw new Error(data.message || "Request failed");
+  }
+
+  return data;
 }
 
-function showLogin(){
-el("dashboard").classList.add("hidden");
-el("login").classList.remove("hidden");
+async function adminLogin(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+
+  document.getElementById("loginMessage").textContent="Logging in...";
+
+  try{
+    const response=await fetch(API+"/api/admin/login",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email,password})
+    });
+
+    const data=await response.json();
+
+    if(!response.ok || !data.success){
+      throw new Error(data.message || "Login failed");
+    }
+
+    adminToken=data.token;
+    localStorage.setItem("ads_admin_token",adminToken);
+    openPanel();
+
+  }catch(error){
+    document.getElementById("loginMessage").textContent=error.message;
+  }
 }
 
-function statusPill(status){
-const s=String(status||"unknown").toLowerCase();
-const allowed=["approved","pending","rejected","active","revoked"];
-const cls=allowed.includes(s)?s:"";
-return `<span class="pill ${cls}">${safe(s.toUpperCase())}</span>`;
+function openPanel(){
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("panel").classList.remove("hidden");
+  loadCustomers();
+  loadPayments();
 }
 
-async function apiRequest(path,options={}){
-const headers={
-"Authorization":"Bearer "+token,
-...(options.headers||{})
-};
-
-if(options.body){
-headers["Content-Type"]="application/json";
+function logout(){
+  localStorage.removeItem("ads_admin_token");
+  adminToken="";
+  location.reload();
 }
 
-const response=await fetch(API+path,{
-...options,
-headers
-});
+async function loadCustomers(){
+  try{
+    const data=await request("/api/admin/customers");
+    const box=document.getElementById("customerList");
+    box.innerHTML="";
 
-let result={};
+    data.customers.forEach(customer=>{
+      const item=document.createElement("div");
+      item.className="item";
 
-try{
-result=await response.json();
-}catch(e){
-throw new Error("Server returned invalid response.");
+      const title=document.createElement("h3");
+      title.textContent=customer.name || customer.email || customer.phone;
+
+      const info=document.createElement("p");
+      info.textContent=
+        "Email: "+(customer.email||"-")+
+        " | Phone: "+(customer.phone||"-")+
+        " | Status: "+(customer.status||"-");
+
+      item.append(title,info);
+
+      const approve=document.createElement("button");
+      approve.textContent="Approve";
+      approve.className="green";
+      approve.onclick=()=>customerAction(customer.id,"approve");
+
+      const reject=document.createElement("button");
+      reject.textContent="Reject";
+      reject.className="danger";
+      reject.onclick=()=>customerAction(customer.id,"reject");
+
+      const reset=document.createElement("button");
+      reset.textContent="RESET PASSWORD";
+      reset.className="small";
+      reset.onclick=()=>resetPassword(customer.id);
+
+      const keys=document.createElement("button");
+      keys.textContent="Generate API Key";
+      keys.className="small";
+      keys.onclick=()=>generateKey(customer.id);
+
+      const list=document.createElement("button");
+      list.textContent="View API Keys";
+      list.className="small";
+      list.onclick=()=>loadCustomerKeys(customer.id,item);
+
+      item.append(approve,reject,reset,keys,list);
+      box.appendChild(item);
+    });
+
+  }catch(error){
+    message(error.message);
+  }
+}
+  <script>
+async function customerAction(id,action){
+  try{
+    const data=await request(
+      "/api/admin/customers/"+encodeURIComponent(id)+"/"+action,
+      "POST"
+    );
+    message(data.message);
+    loadCustomers();
+  }catch(error){
+    message(error.message);
+  }
 }
 
-if(!response.ok){
-if(response.status===401){
-logoutAdmin();
-throw new Error("Session expired. Please login again.");
-}
-throw new Error(result.message||"Request failed.");
-}
+async function resetPassword(id){
+  if(!confirm("Is customer ka password reset karein?"))return;
 
-return result;
-}
+  try{
+    const data=await request(
+      "/api/admin/customers/"+encodeURIComponent(id)+"/reset-password",
+      "POST"
+    );
 
-/* ADMIN LOGIN */
-async function loginAdmin(){
+    const password=data.temporary_password;
 
-const email=el("email").value.trim();
-const password=el("password").value;
-const button=el("loginButton");
+    prompt(
+      "Naya temporary password. Isse copy karke client ko dein:",
+      password
+    );
 
-if(!email||!password){
-loginMessage("Email and password required.");
-return;
-}
-
-button.disabled=true;
-loginMessage("Checking admin login...");
-
-try{
-const response=await fetch(API+"/api/admin/login",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({email,password})
-});
-
-let result={};
-try{
-result=await response.json();
-}catch(e){
-throw new Error("Backend response invalid. Check Render.");
+    message("Password reset successful. Client ko naya password dein.");
+  }catch(error){
+    message(error.message);
+  }
 }
 
-if(!response.ok||!result.success){
-throw new Error(result.message||"Admin login failed.");
+async function generateKey(id){
+  try{
+    const data=await request(
+      "/api/admin/customers/"+encodeURIComponent(id)+"/api-key",
+      "POST"
+    );
+
+    prompt("New API key. Copy karke safe rakhein:",data.api_key);
+    message("API key generated.");
+    loadCustomers();
+
+  }catch(error){
+    message(error.message);
+  }
 }
 
-if(!result.token){
-throw new Error("Backend did not return login token.");
+async function loadCustomerKeys(id,item){
+  try{
+    const data=await request(
+      "/api/admin/customers/"+encodeURIComponent(id)+"/api-keys"
+    );
+
+    const box=document.createElement("div");
+    box.className="card";
+    box.textContent="API Keys: ";
+
+    data.keys.forEach(key=>{
+      const row=document.createElement("div");
+      row.className="item";
+
+      const label=document.createElement("p");
+      label.textContent=
+        key.key_prefix+" | "+key.status+" | "+key.created_at;
+
+      row.appendChild(label);
+
+      if(key.status==="active"){
+        const reveal=document.createElement("button");
+        reveal.textContent="Reveal";
+        reveal.onclick=async()=>{
+          try{
+            const result=await request(
+              "/api/admin/api-keys/"+encodeURIComponent(key.id)+"/reveal"
+            );
+            prompt("API key:",result.api_key);
+          }catch(error){
+            message(error.message);
+          }
+        };
+
+        const revoke=document.createElement("button");
+        revoke.textContent="Revoke";
+        revoke.className="danger";
+        revoke.onclick=async()=>{
+          if(!confirm("Revoke this API key?"))return;
+          try{
+            await request(
+              "/api/admin/api-keys/"+encodeURIComponent(key.id)+"/revoke",
+              "POST"
+            );
+            message("API key revoked.");
+            loadCustomerKeys(id,item);
+          }catch(error){
+            message(error.message);
+          }
+        };
+
+        row.append(reveal,revoke);
+      }
+
+      box.appendChild(row);
+    });
+
+    const old=item.querySelector(".card");
+    if(old)old.remove();
+    item.appendChild(box);
+
+  }catch(error){
+    message(error.message);
+  }
 }
 
-token=result.token;
-sessionStorage.setItem("ads_admin_token",token);
+async function loadPayments(){
+  try{
+    const data=await request("/api/admin/payments");
+    const box=document.getElementById("paymentList");
+    box.innerHTML="";
 
-el("password").value="";
-loginMessage("");
+    data.payments.forEach(payment=>{
+      const item=document.createElement("div");
+      item.className="item";
 
-showDashboard();
-await loadData();
+      const info=document.createElement("p");
+      info.textContent=
+        "UTR: "+payment.utr+
+        " | Status: "+payment.status+
+        " | Customer ID: "+payment.customer_id;
 
-}catch(error){
-token="";
-sessionStorage.removeItem("ads_admin_token");
-loginMessage("Login Error: "+error.message);
-console.error(error);
-}finally{
-button.disabled=false;
-}
-}
+      item.appendChild(info);
 
-/* LOAD CUSTOMER AND PAYMENT DATA */
-async function loadData(){
+      if(payment.screenshot_url){
+        const link=document.createElement("a");
+        link.href=payment.screenshot_url;
+        link.target="_blank";
+        link.rel="noopener";
+        link.textContent="View Screenshot";
+        link.style.color="#ff7900";
+        item.appendChild(link);
+      }
 
-if(!token)return;
+      const approve=document.createElement("button");
+      approve.textContent="Approve Payment";
+      approve.className="green";
+      approve.onclick=async()=>{
+        try{
+          const result=await request(
+            "/api/admin/payments/"+encodeURIComponent(payment.id)+"/approve",
+            "POST"
+          );
+          message(result.message);
+          loadPayments();
+          loadCustomers();
+        }catch(error){
+          message(error.message);
+        }
+      };
 
-message("Loading dashboard data...");
+      const reject=document.createElement("button");
+      reject.textContent="Reject Payment";
+      reject.className="danger";
+      reject.onclick=async()=>{
+        try{
+          const result=await request(
+            "/api/admin/payments/"+encodeURIComponent(payment.id)+"/reject",
+            "POST"
+          );
+          message(result.message);
+          loadPayments();
+        }catch(error){
+          message(error.message);
+        }
+      };
 
-try{
-const [customerResult,paymentResult]=await Promise.all([
-apiRequest("/api/admin/customers"),
-apiRequest("/api/admin/payments")
-]);
+      item.append(approve,reject);
+      box.appendChild(item);
+    });
 
-const customers=customerResult.customers||[];
-const payments=paymentResult.payments||[];
-
-el("totalCustomers").textContent=customers.length;
-el("totalPayments").textContent=payments.length;
-el("approvedPayments").textContent=payments.filter(p=>p.status==="approved").length;
-el("pendingPayments").textContent=payments.filter(p=>p.status==="pending").length;
-
-el("customerCount").textContent=customers.length+" records";
-el("paymentCount").textContent=payments.length+" records";
-
-/* CUSTOMER TABLE WITH GENERATE KEY BUTTON */
-el("customers").innerHTML=customers.map(c=>`
-<tr>
-<td>${safe(c.id)}</td>
-<td>${safe(c.full_name)}</td>
-<td>${safe(c.phone)}</td>
-<td>${safe(c.email)}</td>
-<td>${safe(c.plan)}</td>
-<td>₹${safe(c.amount)}</td>
-<td>${statusPill(c.status)}</td>
-<td>${safe(formatDate(c.created_at))}</td>
-<td>
-${c.status==="approved"?
-`<button class="btn-green btn-small" onclick="generateClientKey('${safe(c.id)}')">GENERATE API KEY</button>`:
-`<span class="muted">Approve payment first</span>`}
-</td>
-</tr>
-`).join("")||"<tr><td colspan='9'>No customers found.</td></tr>";
-
-/* PAYMENT TABLE */
-el("payments").innerHTML=payments.map(p=>`
-<tr>
-<td>${safe(p.id)}</td>
-<td>${safe(p.customer_id)}</td>
-<td>${safe(p.utr)}</td>
-<td>
-<button class="btn-blue btn-small" onclick="viewScreenshot('${safe(p.id)}')">VIEW</button>
-</td>
-<td>${statusPill(p.status)}</td>
-<td>
-${p.status==="pending"?`
-<button class="btn-green btn-small" onclick="approvePayment('${safe(p.id)}')">APPROVE</button>
-<button class="btn-red btn-small" onclick="rejectPayment('${safe(p.id)}')">REJECT</button>
-`:"Processed"}
-</td>
-</tr>
-`).join("")||"<tr><td colspan='6'>No payments found.</td></tr>";
-
-message("Dashboard data loaded successfully.");
-
-}catch(error){
-console.error(error);
-message("Error: "+error.message);
-}
+  }catch(error){
+    message(error.message);
+  }
 }
 
-/* GENERATE CLIENT API KEY AND TEMPORARY PASSWORD */
-async function generateClientKey(customerId){
-
-if(!confirm("इस approved client के लिए API Key और login password generate करना चाहते हैं?")){
-return;
+if(adminToken){
+  openPanel();
 }
-
-try{
-message("Generating API Key and client login...");
-
-const result=await apiRequest(
-"/api/admin/customers/"+encodeURIComponent(customerId)+"/api-key",
-{
-method:"POST",
-body:JSON.stringify({})
-}
-);
-
-if(!result.success){
-throw new Error(result.message||"API Key generation failed.");
-}
-
-showCredentials(customerId,result);
-
-alert("API Key generated. नीचे Client Details देखें।");
-
-await loadData();
-
-}catch(error){
-console.error(error);
-alert("Generate Key Error: "+error.message);
-message("Generate Key Error: "+error.message);
-}
-}
-
-/* SHOW CLIENT CREDENTIALS */
-function showCredentials(customerId,result){
-
-const box=el("generatedKey");
-box.innerHTML="";
-box.className="key-reveal";
-
-const heading=document.createElement("h3");
-heading.textContent="✅ CLIENT ACTIVATION DETAILS";
-
-const customer=document.createElement("p");
-customer.textContent="Customer ID: "+customerId;
-
-const password=document.createElement("p");
-password.textContent="Temporary Password: "+
-(result.temporary_password||"पहले से password बना हुआ है। नया password जारी नहीं हुआ।");
-
-const key=document.createElement("div");
-key.className="key-value";
-key.textContent="API KEY: "+
-(result.api_key||"नई API Key response में नहीं मिली।");
-
-const note=document.createElement("p");
-note.className="muted";
-note.textContent="Password और API Key को अभी सुरक्षित जगह पर कॉपी कर लें। Raw API Key दोबारा उपलब्ध नहीं हो सकती।";
-
-const copyPassword=document.createElement("button");
-copyPassword.className="btn-blue";
-copyPassword.textContent="COPY PASSWORD";
-copyPassword.onclick=()=>{
-if(result.temporary_password){
-copyText(result.temporary_password);
-}else{
-alert("इस बार नया Password जारी नहीं हुआ।");
-}
-};
-
-const copyKey=document.createElement("button");
-copyKey.className="btn-green";
-copyKey.textContent="COPY API KEY";
-copyKey.onclick=()=>{
-if(result.api_key){
-copyText(result.api_key);
-}else{
-alert("API Key उपलब्ध नहीं है।");
-}
-};
-
-const copyId=document.createElement("button");
-copyId.className="btn-purple";
-copyId.textContent="COPY CUSTOMER ID";
-copyId.onclick=()=>copyText(customerId);
-
-box.append(
-heading,customer,password,key,note,
-copyPassword,copyKey,copyId
-);
-}
-
-/* COPY TEXT */
-async function copyText(value){
-try{
-await navigator.clipboard.writeText(value);
-alert("Copied successfully.");
-}catch(e){
-prompt("Copy this text:",value);
-}
-}
-
-/* VIEW PAYMENT SCREENSHOT */
-async function viewScreenshot(id){
-try{
-const result=await apiRequest(
-"/api/admin/payment-image/"+encodeURIComponent(id)
-);
-
-if(!result.url){
-throw new Error("Screenshot URL not found.");
-}
-
-window.open(result.url,"_blank");
-
-}catch(error){
-alert(error.message);
-}
-}
-
-/* APPROVE PAYMENT */
-async function approvePayment(id){
-
-if(!confirm("क्या आपने बैंक/UPI में वास्तविक Payment Verify कर लिया है?")){
-return;
-}
-
-try{
-message("Approving payment...");
-
-const result=await apiRequest(
-"/api/admin/approve/"+encodeURIComponent(id),
-{
-method:"POST",
-body:JSON.stringify({})
-}
-);
-
-if(!result.success){
-throw new Error(result.message||"Approval failed.");
-}
-
-alert("Payment approved. अब Customers section में जाकर Generate API Key दबाएँ।");
-
-await loadData();
-
-}catch(error){
-alert("Approval Error: "+error.message);
-}
-}
-
-/* REJECT PAYMENT */
-async function rejectPayment(id){
-
-if(!confirm("क्या आप इस Payment को Reject करना चाहते हैं?")){
-return;
-}
-
-try{
-await apiRequest(
-"/api/admin/reject/"+encodeURIComponent(id),
-{
-method:"POST",
-body:JSON.stringify({})
-}
-);
-
-alert("Payment rejected.");
-await loadData();
-
-}catch(error){
-alert("Reject Error: "+error.message);
-}
-}
-
-/* LOGOUT */
-function logoutAdmin(){
-token="";
-sessionStorage.removeItem("ads_admin_token");
-showLogin();
-loginMessage("You have logged out.");
-el("generatedKey").innerHTML="अभी कोई नया Client Activate नहीं हुआ है।";
-}
-
-/* RESTORE LOGIN */
-async function restoreLogin(){
-
-if(!token){
-showLogin();
-return;
-}
-
-try{
-showDashboard();
-await loadData();
-}catch(error){
-logoutAdmin();
-loginMessage("Please login again.");
-}
-}
-
-/* START */
-restoreLogin();
 </script>
 
 </body>
-  </html>
-  
+</html>
