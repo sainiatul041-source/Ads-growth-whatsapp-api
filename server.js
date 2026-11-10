@@ -163,11 +163,14 @@ function createToken(payload) {
   );
 }
 
-function verifyToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET);
+function verifyJwt(token) {
+  return jwt.verify(
+    token,
+    process.env.JWT_SECRET
+  );
 }
 
-async function adminAuth(req, res, next) {
+function adminAuth(req, res, next) {
   try {
     const header = req.headers.authorization || "";
 
@@ -179,7 +182,7 @@ async function adminAuth(req, res, next) {
       return sendError(res, "Admin login required.", 401);
     }
 
-    const decoded = verifyToken(token);
+    const decoded = verifyJwt(token);
 
     if (
       decoded.role !== "admin" ||
@@ -196,7 +199,7 @@ async function adminAuth(req, res, next) {
   }
 }
 
-async function clientAuth(req, res, next) {
+function clientAuth(req, res, next) {
   try {
     const header = req.headers.authorization || "";
 
@@ -208,7 +211,7 @@ async function clientAuth(req, res, next) {
       return sendError(res, "Client login required.", 401);
     }
 
-    const decoded = verifyToken(token);
+    const decoded = verifyJwt(token);
 
     if (decoded.role !== "client" || !decoded.id) {
       return sendError(res, "Unauthorized client.", 403);
@@ -222,7 +225,8 @@ async function clientAuth(req, res, next) {
   }
 }
 
-async function getCustomerByLogin(login) {
+// DUPLICATE EMAIL / PHONE SAFE LOGIN SEARCH
+async function getCustomerByLogin(login, password) {
   const value = String(login || "").trim();
 
   if (!value) return null;
@@ -237,16 +241,34 @@ async function getCustomerByLogin(login) {
     query = query.eq("phone", value);
   }
 
-  const { data, error } = await query.maybeSingle();
+  const { data, error } = await query
+    .order("created_at", { ascending: false })
+    .limit(20);
 
   if (error) throw error;
 
-  return data;
+  if (!data || data.length === 0) {
+    return null;
+  }
+
+  for (const customer of data) {
+    if (
+      customer.password_hash &&
+      await bcrypt.compare(
+        String(password),
+        customer.password_hash
+      )
+    ) {
+      return customer;
+    }
+  }
+
+  return null;
 }
 
 function createCustomerKey() {
   return "ADS_" + crypto.randomBytes(32).toString("hex");
-}
+  }
 // HEALTH CHECK
 app.get("/", (req, res) => {
   res.json({
@@ -285,19 +307,37 @@ app.post("/api/register", loginLimiter, async (req, res) => {
     const cleanEmail = String(email).trim().toLowerCase();
     const cleanPhone = String(phone).trim();
 
-    const { data: existing, error: findError } = await db
+    const { data: emailRows, error: emailError } = await db
       .from("customers")
       .select("id")
-      .or(`email.eq.${cleanEmail},phone.eq.${cleanPhone}`)
-      .maybeSingle();
+      .ilike("email", cleanEmail)
+      .limit(1);
 
-    if (findError) throw findError;
+    if (emailError) throw emailError;
 
-    if (existing) {
-      return sendError(res, "Email or phone already registered.", 409);
+    const { data: phoneRows, error: phoneError } = await db
+      .from("customers")
+      .select("id")
+      .eq("phone", cleanPhone)
+      .limit(1);
+
+    if (phoneError) throw phoneError;
+
+    if (
+      (emailRows && emailRows.length) ||
+      (phoneRows && phoneRows.length)
+    ) {
+      return sendError(
+        res,
+        "Email or phone already registered.",
+        409
+      );
     }
 
-    const passwordHash = await bcrypt.hash(String(password), 12);
+    const passwordHash = await bcrypt.hash(
+      String(password),
+      12
+    );
 
     const { data, error } = await db
       .from("customers")
@@ -324,22 +364,48 @@ app.post("/api/register", loginLimiter, async (req, res) => {
 
   } catch (error) {
     console.error("Registration error:", error);
-    sendError(res, error.message || "Registration failed.", 500);
+    sendError(
+      res,
+      error.message || "Registration failed.",
+      500
+    );
   }
 });
 
-// PAYMENT PROOF UPLOAD
+// PAYMENT SCREENSHOT UPLOAD
 async function uploadPaymentProof(req, res) {
   try {
-    const { customer_id, utr } = req.body;
+    const customerId = String(
+      req.body.customer_id || ""
+    ).trim();
+
+    const utr = String(
+      req.body.utr || ""
+    ).trim();
+
     const file = req.file;
 
-    if (!customer_id || !utr || !file) {
-      return sendError(res, "Customer ID, UTR and screenshot required.");
+    if (!customerId || !utr || !file) {
+      return sendError(
+        res,
+        "Customer ID, UTR and screenshot required."
+      );
+    }
+
+    const { data: customer, error: customerError } = await db
+      .from("customers")
+      .select("id")
+      .eq("id", customerId)
+      .maybeSingle();
+
+    if (customerError) throw customerError;
+
+    if (!customer) {
+      return sendError(res, "Customer not found.", 404);
     }
 
     const fileName =
-      `${customer_id}/${Date.now()}-${crypto.randomBytes(5).toString("hex")}`;
+      `${customerId}/${Date.now()}-${crypto.randomBytes(5).toString("hex")}`;
 
     const { error: uploadError } = await db.storage
       .from("payment-proofs")
@@ -357,8 +423,8 @@ async function uploadPaymentProof(req, res) {
     const { data, error } = await db
       .from("payments")
       .insert({
-        customer_id,
-        utr: String(utr).trim(),
+        customer_id: customerId,
+        utr,
         screenshot_url: publicData.publicUrl,
         status: "pending"
       })
@@ -375,7 +441,11 @@ async function uploadPaymentProof(req, res) {
 
   } catch (error) {
     console.error("Payment upload error:", error);
-    sendError(res, error.message || "Payment upload failed.", 500);
+    sendError(
+      res,
+      error.message || "Payment upload failed.",
+      500
+    );
   }
 }
 
@@ -405,7 +475,11 @@ app.post("/api/admin/login", loginLimiter, async (req, res) => {
     }
 
     if (email !== ADMIN_EMAIL) {
-      return sendError(res, "Invalid admin login details.", 401);
+      return sendError(
+        res,
+        "Invalid admin login details.",
+        401
+      );
     }
 
     const { data, error } =
@@ -415,7 +489,11 @@ app.post("/api/admin/login", loginLimiter, async (req, res) => {
       });
 
     if (error || !data.user) {
-      return sendError(res, "Invalid admin login details.", 401);
+      return sendError(
+        res,
+        "Invalid admin login details.",
+        401
+      );
     }
 
     const { data: adminRecord, error: adminError } = await db
@@ -427,7 +505,11 @@ app.post("/api/admin/login", loginLimiter, async (req, res) => {
     if (adminError) throw adminError;
 
     if (!adminRecord) {
-      return sendError(res, "Admin access not configured.", 403);
+      return sendError(
+        res,
+        "Admin access not configured.",
+        403
+      );
     }
 
     const token = createToken({
@@ -439,12 +521,18 @@ app.post("/api/admin/login", loginLimiter, async (req, res) => {
     res.json({
       success: true,
       token,
-      admin: { email: ADMIN_EMAIL }
+      admin: {
+        email: ADMIN_EMAIL
+      }
     });
 
   } catch (error) {
     console.error("Admin login error:", error);
-    sendError(res, error.message || "Admin login failed.", 500);
+    sendError(
+      res,
+      error.message || "Admin login failed.",
+      500
+    );
   }
 });
 
@@ -452,7 +540,9 @@ app.post("/api/admin/login", loginLimiter, async (req, res) => {
 app.get("/api/admin/me", adminAuth, (req, res) => {
   res.json({
     success: true,
-    admin: { email: ADMIN_EMAIL }
+    admin: {
+      email: ADMIN_EMAIL
+    }
   });
 });
 
@@ -473,7 +563,11 @@ app.get("/api/admin/customers", adminAuth, async (req, res) => {
 
   } catch (error) {
     console.error("Customer list error:", error);
-    sendError(res, error.message || "Could not load customers.", 500);
+    sendError(
+      res,
+      error.message || "Could not load customers.",
+      500
+    );
   }
 });
 
@@ -494,104 +588,138 @@ app.get("/api/admin/payments", adminAuth, async (req, res) => {
 
   } catch (error) {
     console.error("Payment list error:", error);
-    sendError(res, error.message || "Could not load payments.", 500);
+    sendError(
+      res,
+      error.message || "Could not load payments.",
+      500
+    );
   }
 });
 
-// APPROVE PAYMENT
-app.post("/api/admin/payments/:id/approve", adminAuth, async (req, res) => {
-  try {
-    const { data, error } = await db
-      .from("payments")
-      .update({ status: "approved" })
-      .eq("id", req.params.id)
-      .select("*")
-      .single();
+// APPROVE PAYMENT AND CUSTOMER
+app.post(
+  "/api/admin/payments/:id/approve",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const { data: payment, error: paymentError } = await db
+        .from("payments")
+        .update({ status: "approved" })
+        .eq("id", req.params.id)
+        .select("id,customer_id,status")
+        .single();
 
-    if (error) throw error;
+      if (paymentError) throw paymentError;
 
-    const { error: customerError } = await db
-      .from("customers")
-      .update({ status: "approved" })
-      .eq("id", data.customer_id);
+      const { error: customerError } = await db
+        .from("customers")
+        .update({ status: "approved" })
+        .eq("id", payment.customer_id);
 
-    if (customerError) throw customerError;
+      if (customerError) throw customerError;
 
-    res.json({
-      success: true,
-      message: "Payment approved and customer activated."
-    });
+      res.json({
+        success: true,
+        message: "Payment approved and customer activated."
+      });
 
-  } catch (error) {
-    console.error("Payment approval error:", error);
-    sendError(res, error.message || "Approval failed.", 500);
+    } catch (error) {
+      console.error("Payment approval error:", error);
+      sendError(
+        res,
+        error.message || "Payment approval failed.",
+        500
+      );
+    }
   }
-});
+);
 
 // REJECT PAYMENT
-app.post("/api/admin/payments/:id/reject", adminAuth, async (req, res) => {
-  try {
-    const { data, error } = await db
-      .from("payments")
-      .update({ status: "rejected" })
-      .eq("id", req.params.id)
-      .select("*")
-      .single();
+app.post(
+  "/api/admin/payments/:id/reject",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const { error } = await db
+        .from("payments")
+        .update({ status: "rejected" })
+        .eq("id", req.params.id);
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({
-      success: true,
-      message: "Payment rejected."
-    });
+      res.json({
+        success: true,
+        message: "Payment rejected."
+      });
 
-  } catch (error) {
-    console.error("Payment rejection error:", error);
-    sendError(res, error.message || "Rejection failed.", 500);
+    } catch (error) {
+      console.error("Payment rejection error:", error);
+      sendError(
+        res,
+        error.message || "Payment rejection failed.",
+        500
+      );
+    }
   }
-});
+);
 
 // APPROVE CUSTOMER
-app.post("/api/admin/customers/:id/approve", adminAuth, async (req, res) => {
-  try {
-    const { error } = await db
-      .from("customers")
-      .update({ status: "approved" })
-      .eq("id", req.params.id);
+app.post(
+  "/api/admin/customers/:id/approve",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const { error } = await db
+        .from("customers")
+        .update({ status: "approved" })
+        .eq("id", req.params.id);
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({
-      success: true,
-      message: "Customer approved."
-    });
+      res.json({
+        success: true,
+        message: "Customer approved."
+      });
 
-  } catch (error) {
-    console.error("Customer approval error:", error);
-    sendError(res, error.message || "Customer approval failed.", 500);
+    } catch (error) {
+      console.error("Customer approval error:", error);
+      sendError(
+        res,
+        error.message || "Customer approval failed.",
+        500
+      );
+    }
   }
-});
+);
 
 // REJECT CUSTOMER
-app.post("/api/admin/customers/:id/reject", adminAuth, async (req, res) => {
-  try {
-    const { error } = await db
-      .from("customers")
-      .update({ status: "rejected" })
-      .eq("id", req.params.id);
+app.post(
+  "/api/admin/customers/:id/reject",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const { error } = await db
+        .from("customers")
+        .update({ status: "rejected" })
+        .eq("id", req.params.id);
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({
-      success: true,
-      message: "Customer rejected."
-    });
+      res.json({
+        success: true,
+        message: "Customer rejected."
+      });
 
-  } catch (error) {
-    console.error("Customer rejection error:", error);
-    sendError(res, error.message || "Customer rejection failed.", 500);
+    } catch (error) {
+      console.error("Customer rejection error:", error);
+      sendError(
+        res,
+        error.message || "Customer rejection failed.",
+        500
+      );
+    }
   }
-});
+);
 // ADMIN RESET CUSTOMER PASSWORD
 app.post(
   "/api/admin/customers/:id/reset-password",
@@ -609,9 +737,11 @@ app.post(
 
       const { data, error } = await db
         .from("customers")
-        .update({ password_hash: passwordHash })
+        .update({
+          password_hash: passwordHash
+        })
         .eq("id", req.params.id)
-        .select("id,email,phone")
+        .select("id,name,email,phone")
         .single();
 
       if (error) throw error;
@@ -625,7 +755,11 @@ app.post(
 
     } catch (error) {
       console.error("Password reset error:", error);
-      sendError(res, error.message || "Password reset failed.", 500);
+      sendError(
+        res,
+        error.message || "Password reset failed.",
+        500
+      );
     }
   }
 );
@@ -636,6 +770,18 @@ app.post(
   adminAuth,
   async (req, res) => {
     try {
+      const { data: customer, error: customerError } = await db
+        .from("customers")
+        .select("id")
+        .eq("id", req.params.id)
+        .maybeSingle();
+
+      if (customerError) throw customerError;
+
+      if (!customer) {
+        return sendError(res, "Customer not found.", 404);
+      }
+
       const apiKey = createCustomerKey();
 
       const { data, error } = await db
@@ -660,12 +806,16 @@ app.post(
 
     } catch (error) {
       console.error("Admin key generation:", error);
-      sendError(res, error.message || "API key generation failed.", 500);
+      sendError(
+        res,
+        error.message || "API key generation failed.",
+        500
+      );
     }
   }
 );
 
-// ADMIN LIST API KEYS
+// ADMIN LIST CUSTOMER API KEYS
 app.get(
   "/api/admin/customers/:id/api-keys",
   adminAuth,
@@ -686,7 +836,11 @@ app.get(
 
     } catch (error) {
       console.error("Admin key list:", error);
-      sendError(res, error.message || "Could not load API keys.", 500);
+      sendError(
+        res,
+        error.message || "Could not load API keys.",
+        500
+      );
     }
   }
 );
@@ -720,7 +874,11 @@ app.get(
 
     } catch (error) {
       console.error("Admin key reveal:", error);
-      sendError(res, error.message || "Could not reveal API key.", 500);
+      sendError(
+        res,
+        error.message || "Could not reveal API key.",
+        500
+      );
     }
   }
 );
@@ -745,149 +903,192 @@ app.post(
 
     } catch (error) {
       console.error("Admin key revoke:", error);
-      sendError(res, error.message || "Could not revoke API key.", 500);
+      sendError(
+        res,
+        error.message || "Could not revoke API key.",
+        500
+      );
     }
   }
 );
 
 // CLIENT LOGIN
-app.post("/api/client/login", loginLimiter, async (req, res) => {
-  try {
-    const login = String(
-      req.body.login ||
-      req.body.email ||
-      req.body.phone ||
-      ""
-    ).trim();
+app.post(
+  "/api/client/login",
+  loginLimiter,
+  async (req, res) => {
+    try {
+      const login = String(
+        req.body.login ||
+        req.body.email ||
+        req.body.phone ||
+        ""
+      ).trim();
 
-    const password = String(req.body.password || "");
+      const password = String(
+        req.body.password || ""
+      );
 
-    if (!login || !password) {
-      return sendError(res, "Email/phone and password required.");
-    }
-
-    const customer = await getCustomerByLogin(login);
-
-    if (!customer || !customer.password_hash) {
-      return sendError(res, "Invalid login details.", 401);
-    }
-
-    const passwordMatch = await bcrypt.compare(
-      password,
-      customer.password_hash
-    );
-
-    if (!passwordMatch) {
-      return sendError(res, "Invalid login details.", 401);
-    }
-
-    if (customer.status !== "approved") {
-      return sendError(res, "Your account is not approved yet.", 403);
-    }
-
-    const token = createToken({
-      role: "client",
-      id: customer.id,
-      email: customer.email
-    });
-
-    res.json({
-      success: true,
-      token,
-      customer: {
-        id: customer.id,
-        name: customer.name,
-        email: customer.email,
-        phone: customer.phone,
-        business_name: customer.business_name,
-        status: customer.status
+      if (!login || !password) {
+        return sendError(
+          res,
+          "Email/phone and password required."
+        );
       }
-    });
 
-  } catch (error) {
-    console.error("Client login error:", error);
-    sendError(res, error.message || "Client login failed.", 500);
+      const customer = await getCustomerByLogin(
+        login,
+        password
+      );
+
+      if (!customer) {
+        return sendError(
+          res,
+          "Invalid login details.",
+          401
+        );
+      }
+
+      if (customer.status !== "approved") {
+        return sendError(
+          res,
+          "Your account is not approved yet.",
+          403
+        );
+      }
+
+      const token = createToken({
+        role: "client",
+        id: customer.id,
+        email: customer.email
+      });
+
+      res.json({
+        success: true,
+        token,
+        customer: {
+          id: customer.id,
+          name: customer.name,
+          email: customer.email,
+          phone: customer.phone,
+          business_name: customer.business_name,
+          status: customer.status
+        }
+      });
+
+    } catch (error) {
+      console.error("Client login error:", error);
+      sendError(
+        res,
+        error.message || "Client login failed.",
+        500
+      );
+    }
   }
-});
+);
 
 // CLIENT PROFILE
-app.get("/api/client/me", clientAuth, async (req, res) => {
-  try {
-    const { data, error } = await db
-      .from("customers")
-      .select("id,name,email,phone,business_name,status,created_at")
-      .eq("id", req.client.id)
-      .maybeSingle();
+app.get(
+  "/api/client/me",
+  clientAuth,
+  async (req, res) => {
+    try {
+      const { data, error } = await db
+        .from("customers")
+        .select("id,name,email,phone,business_name,status,created_at")
+        .eq("id", req.client.id)
+        .maybeSingle();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    if (!data) {
-      return sendError(res, "Customer not found.", 404);
+      if (!data) {
+        return sendError(res, "Customer not found.", 404);
+      }
+
+      res.json({
+        success: true,
+        customer: data
+      });
+
+    } catch (error) {
+      console.error("Client profile:", error);
+      sendError(
+        res,
+        error.message || "Could not load profile.",
+        500
+      );
     }
-
-    res.json({
-      success: true,
-      customer: data
-    });
-
-  } catch (error) {
-    console.error("Client profile:", error);
-    sendError(res, error.message || "Could not load profile.", 500);
   }
-});
+);
 
 // CLIENT GENERATE API KEY
-app.post("/api/client/api-key", clientAuth, async (req, res) => {
-  try {
-    const apiKey = createCustomerKey();
+app.post(
+  "/api/client/api-key",
+  clientAuth,
+  async (req, res) => {
+    try {
+      const apiKey = createCustomerKey();
 
-    const { data, error } = await db
-      .from("api_keys")
-      .insert({
-        customer_id: req.client.id,
-        key_hash: hashKey(apiKey),
-        key_prefix: apiKey.slice(0, 12),
-        key_encrypted: encryptKey(apiKey),
-        status: "active"
-      })
-      .select("id,customer_id,key_prefix,status,created_at")
-      .single();
+      const { data, error } = await db
+        .from("api_keys")
+        .insert({
+          customer_id: req.client.id,
+          key_hash: hashKey(apiKey),
+          key_prefix: apiKey.slice(0, 12),
+          key_encrypted: encryptKey(apiKey),
+          status: "active"
+        })
+        .select("id,customer_id,key_prefix,status,created_at")
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.status(201).json({
-      success: true,
-      api_key: apiKey,
-      key: data
-    });
+      res.status(201).json({
+        success: true,
+        api_key: apiKey,
+        key: data
+      });
 
-  } catch (error) {
-    console.error("Client key generation:", error);
-    sendError(res, error.message || "API key generation failed.", 500);
+    } catch (error) {
+      console.error("Client key generation:", error);
+      sendError(
+        res,
+        error.message || "API key generation failed.",
+        500
+      );
+    }
   }
-});
+);
 
 // CLIENT LIST API KEYS
-app.get("/api/client/api-keys", clientAuth, async (req, res) => {
-  try {
-    const { data, error } = await db
-      .from("api_keys")
-      .select("id,key_prefix,status,created_at")
-      .eq("customer_id", req.client.id)
-      .order("created_at", { ascending: false });
+app.get(
+  "/api/client/api-keys",
+  clientAuth,
+  async (req, res) => {
+    try {
+      const { data, error } = await db
+        .from("api_keys")
+        .select("id,key_prefix,status,created_at")
+        .eq("customer_id", req.client.id)
+        .order("created_at", { ascending: false });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    res.json({
-      success: true,
-      keys: data || []
-    });
+      res.json({
+        success: true,
+        keys: data || []
+      });
 
-  } catch (error) {
-    console.error("Client key list:", error);
-    sendError(res, error.message || "Could not load API keys.", 500);
+    } catch (error) {
+      console.error("Client key list:", error);
+      sendError(
+        res,
+        error.message || "Could not load API keys.",
+        500
+      );
+    }
   }
-});
+);
 
 // CLIENT REVEAL API KEY
 app.get(
@@ -919,7 +1120,11 @@ app.get(
 
     } catch (error) {
       console.error("Client key reveal:", error);
-      sendError(res, error.message || "Could not reveal API key.", 500);
+      sendError(
+        res,
+        error.message || "Could not reveal API key.",
+        500
+      );
     }
   }
 );
@@ -945,49 +1150,62 @@ app.post(
 
     } catch (error) {
       console.error("Client key revoke:", error);
-      sendError(res, error.message || "Could not revoke API key.", 500);
+      sendError(
+        res,
+        error.message || "Could not revoke API key.",
+        500
+      );
     }
   }
 );
 
 // API KEY VALIDATION
-app.post("/api/keys/validate", async (req, res) => {
-  try {
-    const apiKey = String(
-      req.body.api_key || req.body.key || ""
-    ).trim();
+app.post(
+  "/api/keys/validate",
+  async (req, res) => {
+    try {
+      const apiKey = String(
+        req.body.api_key ||
+        req.body.key ||
+        ""
+      ).trim();
 
-    if (!apiKey) {
-      return sendError(res, "API key is required.");
-    }
+      if (!apiKey) {
+        return sendError(res, "API key is required.");
+      }
 
-    const { data, error } = await db
-      .from("api_keys")
-      .select("id,customer_id,status")
-      .eq("key_hash", hashKey(apiKey))
-      .maybeSingle();
+      const { data, error } = await db
+        .from("api_keys")
+        .select("id,customer_id,status")
+        .eq("key_hash", hashKey(apiKey))
+        .maybeSingle();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    if (!data || data.status !== "active") {
-      return res.status(401).json({
-        success: false,
-        valid: false,
-        message: "Invalid or revoked API key."
+      if (!data || data.status !== "active") {
+        return res.status(401).json({
+          success: false,
+          valid: false,
+          message: "Invalid or revoked API key."
+        });
+      }
+
+      res.json({
+        success: true,
+        valid: true,
+        customer_id: data.customer_id
       });
+
+    } catch (error) {
+      console.error("Key validation:", error);
+      sendError(
+        res,
+        error.message || "Key validation failed.",
+        500
+      );
     }
-
-    res.json({
-      success: true,
-      valid: true,
-      customer_id: data.customer_id
-    });
-
-  } catch (error) {
-    console.error("Key validation:", error);
-    sendError(res, error.message || "Key validation failed.", 500);
   }
-});
+);
 
 // NOT FOUND
 app.use((req, res) => {
@@ -1009,5 +1227,7 @@ app.use((err, req, res, next) => {
 
 // START SERVER
 app.listen(PORT, () => {
-  console.log(`ADS GROWTH server running on port ${PORT}`);
+  console.log(
+    `ADS GROWTH server running on port ${PORT}`
+  );
 });
