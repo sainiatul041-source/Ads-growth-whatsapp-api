@@ -2,253 +2,650 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080808">
-<title>ADS GROWTH Client Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>ADS GROWTH | Client Portal</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif}
-header{padding:22px;text-align:center}
-h1{color:#ff7900;font-size:32px}
-.subtitle{color:#aaa;font-size:20px}
-.container{max-width:750px;margin:auto;padding:20px}
-.card{background:#171717;border:1px solid #383838;border-radius:18px;padding:24px;margin:18px 0}
-input{width:100%;padding:17px;margin:12px 0 20px;background:#080808;color:white;border:1px solid #555;border-radius:12px;font-size:17px}
-label{color:#bbb}
-button{background:#ff7900;color:#111;border:0;border-radius:10px;padding:15px;font-weight:bold;font-size:16px;cursor:pointer;margin:5px}
-.full{width:100%}
-.hidden{display:none}
-#message{color:#ff8181}
-.item{border-bottom:1px solid #444;padding:15px 0;overflow-wrap:anywhere}
-.key{background:#080808;padding:12px;border-radius:8px;overflow-wrap:anywhere}
-.secondary{background:#333;color:white}
-.danger{background:#b92d2d;color:white}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#07111f;
+ color:#fff;
+}
+header{
+ background:#102139;
+ padding:16px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #30445c;
+}
+header h2{margin:0;color:#36d6a3}
+.container{max-width:950px;margin:auto;padding:16px}
+.card{
+ background:#102139;
+ border:1px solid #30445c;
+ border-radius:12px;
+ padding:18px;
+ margin-bottom:16px;
+}
+input,select,textarea{
+ width:100%;
+ padding:13px;
+ margin:7px 0 14px;
+ border:1px solid #354a62;
+ border-radius:8px;
+ background:#091a2d;
+ color:white;
+}
+label{font-size:14px;color:#c5d3e2}
+button{
+ padding:12px 16px;
+ border:0;
+ border-radius:8px;
+ background:#16bd8b;
+ color:#06151b;
+ font-weight:bold;
+ cursor:pointer;
+}
+button:disabled{opacity:.5}
+.secondary{background:#344b67;color:white}
+.danger{background:#df4b59;color:white}
+.hidden{display:none!important}
+nav{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:16px;
+}
+nav button{background:#263c55;color:white}
+nav button.active{background:#16bd8b;color:#06151b}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:12px;
+}
+.stat{
+ background:#091a2d;
+ padding:18px;
+ border-radius:9px;
+}
+.stat strong{
+ display:block;
+ color:#36d6a3;
+ font-size:22px;
+ margin-top:8px;
+}
+.small{font-size:12px;color:#a9bbce}
+.success{color:#36d6a3}
+.error{color:#ff7777}
+.keybox{
+ background:#06111e;
+ padding:13px;
+ border-radius:8px;
+ word-break:break-all;
+ margin-top:12px;
+}
+hr{border:0;border-top:1px solid #30445c;margin:20px 0}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>ADS GROWTH</h1>
-<div class="subtitle">CLIENT API DASHBOARD</div>
+ <h2>ADS GROWTH</h2>
+ <button id="logoutBtn" class="danger hidden">Logout</button>
 </header>
 
 <div class="container">
 
-<div id="loginBox" class="card">
-<h2>Client Login</h2>
+<!-- LOGIN SECTION -->
+<section id="loginSection" class="card">
+ <h2>Client Login</h2>
 
-<label>Email Address or Phone Number</label>
-<input id="login" placeholder="Email or phone" autocomplete="username">
+ <label>Email or Phone</label>
+ <input id="loginId"
+ type="text"
+ placeholder="Enter registered email or phone">
 
-<label>Password</label>
-<input id="password" type="password" placeholder="Password" autocomplete="current-password">
+ <label>Password</label>
+ <input id="loginPassword"
+ type="password"
+ placeholder="Enter your password">
 
-<button class="full" onclick="loginClient()">LOGIN</button>
+ <button id="loginBtn">Login</button>
 
-<p id="message"></p>
-<p style="color:#aaa">
-Sirf approved clients login kar sakte hain. Login details admin se prapt karein.
-</p>
-</div>
+ <p id="loginMessage" class="small"></p>
 
-<div id="dashboard" class="hidden">
-<div class="card">
-<h2>Welcome</h2>
-<p id="customerName"></p>
-<p id="customerEmail"></p>
-<p id="customerStatus"></p>
-<button onclick="logout()" class="danger">LOGOUT</button>
-</div>
+ <hr>
 
-<div class="card">
-<h2>API Management</h2>
-<button class="full" onclick="generateApiKey()">GENERATE API KEY</button>
-<button class="full secondary" onclick="loadKeys()">REFRESH API KEYS</button>
-<div id="keyList"></div>
-</div>
-</div>
-</div>
+ <p>New customer?</p>
+ <button id="showRegisterBtn" class="secondary">
+  Create Account
+ </button>
+</section>
 
-<script>
-const API="https://ads-growth-whatsapp-api.onrender.com";
-let token=localStorage.getItem("ads_client_token")||"";
+<!-- REGISTRATION SECTION -->
+<section id="registerSection" class="card hidden">
+ <h2>Create Client Account</h2>
 
-async function api(path,method="GET",body=null){
-  const response=await fetch(API+path,{
-    method,
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body:body?JSON.stringify(body):null
+ <label>Full Name</label>
+ <input id="regName"
+ type="text"
+ placeholder="Enter your name">
+
+ <label>Email</label>
+ <input id="regEmail"
+ type="email"
+ placeholder="Enter email">
+
+ <label>Phone Number</label>
+ <input id="regPhone"
+ type="tel"
+ placeholder="Enter phone number">
+
+ <label>Password</label>
+ <input id="regPassword"
+ type="password"
+ placeholder="Create password">
+
+ <label>Confirm Password</label>
+ <input id="regConfirmPassword"
+ type="password"
+ placeholder="Confirm password">
+
+ <button id="registerBtn">Register Now</button>
+
+ <p id="registerMessage" class="small"></p>
+
+ <button id="backLoginBtn" class="secondary">
+  Back to Login
+ </button>
+</section>
+
+<!-- CLIENT DASHBOARD -->
+<section id="dashboardSection" class="hidden">
+
+ <nav>
+  <button class="active" data-tab="home">Dashboard</button>
+  <button data-tab="mykeys">My API Keys</button>
+  <button data-tab="payment">Payment</button>
+  <button data-tab="profile">Profile</button>
+ </nav>
+
+ <!-- HOME -->
+ <div id="homeTab">
+
+  <div class="card">
+   <h2>Welcome to ADS GROWTH</h2>
+   <p id="welcomeName">Client</p>
+   <p class="small">
+    Manage your account and API keys from here.
+   </p>
+  </div>
+
+  <div class="grid">
+   <div class="stat">
+    Account Status
+    <strong id="accountStatus">Loading</strong>
+   </div>
+
+   <div class="stat">
+    Total API Keys
+    <strong id="keyCount">0</strong>
+   </div>
+  </div>
+
+ </div>
+
+ <!-- API KEYS -->
+ <div id="mykeysTab" class="card hidden">
+  <h2>My API Keys</h2>
+
+  <label>API Key Name</label>
+  <input id="newKeyName"
+   placeholder="Example: WhatsApp API">
+
+  <button id="generateKeyBtn">
+   Generate New API Key
+  </button>
+
+  <div id="newKeyResult" class="keybox hidden"></div>
+
+  <hr>
+
+  <button id="refreshKeysBtn" class="secondary">
+   Refresh API Keys
+  </button>
+
+  <div id="keysList"></div>
+ </div>
+
+ <!-- PAYMENT -->
+ <div id="paymentTab" class="card hidden">
+  <h2>Payment Details</h2>
+
+  <label>Payment Amount</label>
+  <input id="paymentAmount"
+   type="number"
+   min="1"
+   placeholder="Enter amount">
+
+  <label>Transaction ID</label>
+  <input id="transactionId"
+   placeholder="Enter transaction ID">
+
+  <label>Payment Screenshot</label>
+  <input id="paymentProof"
+   type="file"
+   accept="image/png,image/jpeg,image/webp">
+
+  <button id="uploadPaymentBtn">
+   Submit Payment
+  </button>
+
+  <p id="paymentMessage" class="small"></p>
+
+  <p class="small">
+   Payment approval admin ke verification ke baad hoga.
+  </p>
+ </div>
+
+ <!-- PROFILE -->
+ <div id="profileTab" class="card hidden">
+  <h2>My Profile</h2>
+
+  <p>Name: <strong id="profileName">-</strong></p>
+  <p>Email: <strong id="profileEmail">-</strong></p>
+  <p>Phone: <strong id="profilePhone">-</strong></p>
+  <p>Status: <strong id="profileStatus">-</strong></p>
+ </div>
+
+</section>
+
+  </div>
+  <script>
+const API = "https://ads-growth-whatsapp-api.onrender.com";
+
+let token = localStorage.getItem("ads_client_token") || "";
+let currentCustomer = null;
+
+const $ = id => document.getElementById(id);
+
+async function api(path, options = {}) {
+  const headers = {
+    ...(token ? { Authorization: "Bearer " + token } : {}),
+    ...(options.headers || {})
+  };
+
+  const response = await fetch(API + path, {
+    ...options,
+    headers
   });
 
-  const data=await response.json();
+  const data = await response.json().catch(() => ({}));
 
-  if(!response.ok||!data.success){
-    throw new Error(data.message||"Request failed");
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Request failed");
   }
 
   return data;
 }
 
-async function loginClient(){
-  const login=document.getElementById("login").value.trim();
-  const password=document.getElementById("password").value;
-  const message=document.getElementById("message");
-
-  if(!login||!password){
-    message.textContent="Email/phone and password required.";
-    return;
-  }
-
-  message.textContent="Logging in...";
-
-  try{
-    const response=await fetch(API+"/api/client/login",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({login,password})
-    });
-
-    const data=await response.json();
-
-    if(!response.ok||!data.success){
-      throw new Error(data.message||"Invalid login details.");
-    }
-
-    token=data.token;
-    localStorage.setItem("ads_client_token",token);
-    showDashboard(data.customer);
-
-  }catch(error){
-    message.textContent=error.message;
-  }
+function message(id, text, error = false) {
+  $(id).textContent = text;
+  $(id).className = error ? "error" : "success";
 }
 
-function showDashboard(customer){
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
+function showLogin() {
+  $("loginSection").classList.remove("hidden");
+  $("registerSection").classList.add("hidden");
+  $("dashboardSection").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+}
 
-  document.getElementById("customerName").textContent=
-    "Name: "+(customer.name||"-");
+function showRegister() {
+  $("loginSection").classList.add("hidden");
+  $("registerSection").classList.remove("hidden");
+}
 
-  document.getElementById("customerEmail").textContent=
-    "Email: "+(customer.email||"-");
+function showDashboard() {
+  $("loginSection").classList.add("hidden");
+  $("registerSection").classList.add("hidden");
+  $("dashboardSection").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
 
-  document.getElementById("customerStatus").textContent=
-    "Status: "+(customer.status||"-");
-
+  loadProfile();
   loadKeys();
 }
 
-async function loadProfile(){
-  try{
-    const data=await api("/api/client/me");
-    showDashboard(data.customer);
-  }catch(error){
-    logout();
-  }
-}
+$("showRegisterBtn").addEventListener("click", showRegister);
+$("backLoginBtn").addEventListener("click", showLogin);
 
-async function generateApiKey(){
-  if(!confirm("Generate a new API key?"))return;
+$("registerBtn").addEventListener("click", async () => {
+  const name = $("regName").value.trim();
+  const email = $("regEmail").value.trim();
+  const phone = $("regPhone").value.trim();
+  const password = $("regPassword").value;
+  const confirmPassword = $("regConfirmPassword").value;
 
-  try{
-    const data=await api("/api/client/api-key","POST");
-
-    prompt(
-      "Your new API key. Copy and save it safely:",
-      data.api_key
+  if (!name || (!email && !phone) || !password) {
+    return message(
+      "registerMessage",
+      "Name, email or phone, and password required.",
+      true
     );
-
-    loadKeys();
-
-  }catch(error){
-    alert(error.message);
   }
-}
-  async function loadKeys(){
-  try{
-    const data=await api("/api/client/api-keys");
-    const box=document.getElementById("keyList");
-    box.innerHTML="";
 
-    if(!data.keys.length){
-      box.textContent="No API keys generated yet.";
-      return;
-    }
+  if (password.length < 6) {
+    return message(
+      "registerMessage",
+      "Password must be at least 6 characters.",
+      true
+    );
+  }
 
-    data.keys.forEach(key=>{
-      const item=document.createElement("div");
-      item.className="item";
+  if (password !== confirmPassword) {
+    return message(
+      "registerMessage",
+      "Passwords do not match.",
+      true
+    );
+  }
 
-      const title=document.createElement("p");
-      title.textContent=
-        key.key_prefix+" | "+key.status;
+  $("registerBtn").disabled = true;
 
-      item.appendChild(title);
-
-      if(key.status==="active"){
-        const reveal=document.createElement("button");
-        reveal.textContent="REVEAL KEY";
-        reveal.className="secondary";
-
-        reveal.onclick=async()=>{
-          try{
-            const result=await api(
-              "/api/client/api-keys/"+encodeURIComponent(key.id)+"/reveal"
-            );
-
-            prompt("Your API key:",result.api_key);
-
-          }catch(error){
-            alert(error.message);
-          }
-        };
-
-        const revoke=document.createElement("button");
-        revoke.textContent="REVOKE";
-        revoke.className="danger";
-
-        revoke.onclick=async()=>{
-          if(!confirm("Are you sure you want to revoke this key?"))return;
-
-          try{
-            await api(
-              "/api/client/api-keys/"+encodeURIComponent(key.id)+"/revoke",
-              "POST"
-            );
-
-            alert("API key revoked.");
-            loadKeys();
-
-          }catch(error){
-            alert(error.message);
-          }
-        };
-
-        item.append(reveal,revoke);
-      }
-
-      box.appendChild(item);
+  try {
+    const data = await api("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, password })
     });
 
-  }catch(error){
-    document.getElementById("keyList").textContent=error.message;
+    message(
+      "registerMessage",
+      data.message || "Registration successful. Wait for admin approval."
+    );
+
+  } catch (error) {
+    message("registerMessage", error.message, true);
+  } finally {
+    $("registerBtn").disabled = false;
+  }
+});
+
+$("loginBtn").addEventListener("click", async () => {
+  const login = $("loginId").value.trim();
+  const password = $("loginPassword").value;
+
+  if (!login || !password) {
+    return message(
+      "loginMessage",
+      "Email/phone and password required.",
+      true
+    );
+  }
+
+  $("loginBtn").disabled = true;
+
+  try {
+    const data = await api("/api/client/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ login, password })
+    });
+
+    if (!data.token) {
+      throw new Error("Login token missing.");
+    }
+
+    token = data.token;
+    localStorage.setItem("ads_client_token", token);
+
+    currentCustomer = data.customer || data.client || null;
+
+    message("loginMessage", "Login successful.");
+    showDashboard();
+
+  } catch (error) {
+    message("loginMessage", error.message, true);
+  } finally {
+    $("loginBtn").disabled = false;
+  }
+});
+
+$("logoutBtn").addEventListener("click", () => {
+  token = "";
+  currentCustomer = null;
+  localStorage.removeItem("ads_client_token");
+  showLogin();
+});
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("nav button").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    [
+      "homeTab",
+      "mykeysTab",
+      "paymentTab",
+      "profileTab"
+    ].forEach(id => $(id).classList.add("hidden"));
+
+    $(button.dataset.tab + "Tab").classList.remove("hidden");
+  });
+});
+
+async function loadProfile() {
+  try {
+    const data = await api("/api/client/me");
+
+    currentCustomer = data.customer || data.client || data;
+
+    const customer = currentCustomer;
+
+    $("welcomeName").textContent =
+      "Welcome, " + (customer.name || customer.email || "Client");
+
+    $("profileName").textContent = customer.name || "-";
+    $("profileEmail").textContent = customer.email || "-";
+    $("profilePhone").textContent = customer.phone || "-";
+    $("profileStatus").textContent = customer.status || "-";
+    $("accountStatus").textContent = customer.status || "Pending";
+
+  } catch (error) {
+    message("paymentMessage", error.message, true);
   }
 }
 
-function logout(){
-  localStorage.removeItem("ads_client_token");
-  token="";
-  location.reload();
+async function loadKeys() {
+  try {
+    const data = await api("/api/client/keys");
+    const keys = data.keys || [];
+
+    $("keysList").innerHTML = "";
+
+    keys.forEach(key => {
+      const card = document.createElement("div");
+      card.className = "keybox";
+
+      const title = document.createElement("strong");
+      title.textContent = key.name || "API Key";
+
+      const status = document.createElement("p");
+      status.textContent = "Status: " + (key.status || "active");
+
+      const reveal = document.createElement("button");
+      reveal.textContent = "Reveal Key";
+
+      reveal.addEventListener("click", async () => {
+        try {
+          const result = await api(
+            "/api/client/keys/" + encodeURIComponent(key.id) + "/reveal",
+            { method: "POST" }
+          );
+
+          const value = result.key || result.api_key;
+
+          if (!value) throw new Error("Key not found.");
+
+          cardKey.textContent = value;
+          cardKey.classList.remove("hidden");
+
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+
+      const cardKey = document.createElement("p");
+      cardKey.className = "hidden";
+      cardKey.style.wordBreak = "break-all";
+
+      const revoke = document.createElement("button");
+      revoke.textContent = "Revoke";
+      revoke.className = "danger";
+      revoke.style.marginLeft = "8px";
+
+      revoke.addEventListener("click", async () => {
+        if (!confirm("Revoke this API key?")) return;
+
+        try {
+          await api(
+            "/api/client/keys/" + encodeURIComponent(key.id) + "/revoke",
+            { method: "POST" }
+          );
+
+          alert("API key revoked.");
+          await loadKeys();
+
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+
+      card.append(title, status, reveal, revoke, cardKey);
+      $("keysList").appendChild(card);
+    });
+
+    $("keyCount").textContent = keys.length;
+
+  } catch (error) {
+    $("keysList").textContent = error.message;
+  }
 }
 
-if(token){
-  loadProfile();
+$("generateKeyBtn").addEventListener("click", async () => {
+  const name = $("newKeyName").value.trim();
+
+  if (!name) {
+    alert("Please enter API key name.");
+    return;
+  }
+
+  $("generateKeyBtn").disabled = true;
+
+  try {
+    const data = await api("/api/client/keys", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name })
+    });
+
+    const key = data.key || data.api_key;
+
+    $("newKeyResult").classList.remove("hidden");
+    $("newKeyResult").textContent =
+      key
+        ? "Your new API key: " + key
+        : "API key created. Use Reveal Key to view it.";
+
+    $("newKeyName").value = "";
+
+    await loadKeys();
+
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    $("generateKeyBtn").disabled = false;
+  }
+});
+
+$("refreshKeysBtn").addEventListener("click", loadKeys);
+
+$("uploadPaymentBtn").addEventListener("click", async () => {
+  const amount = $("paymentAmount").value;
+  const transaction_id = $("transactionId").value.trim();
+  const file = $("paymentProof").files[0];
+
+  if (!amount || Number(amount) <= 0 || !transaction_id || !file) {
+    return message(
+      "paymentMessage",
+      "Amount, transaction ID and screenshot required.",
+      true
+    );
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    return message(
+      "paymentMessage",
+      "Image must be smaller than 5 MB.",
+      true
+    );
+  }
+
+  const formData = new FormData();
+  formData.append("amount", amount);
+  formData.append("transaction_id", transaction_id);
+  formData.append("proof", file);
+
+  $("uploadPaymentBtn").disabled = true;
+
+  try {
+    const data = await api("/api/payment/upload", {
+      method: "POST",
+      body: formData
+    });
+
+    message(
+      "paymentMessage",
+      data.message || "Payment submitted successfully."
+    );
+
+    $("paymentAmount").value = "";
+    $("transactionId").value = "";
+    $("paymentProof").value = "";
+
+  } catch (error) {
+    message("paymentMessage", error.message, true);
+  } finally {
+    $("uploadPaymentBtn").disabled = false;
+  }
+});
+
+async function restoreSession() {
+  if (!token) {
+    showLogin();
+    return;
+  }
+
+  try {
+    await api("/api/client/me");
+    showDashboard();
+  } catch (error) {
+    token = "";
+    localStorage.removeItem("ads_client_token");
+    showLogin();
+  }
 }
+
+restoreSession();
 </script>
 
 </body>
-</html>
+  </html>
