@@ -1,282 +1,254 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080808">
-<title>ADS GROWTH | Client Panel</title>
+<title>ADS GROWTH Client Dashboard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#080808;color:#fff;min-height:100vh;padding:18px}
-.wrap{max-width:650px;margin:35px auto}
-.logo{text-align:center;color:#ff7900;font-size:28px;font-weight:900;margin-bottom:8px}
-.sub{text-align:center;color:#aaa;margin-bottom:25px}
-.card{background:#151515;border:1px solid #333;border-radius:15px;padding:22px;margin-bottom:18px}
-h2{font-size:20px;margin-bottom:18px}
-label{display:block;color:#bbb;font-size:13px;margin:13px 0 7px}
-input{width:100%;padding:14px;border-radius:8px;border:1px solid #444;background:#090909;color:white;font-size:15px}
-button{border:0;border-radius:8px;padding:13px 16px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:#ff7900;color:#111;width:100%;margin-top:17px}
-.secondary{background:#292929;color:white;margin-top:10px}
-.danger{background:#5c1717;color:white;margin-top:10px}
-.muted{color:#aaa;font-size:13px;line-height:1.6}
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif}
+header{padding:22px;text-align:center}
+h1{color:#ff7900;font-size:32px}
+.subtitle{color:#aaa;font-size:20px}
+.container{max-width:750px;margin:auto;padding:20px}
+.card{background:#171717;border:1px solid #383838;border-radius:18px;padding:24px;margin:18px 0}
+input{width:100%;padding:17px;margin:12px 0 20px;background:#080808;color:white;border:1px solid #555;border-radius:12px;font-size:17px}
+label{color:#bbb}
+button{background:#ff7900;color:#111;border:0;border-radius:10px;padding:15px;font-weight:bold;font-size:16px;cursor:pointer;margin:5px}
+.full{width:100%}
 .hidden{display:none}
-.key{word-break:break-all;background:#090909;border:1px dashed #ff7900;padding:14px;border-radius:8px;margin-top:12px;color:#ffb36e}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #333;overflow-wrap:anywhere}
-.status{color:#ffb36e}
-.message{margin-top:14px;font-size:14px;line-height:1.5}
+#message{color:#ff8181}
+.item{border-bottom:1px solid #444;padding:15px 0;overflow-wrap:anywhere}
+.key{background:#080808;padding:12px;border-radius:8px;overflow-wrap:anywhere}
+.secondary{background:#333;color:white}
+.danger{background:#b92d2d;color:white}
 </style>
 </head>
 <body>
-<div class="wrap">
-<div class="logo">ADS GROWTH</div>
-<p class="sub">CLIENT API DASHBOARD</p>
 
-<section class="card" id="loginCard">
+<header>
+<h1>ADS GROWTH</h1>
+<div class="subtitle">CLIENT API DASHBOARD</div>
+</header>
+
+<div class="container">
+
+<div id="loginBox" class="card">
 <h2>Client Login</h2>
+
 <label>Email Address or Phone Number</label>
-<input id="login" type="text" placeholder="Enter email or phone" autocomplete="username">
+<input id="login" placeholder="Email or phone" autocomplete="username">
+
 <label>Password</label>
-<input id="password" type="password" placeholder="Enter password" autocomplete="current-password">
-<button class="primary" id="loginBtn" onclick="login()">LOGIN</button>
-<div id="loginMessage" class="message"></div>
-<p class="muted" style="margin-top:15px">Sirf approved clients login kar sakte hain. Login details admin se prapt karein.</p>
-</section>
+<input id="password" type="password" placeholder="Password" autocomplete="current-password">
 
-<section class="card hidden" id="dashboard">
-<h2>My Dashboard</h2>
-<div class="row"><span>Customer ID</span><strong id="profileId">-</strong></div>
-<div class="row"><span>Name</span><strong id="profileName">-</strong></div>
-<div class="row"><span>Email</span><strong id="profileEmail">-</strong></div>
-<div class="row"><span>Phone</span><strong id="profilePhone">-</strong></div>
-<div class="row"><span>Account Status</span><strong class="status" id="profileStatus">-</strong></div>
+<button class="full" onclick="loginClient()">LOGIN</button>
 
-<h2 style="margin-top:22px">My API Keys</h2>
-<p class="muted">Aap apni active API key ko dobara dekh aur copy kar sakte hain.</p>
-<div id="keyArea"></div>
-<button class="primary" id="generateBtn" onclick="generateKey()">GENERATE API KEY</button>
-<button class="secondary" onclick="loadDashboard()">REFRESH DASHBOARD</button>
-<button class="danger" onclick="logout()">LOGOUT</button>
-<div id="dashboardMessage" class="message"></div>
-</section>
+<p id="message"></p>
+<p style="color:#aaa">
+Sirf approved clients login kar sakte hain. Login details admin se prapt karein.
+</p>
+</div>
+
+<div id="dashboard" class="hidden">
+<div class="card">
+<h2>Welcome</h2>
+<p id="customerName"></p>
+<p id="customerEmail"></p>
+<p id="customerStatus"></p>
+<button onclick="logout()" class="danger">LOGOUT</button>
+</div>
+
+<div class="card">
+<h2>API Management</h2>
+<button class="full" onclick="generateApiKey()">GENERATE API KEY</button>
+<button class="full secondary" onclick="loadKeys()">REFRESH API KEYS</button>
+<div id="keyList"></div>
+</div>
+</div>
 </div>
 
 <script>
-const API = "https://ads-growth-whatsapp-api.onrender.com";
-let token = sessionStorage.getItem("ag_client_token") || "";
+const API="https://ads-growth-whatsapp-api.onrender.com";
+let token=localStorage.getItem("ads_client_token")||"";
 
-async function request(path, options = {}) {
-  const headers = {...(options.headers || {})};
-  if (token) headers.Authorization = "Bearer " + token;
-
-  const response = await fetch(API + path, {
-    ...options,
-    headers
+async function api(path,method="GET",body=null){
+  const response=await fetch(API+path,{
+    method,
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+token
+    },
+    body:body?JSON.stringify(body):null
   });
 
-  let result;
-  try {
-    result = await response.json();
-  } catch {
-    throw new Error("Server se valid response nahi mila.");
+  const data=await response.json();
+
+  if(!response.ok||!data.success){
+    throw new Error(data.message||"Request failed");
   }
 
-  if (!response.ok || !result.success) {
-    throw new Error(result.message || "Request failed.");
-  }
-  return result;
+  return data;
 }
 
-function message(id, text, error = false) {
-  const el = document.getElementById(id);
-  el.textContent = text;
-  el.style.color = error ? "#ff7777" : "#8ee6a1";
-}
+async function loginClient(){
+  const login=document.getElementById("login").value.trim();
+  const password=document.getElementById("password").value;
+  const message=document.getElementById("message");
 
-async function login() {
-  const loginValue = document.getElementById("login").value.trim();
-  const password = document.getElementById("password").value;
-
-  if (!loginValue || !password) {
-    message("loginMessage","Email/phone aur password dono bharein.",true);
+  if(!login||!password){
+    message.textContent="Email/phone and password required.";
     return;
   }
 
-  const button = document.getElementById("loginBtn");
-  button.disabled = true;
-  button.textContent = "PLEASE WAIT...";
+  message.textContent="Logging in...";
 
-  try {
-    const result = await request("/api/client/login", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        login: loginValue,
-        password: password
-      })
+  try{
+    const response=await fetch(API+"/api/client/login",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({login,password})
     });
 
-    token = result.token;
-    sessionStorage.setItem("ag_client_token",token);
+    const data=await response.json();
 
-    document.getElementById("loginCard").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
+    if(!response.ok||!data.success){
+      throw new Error(data.message||"Invalid login details.");
+    }
 
-    await loadDashboard();
-  } catch (error) {
-    message("loginMessage",error.message,true);
-  } finally {
-    button.disabled = false;
-    button.textContent = "LOGIN";
+    token=data.token;
+    localStorage.setItem("ads_client_token",token);
+    showDashboard(data.customer);
+
+  }catch(error){
+    message.textContent=error.message;
   }
 }
 
-async function loadDashboard() {
-  try {
-    const result = await request("/api/client/me");
-    const customer = result.customer;
+function showDashboard(customer){
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
 
-    document.getElementById("profileId").textContent = customer.id || "-";
-    document.getElementById("profileName").textContent = customer.name || "-";
-    document.getElementById("profileEmail").textContent = customer.email || "-";
-    document.getElementById("profilePhone").textContent = customer.phone || "-";
-    document.getElementById("profileStatus").textContent = customer.status || "-";
+  document.getElementById("customerName").textContent=
+    "Name: "+(customer.name||"-");
 
-    const keys = result.api_keys || result.keys || [];
-    const activeKeys = keys.filter(k => k.status === "active");
+  document.getElementById("customerEmail").textContent=
+    "Email: "+(customer.email||"-");
 
-    const area = document.getElementById("keyArea");
-    area.innerHTML = "";
+  document.getElementById("customerStatus").textContent=
+    "Status: "+(customer.status||"-");
 
-    if (activeKeys.length) {
-      activeKeys.forEach(k => {
-        const item = document.createElement("div");
-        item.className = "card";
-        item.style.padding = "14px";
-        item.style.marginTop = "12px";
+  loadKeys();
+}
 
-        const title = document.createElement("p");
-        title.textContent = "Key: " + (k.key_prefix || "API key");
-        title.style.color = "#ffb36e";
-
-        const status = document.createElement("p");
-        status.className = "muted";
-        status.textContent = "Status: " + k.status;
-
-        const reveal = document.createElement("button");
-        reveal.className = "secondary";
-        reveal.textContent = "VIEW API KEY";
-        reveal.onclick = () => revealKey(k.id, item, reveal);
-
-        item.append(title,status,reveal);
-        area.appendChild(item);
-      });
-      document.getElementById("generateBtn").disabled = true;
-      document.getElementById("generateBtn").textContent = "ACTIVE KEY EXISTS";
-    } else {
-      area.innerHTML = '<p class="muted">Abhi koi active API key nahi hai.</p>';
-      document.getElementById("generateBtn").disabled = false;
-      document.getElementById("generateBtn").textContent = "GENERATE API KEY";
-    }
-
-    message("dashboardMessage","Dashboard updated.");
-  } catch (error) {
-    message("dashboardMessage",error.message,true);
-    if (error.message.toLowerCase().includes("session") ||
-        error.message.toLowerCase().includes("login")) {
-      logout();
-    }
+async function loadProfile(){
+  try{
+    const data=await api("/api/client/me");
+    showDashboard(data.customer);
+  }catch(error){
+    logout();
   }
 }
 
-async function revealKey(id, item, button) {
-  button.disabled = true;
-  button.textContent = "LOADING...";
-  try {
-    const result = await request(
-      "/api/client/api-keys/" + encodeURIComponent(id) + "/reveal"
+async function generateApiKey(){
+  if(!confirm("Generate a new API key?"))return;
+
+  try{
+    const data=await api("/api/client/api-key","POST");
+
+    prompt(
+      "Your new API key. Copy and save it safely:",
+      data.api_key
     );
 
-    const keyBox = document.createElement("div");
-    keyBox.className = "key";
-    keyBox.textContent = result.api_key;
+    loadKeys();
 
-    const copy = document.createElement("button");
-    copy.className = "secondary";
-    copy.textContent = "COPY API KEY";
-    copy.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(result.api_key);
-        message("dashboardMessage","API key copied.");
-      } catch {
-        message("dashboardMessage","Copy nahi hua. Key select karke copy karein.",true);
-      }
-    };
-
-    item.append(keyBox,copy);
-    button.textContent = "KEY SHOWN";
-  } catch (error) {
-    button.disabled = false;
-    button.textContent = "VIEW API KEY";
-    message("dashboardMessage",error.message,true);
+  }catch(error){
+    alert(error.message);
   }
 }
+  async function loadKeys(){
+  try{
+    const data=await api("/api/client/api-keys");
+    const box=document.getElementById("keyList");
+    box.innerHTML="";
 
-async function generateKey() {
-  const button = document.getElementById("generateBtn");
-  button.disabled = true;
-  button.textContent = "GENERATING...";
+    if(!data.keys.length){
+      box.textContent="No API keys generated yet.";
+      return;
+    }
 
-  try {
-    const result = await request("/api/client/api-key", {
-      method: "POST"
+    data.keys.forEach(key=>{
+      const item=document.createElement("div");
+      item.className="item";
+
+      const title=document.createElement("p");
+      title.textContent=
+        key.key_prefix+" | "+key.status;
+
+      item.appendChild(title);
+
+      if(key.status==="active"){
+        const reveal=document.createElement("button");
+        reveal.textContent="REVEAL KEY";
+        reveal.className="secondary";
+
+        reveal.onclick=async()=>{
+          try{
+            const result=await api(
+              "/api/client/api-keys/"+encodeURIComponent(key.id)+"/reveal"
+            );
+
+            prompt("Your API key:",result.api_key);
+
+          }catch(error){
+            alert(error.message);
+          }
+        };
+
+        const revoke=document.createElement("button");
+        revoke.textContent="REVOKE";
+        revoke.className="danger";
+
+        revoke.onclick=async()=>{
+          if(!confirm("Are you sure you want to revoke this key?"))return;
+
+          try{
+            await api(
+              "/api/client/api-keys/"+encodeURIComponent(key.id)+"/revoke",
+              "POST"
+            );
+
+            alert("API key revoked.");
+            loadKeys();
+
+          }catch(error){
+            alert(error.message);
+          }
+        };
+
+        item.append(reveal,revoke);
+      }
+
+      box.appendChild(item);
     });
 
-    const area = document.getElementById("keyArea");
-    area.innerHTML = "";
-
-    const box = document.createElement("div");
-    box.className = "key";
-    box.textContent = result.api_key;
-
-    const copy = document.createElement("button");
-    copy.className = "secondary";
-    copy.textContent = "COPY API KEY";
-    copy.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(result.api_key);
-        message("dashboardMessage","API key copied.");
-      } catch {
-        message("dashboardMessage","Key select karke copy karein.",true);
-      }
-    };
-
-    area.append(box,copy);
-    button.textContent = "API KEY GENERATED";
-    message("dashboardMessage","API key successfully generated.");
-  } catch (error) {
-    button.disabled = false;
-    button.textContent = "GENERATE API KEY";
-    message("dashboardMessage",error.message,true);
+  }catch(error){
+    document.getElementById("keyList").textContent=error.message;
   }
 }
 
-function logout() {
-  token = "";
-  sessionStorage.removeItem("ag_client_token");
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("loginCard").classList.remove("hidden");
-  document.getElementById("password").value = "";
+function logout(){
+  localStorage.removeItem("ads_client_token");
+  token="";
+  location.reload();
 }
 
-if (token) {
-  document.getElementById("loginCard").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  loadDashboard();
+if(token){
+  loadProfile();
 }
 </script>
+
 </body>
-  </html>
-  
+</html>
