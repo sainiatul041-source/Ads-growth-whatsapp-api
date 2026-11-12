@@ -9,855 +9,855 @@
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#070b18;
- color:#f1f5f9;
-}
-header{
- background:linear-gradient(120deg,#101d38,#142b42,#063c38);
- padding:18px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- border-bottom:1px solid #1eaa8a;
- box-shadow:0 5px 25px #0008;
- position:sticky;
- top:0;
- z-index:10;
-}
-header h2{
- color:#39e6b1;
- font-size:21px;
- letter-spacing:1px;
- margin:0;
-}
-.container{
- max-width:1250px;
- margin:auto;
- padding:20px;
-}
-.card{
- background:linear-gradient(145deg,#121d33,#0c1729);
- border:1px solid #263c58;
- border-radius:15px;
- padding:20px;
- margin-bottom:18px;
- box-shadow:0 10px 30px #0004;
-}
-h2,h3{margin-top:0}
-h3{color:#45ddb1}
-button{
- border:0;
- padding:12px 16px;
- border-radius:9px;
- background:linear-gradient(135deg,#20d5a0,#0ca77d);
- color:#031b17;
- font-weight:bold;
- cursor:pointer;
- transition:.2s;
- margin:3px;
-}
-button:hover{
- transform:translateY(-2px);
- box-shadow:0 5px 18px #16bd8b55;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#070b18;color:#f1f5f9}
+header{background:linear-gradient(120deg,#101d38,#142b42,#063c38);padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1eaa8a;position:sticky;top:0;z-index:10}
+header h2{color:#39e6b1;font-size:20px;margin:0}
+.container{max-width:1350px;margin:auto;padding:18px}
+.card{background:linear-gradient(145deg,#121d33,#0c1729);border:1px solid #263c58;border-radius:14px;padding:18px;margin-bottom:18px}
+h2,h3{margin-top:0}h3{color:#45ddb1}
+button{border:0;padding:11px 14px;border-radius:8px;background:linear-gradient(135deg,#20d5a0,#0ca77d);color:#031b17;font-weight:bold;cursor:pointer;margin:3px}
 button:disabled{opacity:.5;cursor:not-allowed}
-.secondary{background:#263e5d;color:white}
-.danger{background:#df4055;color:white}
-input,select{
- width:100%;
- padding:13px;
- margin:8px 0 15px;
- border:1px solid #344b68;
- border-radius:9px;
- background:#091326;
- color:white;
- outline:none;
-}
-input:focus{
- border-color:#26d9a3;
- box-shadow:0 0 10px #26d9a344;
-}
-label{font-size:14px;color:#c5d3e2}
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
- gap:16px;
-}
-.stat{
- background:linear-gradient(145deg,#142b42,#0a1c30);
- border:1px solid #28516a;
- padding:22px;
- border-radius:14px;
-}
-.stat strong{
- display:block;
- color:#39e6b1;
- font-size:32px;
- margin-top:12px;
-}
-nav{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
- margin-bottom:20px;
-}
-nav button{
- background:#192b45;
- color:#d8e7f5;
- border:1px solid #344d69;
-}
-nav button.active{
- background:linear-gradient(135deg,#20d5a0,#0ca77d);
- color:#031b17;
- border:0;
-}
-table{
- width:100%;
- border-collapse:collapse;
- min-width:650px;
-}
-th{
- background:#19314b;
- color:#45ddb1;
- padding:14px;
- text-align:left;
-}
-td{
- padding:13px;
- border-bottom:1px solid #263b53;
- color:#d6e2ef;
- font-size:13px;
-}
-tr:hover td{background:#172940}
-.table-wrap{overflow-x:auto;border-radius:10px}
+.secondary{background:#263e5d;color:white}.danger{background:#df4055;color:white}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #344b68;border-radius:8px;background:#091326;color:white;outline:none}
+label{font-size:13px;color:#c5d3e2}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.stat{background:#142b42;border:1px solid #28516a;padding:20px;border-radius:12px}
+.stat strong{display:block;color:#39e6b1;font-size:30px;margin-top:10px}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+nav button{background:#192b45;color:#d8e7f5;border:1px solid #344d69}
+nav button.active{background:#20d5a0;color:#031b17}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th{background:#19314b;color:#45ddb1;padding:12px;text-align:left}
+td{padding:12px;border-bottom:1px solid #263b53;font-size:13px;vertical-align:top}
+.table-wrap{overflow-x:auto;border-radius:9px}
 .small{color:#9eb2c8;font-size:13px}
-.success{color:#39e6b1}
-.error{color:#ff6978}
+.success{color:#39e6b1}.error{color:#ff6978}
 .hidden{display:none!important}
-.keybox{
- background:#071321;
- border:1px solid #20b88f;
- border-radius:10px;
- padding:15px;
- word-break:break-all;
- margin-top:15px;
-}
-hr{border:0;border-top:1px solid #30445c;margin:22px 0}
-.status{
- display:inline-block;
- padding:5px 9px;
- border-radius:20px;
- background:#263e5d;
- font-size:12px;
-}
-.empty{
- text-align:center;
- padding:25px;
- color:#9eb2c8;
-}
-#loginSection{
- max-width:450px;
- margin:55px auto;
-}
+#loginSection{max-width:440px;margin:55px auto}
 #loginSection h2{color:#39e6b1}
-@media(max-width:600px){
- .container{padding:12px}
- header{padding:14px}
- header h2{font-size:17px}
- .card{padding:15px}
- .stat strong{font-size:26px}
- nav button{flex:1}
-}
+.keybox{background:#071321;border:1px solid #20b88f;border-radius:9px;padding:14px;word-break:break-all;margin:12px 0}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#263e5d;font-size:12px}
+.notice{padding:12px;border:1px solid #344b68;border-radius:8px;color:#b9c9d9;margin:10px 0}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+@media(max-width:600px){.container{padding:10px}header h2{font-size:16px}.card{padding:13px}nav button{flex:1}.stat strong{font-size:25px}}
 </style>
 </head>
-
 <body>
 
 <header>
- <h2>ADS GROWTH ADMIN</h2>
- <button id="logoutBtn" class="danger hidden">Logout</button>
+  <h2>ADS GROWTH ADMIN</h2>
+  <button id="logoutBtn" class="danger hidden">Logout</button>
 </header>
 
 <div class="container">
 
-<!-- ADMIN LOGIN -->
 <section id="loginSection" class="card">
- <h2>Admin Login</h2>
-
- <label>Email</label>
- <input id="email" type="email"
- placeholder="Admin email"
- autocomplete="username">
-
- <label>Password</label>
- <input id="password" type="password"
- placeholder="Admin password"
- autocomplete="current-password">
-
- <button id="loginBtn">Login to Dashboard</button>
- <p id="loginMessage" class="small"></p>
+  <h2>Admin Login</h2>
+  <label>Admin Email</label>
+  <input id="email" type="email" placeholder="Admin email" autocomplete="username">
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Admin password" autocomplete="current-password">
+  <button id="loginBtn">Login to Dashboard</button>
+  <p id="loginMessage" class="small"></p>
 </section>
 
-<!-- ADMIN DASHBOARD -->
 <section id="dashboardSection" class="hidden">
 
- <nav>
+<nav>
   <button class="active" data-tab="dashboard">Dashboard</button>
-  <button data-tab="customers">Customers</button>
+  <button data-tab="clients">Clients</button>
   <button data-tab="payments">Payments</button>
-  <button data-tab="keys">API Keys</button>
- </nav>
+  <button data-tab="keys">Create / Manage API</button>
+  <button data-tab="whatsapp">WhatsApp Setup</button>
+</nav>
 
- <!-- DASHBOARD HOME -->
- <div id="dashboardTab">
-
+<div id="dashboardTab">
   <div class="card">
-   <h2>Welcome to ADS GROWTH</h2>
-   <p id="adminEmail" class="small">Admin Panel</p>
-   <p>Manage your customers, payments and API keys.</p>
+    <h2>Welcome to ADS GROWTH</h2>
+    <p id="adminEmail" class="small">Admin Panel</p>
+    <p>Manage clients, UPI payments, platform API keys and WhatsApp connections.</p>
+    <button data-open-tab="keys">Create API Key</button>
+    <button data-open-tab="payments" class="secondary">Review Payments</button>
   </div>
 
   <div class="grid">
-
-   <div class="stat">
-    Total Customers
-    <strong id="totalCustomers">0</strong>
-   </div>
-
-   <div class="stat">
-    Approved Customers
-    <strong id="approvedCustomers">0</strong>
-   </div>
-
-   <div class="stat">
-    Pending Payments
-    <strong id="pendingPayments">0</strong>
-   </div>
-
-   <div class="stat">
-    Total API Keys
-    <strong id="totalKeys">0</strong>
-   </div>
-
+    <div class="stat">Total Clients<strong id="totalClients">0</strong></div>
+    <div class="stat">Approved Clients<strong id="approvedClients">0</strong></div>
+    <div class="stat">Pending Payments<strong id="pendingPayments">0</strong></div>
+    <div class="stat">Total API Keys<strong id="totalKeys">0</strong></div>
   </div>
+  <p id="dashboardMessage" class="small"></p>
+</div>
 
-  <div class="card" style="margin-top:20px">
-   <h3>Quick Actions</h3>
-   <button data-open-tab="customers">Manage Customers</button>
-   <button data-open-tab="payments">Check Payments</button>
-   <button data-open-tab="keys">Manage API Keys</button>
-  </div>
-
- </div>
-
- <!-- CUSTOMERS -->
- <div id="customersTab" class="hidden card">
-
-  <h3>Customers Management</h3>
-
-  <input id="customerSearch"
-   placeholder="Search name, email or phone">
-
-  <button id="refreshCustomers">Refresh Customers</button>
-
-  <p id="customersMessage" class="small"></p>
-
+<div id="clientsTab" class="card hidden">
+  <h3>Client Management</h3>
+  <input id="clientSearch" placeholder="Search client name, email or phone">
+  <label>Filter by status</label>
+  <select id="clientStatusFilter">
+    <option value="">All clients</option>
+    <option value="pending">Pending</option>
+    <option value="approved">Approved</option>
+    <option value="rejected">Rejected</option>
+  </select>
+  <button id="refreshClients">Refresh Clients</button>
+  <p id="clientsMessage" class="small"></p>
   <div class="table-wrap">
-   <table>
-    <thead>
-     <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Status</th>
-      <th>Action</th>
-     </tr>
-    </thead>
-    <tbody id="customersBody"></tbody>
-   </table>
+    <table>
+      <thead><tr>
+        <th>Client</th><th>Email</th><th>Phone</th><th>Business</th><th>Plan</th><th>Status</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="clientsBody"></tbody>
+    </table>
   </div>
+</div>
 
- </div>
-
- <!-- PAYMENTS -->
- <div id="paymentsTab" class="hidden card">
-
-  <h3>Payment Management</h3>
-
+<div id="paymentsTab" class="card hidden">
+  <h3>UPI Payment Verification</h3>
+  <label>Payment status</label>
+  <select id="paymentStatusFilter">
+    <option value="">All payments</option>
+    <option value="pending">Pending</option>
+    <option value="approved">Approved</option>
+    <option value="rejected">Rejected</option>
+  </select>
   <button id="refreshPayments">Refresh Payments</button>
-
   <p id="paymentsMessage" class="small"></p>
-
   <div class="table-wrap">
-   <table>
-    <thead>
-     <tr>
-      <th>Customer ID</th>
-      <th>Amount</th>
-      <th>Transaction ID</th>
-      <th>Status</th>
-      <th>Proof</th>
-      <th>Action</th>
-     </tr>
-    </thead>
-    <tbody id="paymentsBody"></tbody>
-   </table>
+    <table>
+      <thead><tr>
+        <th>Client</th><th>Amount</th><th>UTR</th><th>Method</th><th>Status</th><th>Proof</th><th>Review</th>
+      </tr></thead>
+      <tbody id="paymentsBody"></tbody>
+    </table>
   </div>
+</div>
 
- </div>
-
- <!-- API KEYS -->
- <div id="keysTab" class="hidden card">
-
-  <h3>API Key Management</h3>
-
-  <label>Customer ID</label>
-  <input id="keyCustomerId"
-   placeholder="Enter customer ID">
-
+<div id="keysTab" class="card hidden">
+  <h3>Create Platform API Key</h3>
+  <div class="notice">API key sirf approved client ke liye banegi aur payment approval zaroori hai.</div>
+  <label>Select Client</label>
+  <select id="keyCustomerId">
+    <option value="">Loading clients...</option>
+  </select>
   <label>API Key Name</label>
-  <input id="keyName"
-   placeholder="Example: WhatsApp API">
-
-  <button id="generateKeyBtn">Generate API Key</button>
-
+  <input id="keyName" placeholder="Example: WhatsApp Business API">
+  <button id="generateKeyBtn">Create API Key</button>
   <div id="generatedKey" class="keybox hidden"></div>
-
+  <p id="keysMessage" class="small"></p>
   <hr>
-
-  <button id="refreshKeys" class="secondary">
-   Refresh API Keys
-  </button>
-
+  <h3>API Keys List</h3>
+  <button id="refreshKeys" class="secondary">Refresh API Keys</button>
   <div class="table-wrap">
-   <table>
-    <thead>
-     <tr>
-      <th>Customer ID</th>
-      <th>Key Name</th>
-      <th>Status</th>
-      <th>Action</th>
-     </tr>
-    </thead>
-    <tbody id="keysBody"></tbody>
-   </table>
+    <table>
+      <thead><tr>
+        <th>Client ID</th><th>Key Name</th><th>Prefix</th><th>Status</th><th>Created</th><th>Action</th>
+      </tr></thead>
+      <tbody id="keysBody"></tbody>
+    </table>
   </div>
+</div>
 
- </div>
+<div id="whatsappTab" class="card hidden">
+  <h3>WhatsApp Cloud API Connection</h3>
+  <div class="notice">Client ka Meta WhatsApp Phone Number ID, WABA ID aur Access Token yahan securely save karein.</div>
+  <label>Select Client</label>
+  <select id="waCustomerId">
+    <option value="">Select client</option>
+  </select>
+  <button id="loadWaConnection" class="secondary">Check Connection</button>
+  <p id="waCurrentStatus" class="small"></p>
+  <label>Phone Number ID</label>
+  <input id="waPhoneNumberId" placeholder="Meta Phone Number ID">
+  <label>WhatsApp Business Account ID (WABA ID)</label>
+  <input id="waWabaId" placeholder="WABA ID">
+  <label>Meta Access Token</label>
+  <textarea id="waAccessToken" rows="3" placeholder="Paste Meta access token"></textarea>
+  <button id="saveWaConnection">Save WhatsApp Connection</button>
+  <p id="waMessage" class="small"></p>
+</div>
 
 </section>
 </div>
 
 <script>
-const API="https://ads-growth-whatsapp-api.onrender.com";
+const API = "https://ads-growth-whatsapp-api.onrender.com";
+let token = localStorage.getItem("ads_admin_token") || "";
+let allClients = [];
+let allPayments = [];
+let allKeys = [];
 
-let token=localStorage.getItem("ads_admin_token")||"";
-let allCustomers=[];
+const $ = id => document.getElementById(id);
 
-const $=id=>document.getElementById(id);
+async function request(path, options = {}) {
+  const headers = {
+    ...(token ? {Authorization: "Bearer " + token} : {}),
+    ...(options.headers || {})
+  };
 
-async function request(path,options={}){
-
- const headers={
-  ...(token?{Authorization:"Bearer "+token}:{}),
-  ...(options.headers||{})
- };
-
- if(options.body && !(options.body instanceof FormData)){
-  headers["Content-Type"]="application/json";
- }
-
- const response=await fetch(API+path,{
-  ...options,
-  headers
- });
-
- const data=await response.json().catch(()=>({}));
-
- if(!response.ok || data.success===false){
-  throw new Error(data.message||"Request failed");
- }
-
- return data;
-}
-
-function showMessage(id,text,error=false){
- $(id).textContent=text;
- $(id).className=error?"error":"success";
-}
-
-function showLogin(){
- $("loginSection").classList.remove("hidden");
- $("dashboardSection").classList.add("hidden");
- $("logoutBtn").classList.add("hidden");
-}
-
-function showDashboard(){
- $("loginSection").classList.add("hidden");
- $("dashboardSection").classList.remove("hidden");
- $("logoutBtn").classList.remove("hidden");
- loadAll();
-}
-
-function switchTab(tab){
- document.querySelectorAll("nav button[data-tab]").forEach(b=>{
-  b.classList.toggle("active",b.dataset.tab===tab);
- });
-
- ["dashboard","customers","payments","keys"].forEach(name=>{
-  $(name+"Tab").classList.toggle("hidden",name!==tab);
- });
-}
-
-document.querySelectorAll("nav button[data-tab]").forEach(button=>{
- button.addEventListener("click",()=>{
-  switchTab(button.dataset.tab);
- });
-});
-
-document.querySelectorAll("[data-open-tab]").forEach(button=>{
- button.addEventListener("click",()=>{
-  switchTab(button.dataset.openTab);
- });
-});
-
-// ADMIN LOGIN
-$("loginBtn").addEventListener("click",async()=>{
-
- const email=$("email").value.trim();
- const password=$("password").value;
-
- if(!email||!password){
-  showMessage("loginMessage","Email and password required.",true);
-  return;
- }
-
- $("loginBtn").disabled=true;
-
- try{
-  const data=await request("/api/admin/login",{
-   method:"POST",
-   body:JSON.stringify({email,password})
-  });
-
-  if(!data.token){
-   throw new Error("Login token missing.");
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
   }
 
-  token=data.token;
-  localStorage.setItem("ads_admin_token",token);
-  localStorage.setItem("ads_admin_email",email);
+  const response = await fetch(API + path, {...options, headers});
+  const data = await response.json().catch(() => ({}));
 
-  showMessage("loginMessage","Login successful.");
-  showDashboard();
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Request failed (" + response.status + ")");
+  }
+  return data;
+}
 
- }catch(error){
-  showMessage("loginMessage",error.message,true);
- }finally{
-  $("loginBtn").disabled=false;
- }
+function showMessage(id, message, isError = false) {
+  $(id).textContent = message;
+  $(id).className = isError ? "error small" : "success small";
+}
+
+function showLogin() {
+  $("loginSection").classList.remove("hidden");
+  $("dashboardSection").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+}
+
+function showDashboard() {
+  $("loginSection").classList.add("hidden");
+  $("dashboardSection").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  loadAll();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll("nav [data-tab]").forEach(button => {
+    button.classList.toggle("active", button.dataset.tab === tab);
+  });
+
+  ["dashboard","clients","payments","keys","whatsapp"].forEach(name => {
+    $(name + "Tab").classList.toggle("hidden", name !== tab);
+  });
+
+  if (tab === "keys") loadKeys();
+  if (tab === "whatsapp") loadClientOptions();
+}
+
+document.querySelectorAll("nav [data-tab]").forEach(button => {
+  button.addEventListener("click", () => switchTab(button.dataset.tab));
 });
 
-// LOGOUT
-$("logoutBtn").addEventListener("click",()=>{
- token="";
- localStorage.removeItem("ads_admin_token");
- localStorage.removeItem("ads_admin_email");
- showLogin();
+document.querySelectorAll("[data-open-tab]").forEach(button => {
+  button.addEventListener("click", () => switchTab(button.dataset.openTab));
 });
 
-// LOAD ALL DATA
-async function loadAll(){
+// Admin login — backend route: POST /api/admin/login
+$("loginBtn").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
 
- $("adminEmail").textContent=
- "Admin: "+(localStorage.getItem("ads_admin_email")||"Logged in");
-
- await Promise.allSettled([
-  loadCustomers(),
-  loadPayments(),
-  loadKeys()
- ]);
-}
-
-// CUSTOMERS
-async function loadCustomers(){
-
- try{
-  const data=await request("/api/admin/customers");
-  allCustomers=data.customers||[];
-  renderCustomers(allCustomers);
-
-  $("totalCustomers").textContent=allCustomers.length;
-
-  $("approvedCustomers").textContent=
-   allCustomers.filter(c=>c.status==="approved").length;
-
-  showMessage("customersMessage","Customers loaded.");
-
- }catch(error){
-  showMessage("customersMessage",error.message,true);
- }
-}
-
-function renderCustomers(customers){
-
- const body=$("customersBody");
- body.innerHTML="";
-
- if(!customers.length){
-  body.innerHTML='<tr><td colspan="5" class="empty">No customers found.</td></tr>';
-  return;
- }
-
- customers.forEach(customer=>{
-
-  const tr=document.createElement("tr");
-
-  const values=[
-   customer.name||"Customer",
-   customer.email||"-",
-   customer.phone||"-",
-   customer.status||"pending"
-  ];
-
-  values.forEach(value=>{
-   const td=document.createElement("td");
-   td.textContent=value;
-   tr.appendChild(td);
-  });
-
-  const action=document.createElement("td");
-
-  const approve=document.createElement("button");
-  approve.textContent="Approve";
-  approve.addEventListener("click",()=>{
-   updateCustomer(customer.id,"approve");
-  });
-
-  const reject=document.createElement("button");
-  reject.textContent="Reject";
-  reject.className="danger";
-  reject.addEventListener("click",()=>{
-   updateCustomer(customer.id,"reject");
-  });
-
-  const reset=document.createElement("button");
-  reset.textContent="Reset Password";
-  reset.className="secondary";
-  reset.addEventListener("click",()=>{
-   resetCustomerPassword(customer.id);
-  });
-
-  action.append(approve,reject,reset);
-  tr.appendChild(action);
-  body.appendChild(tr);
- });
-}
-
-$("customerSearch").addEventListener("input",()=>{
- const q=$("customerSearch").value.toLowerCase();
-
- const filtered=allCustomers.filter(c=>
-  [c.name,c.email,c.phone,c.status]
-   .some(v=>String(v||"").toLowerCase().includes(q))
- );
-
- renderCustomers(filtered);
-});
-
-async function updateCustomer(id,action){
-
- if(!confirm("Are you sure?"))return;
-
- try{
-  await request("/api/admin/customers/"+encodeURIComponent(id)+"/"+action,{
-   method:"POST"
-  });
-
-  alert("Customer updated successfully.");
-  await loadCustomers();
-
- }catch(error){
-  alert(error.message);
- }
-}
-
-async function resetCustomerPassword(id){
-
- const password=prompt("Enter new customer password:");
-
- if(!password||password.length<6){
-  alert("Password must be at least 6 characters.");
-  return;
- }
-
- try{
-  const data=await request(
-   "/api/admin/customers/"+encodeURIComponent(id)+"/reset-password",
-   {
-    method:"POST",
-    body:JSON.stringify({password})
-   }
-  );
-
-  alert(data.message||"Password updated.");
-
- }catch(error){
-  alert(error.message);
- }
-}
-
-// PAYMENTS
-async function loadPayments(){
-
- try{
-  const data=await request("/api/admin/payments");
-  const payments=data.payments||[];
-
-  const body=$("paymentsBody");
-  body.innerHTML="";
-
-  if(!payments.length){
-   body.innerHTML='<tr><td colspan="6" class="empty">No payments found.</td></tr>';
+  if (!email || !password) {
+    showMessage("loginMessage", "Email and password required.", true);
+    return;
   }
 
-  payments.forEach(payment=>{
+  $("loginBtn").disabled = true;
+  try {
+    const data = await request("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({email, password})
+    });
 
-   const tr=document.createElement("tr");
+    if (!data.token) throw new Error("Login token missing.");
 
-   const customer=document.createElement("td");
-   customer.textContent=payment.customer_id||"-";
-
-   const amount=document.createElement("td");
-   amount.textContent=payment.amount||"-";
-
-   const transaction=document.createElement("td");
-   transaction.textContent=payment.transaction_id||"-";
-
-   const status=document.createElement("td");
-   status.textContent=payment.status||"pending";
-
-   const proof=document.createElement("td");
-
-   if(payment.proof_url){
-    const link=document.createElement("a");
-    link.href=payment.proof_url;
-    link.target="_blank";
-    link.rel="noopener noreferrer";
-    link.textContent="View Proof";
-    proof.appendChild(link);
-   }else{
-    proof.textContent="-";
-   }
-
-   const action=document.createElement("td");
-
-   const approve=document.createElement("button");
-   approve.textContent="Approve";
-   approve.addEventListener("click",()=>{
-    updatePayment(payment.id,"approve");
-   });
-
-   const reject=document.createElement("button");
-   reject.textContent="Reject";
-   reject.className="danger";
-   reject.addEventListener("click",()=>{
-    updatePayment(payment.id,"reject");
-   });
-
-   action.append(approve,reject);
-   tr.append(customer,amount,transaction,status,proof,action);
-
-   body.appendChild(tr);
-  });
-
-  $("pendingPayments").textContent=
-   payments.filter(p=>p.status==="pending").length;
-
-  showMessage("paymentsMessage","Payments loaded.");
-
- }catch(error){
-  showMessage("paymentsMessage",error.message,true);
- }
-}
-
-async function updatePayment(id,action){
-
- if(!confirm("Are you sure?"))return;
-
- try{
-  await request("/api/admin/payments/"+encodeURIComponent(id)+"/"+action,{
-   method:"POST"
-  });
-
-  alert("Payment updated.");
-  await loadPayments();
-
- }catch(error){
-  alert(error.message);
- }
-}
-
-// API KEYS
-async function loadKeys(){
-
- try{
-  const data=await request("/api/admin/keys");
-  const keys=data.keys||[];
-
-  const body=$("keysBody");
-  body.innerHTML="";
-
-  if(!keys.length){
-   body.innerHTML='<tr><td colspan="4" class="empty">No API keys found.</td></tr>';
+    token = data.token;
+    localStorage.setItem("ads_admin_token", token);
+    localStorage.setItem("ads_admin_email", email);
+    showMessage("loginMessage", "Login successful.");
+    showDashboard();
+  } catch (error) {
+    showMessage("loginMessage", error.message, true);
+  } finally {
+    $("loginBtn").disabled = false;
   }
-
-  keys.forEach(key=>{
-
-   const tr=document.createElement("tr");
-
-   const customer=document.createElement("td");
-   customer.textContent=key.customer_id||"-";
-
-   const name=document.createElement("td");
-   name.textContent=key.name||"API Key";
-
-   const status=document.createElement("td");
-   status.textContent=key.status||"active";
-
-   const action=document.createElement("td");
-
-   const reveal=document.createElement("button");
-   reveal.textContent="Reveal";
-   reveal.addEventListener("click",()=>{
-    revealKey(key.id);
-   });
-
-   const revoke=document.createElement("button");
-   revoke.textContent="Revoke";
-   revoke.className="danger";
-   revoke.addEventListener("click",()=>{
-    revokeKey(key.id);
-   });
-
-   action.append(reveal,revoke);
-   tr.append(customer,name,status,action);
-
-   body.appendChild(tr);
-  });
-
-  $("totalKeys").textContent=keys.length;
-
- }catch(error){
-  console.error("API keys:",error.message);
- }
-}
-
-$("generateKeyBtn").addEventListener("click",async()=>{
-
- const customer_id=$("keyCustomerId").value.trim();
- const name=$("keyName").value.trim();
-
- if(!customer_id||!name){
-  alert("Customer ID and key name required.");
-  return;
- }
-
- try{
-  const data=await request("/api/admin/keys",{
-   method:"POST",
-   body:JSON.stringify({customer_id,name})
-  });
-
-  const key=data.key||data.api_key;
-
-  $("generatedKey").classList.remove("hidden");
-  $("generatedKey").textContent=key
-   ?"Generated API Key: "+key
-   :"Key created. Use Reveal to view it.";
-
-  await loadKeys();
-
- }catch(error){
-  alert(error.message);
- }
 });
 
-async function revealKey(id){
+$("logoutBtn").addEventListener("click", () => {
+  token = "";
+  localStorage.removeItem("ads_admin_token");
+  localStorage.removeItem("ads_admin_email");
+  showLogin();
+});
+ 
+// Load dashboard, clients, payments and API keys
+async function loadAll() {
+  $("adminEmail").textContent =
+    "Admin: " + (localStorage.getItem("ads_admin_email") || "Logged in");
 
- try{
-  const data=await request(
-   "/api/admin/keys/"+encodeURIComponent(id)+"/reveal",
-   {method:"POST"}
-  );
-
-  const key=data.key||data.api_key;
-
-  if(!key)throw new Error("Key not found.");
-
-  $("generatedKey").classList.remove("hidden");
-  $("generatedKey").textContent="API Key: "+key;
-
- }catch(error){
-  alert(error.message);
- }
+  await Promise.allSettled([
+    loadDashboard(),
+    loadClients(),
+    loadPayments()
+  ]);
 }
 
-async function revokeKey(id){
+async function loadDashboard() {
+  try {
+    const data = await request("/api/admin/dashboard");
+    const stats = data.dashboard || data.stats || data;
 
- if(!confirm("Are you sure you want to revoke this API key?"))return;
+    $("totalClients").textContent =
+      stats.total_clients ?? stats.totalCustomers ?? 0;
+    $("approvedClients").textContent =
+      stats.approved_clients ?? stats.approvedCustomers ?? 0;
+    $("pendingPayments").textContent =
+      stats.pending_payments ?? stats.pendingPayments ?? 0;
+    $("totalKeys").textContent =
+      stats.total_api_keys ?? stats.totalKeys ?? 0;
 
- try{
-  await request(
-   "/api/admin/keys/"+encodeURIComponent(id)+"/revoke",
-   {method:"POST"}
-  );
-
-  alert("API key revoked.");
-  await loadKeys();
-
- }catch(error){
-  alert(error.message);
- }
+    showMessage("dashboardMessage", "Dashboard data refreshed.");
+  } catch (error) {
+    showMessage("dashboardMessage", error.message, true);
+  }
 }
 
-// REFRESH BUTTONS
-$("refreshCustomers").addEventListener("click",loadCustomers);
-$("refreshPayments").addEventListener("click",loadPayments);
-$("refreshKeys").addEventListener("click",loadKeys);
+// CLIENTS — backend route: GET /api/admin/clients
+async function loadClients() {
+  try {
+    const status = $("clientStatusFilter").value;
+    const query = status ? "?status=" + encodeURIComponent(status) : "";
+    const data = await request("/api/admin/clients" + query);
+
+    allClients = data.clients || [];
+    renderClients(allClients);
+    fillClientSelectors();
+
+    showMessage("clientsMessage", allClients.length + " clients loaded.");
+    $("totalClients").textContent = allClients.length;
+    $("approvedClients").textContent =
+      allClients.filter(c => c.status === "approved").length;
+  } catch (error) {
+    showMessage("clientsMessage", error.message, true);
+  }
+}
+
+function renderClients(list) {
+  const body = $("clientsBody");
+  body.innerHTML = "";
+
+  if (!list.length) {
+    body.innerHTML =
+      '<tr><td colspan="7">No clients found.</td></tr>';
+    return;
+  }
+
+  list.forEach(client => {
+    const tr = document.createElement("tr");
+
+    const values = [
+      client.full_name || client.name || "Client",
+      client.email || "-",
+      client.phone || "-",
+      client.business_name || "-",
+      client.plan || "-",
+      client.status || "pending"
+    ];
+
+    values.forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+
+    const action = document.createElement("td");
+    const buttons = document.createElement("div");
+    buttons.className = "actions";
+
+    const details = document.createElement("button");
+    details.textContent = "Details";
+    details.className = "secondary";
+    details.addEventListener("click", () => viewClient(client.id));
+
+    const approve = document.createElement("button");
+    approve.textContent = "Approve";
+    approve.disabled = client.status === "approved";
+    approve.addEventListener("click", () =>
+      changeClientStatus(client.id, "approved")
+    );
+
+    const reject = document.createElement("button");
+    reject.textContent = "Reject";
+    reject.className = "danger";
+    reject.disabled = client.status === "rejected";
+    reject.addEventListener("click", () =>
+      changeClientStatus(client.id, "rejected")
+    );
+
+    buttons.append(details, approve, reject);
+    action.appendChild(buttons);
+    tr.appendChild(action);
+    body.appendChild(tr);
+  });
+}
+
+function fillClientSelectors() {
+  const options = allClients.map(client => {
+    const name = client.full_name || client.name || "Client";
+    const email = client.email || client.id;
+    return {id: client.id, label: name + " — " + email};
+  });
+
+  ["keyCustomerId", "waCustomerId"].forEach(id => {
+    const select = $(id);
+    const oldValue = select.value;
+    select.innerHTML = '<option value="">Select client</option>';
+
+    options.forEach(option => {
+      const item = document.createElement("option");
+      item.value = option.id;
+      item.textContent = option.label;
+      select.appendChild(item);
+    });
+
+    if (options.some(option => option.id === oldValue)) {
+      select.value = oldValue;
+    }
+  });
+}
+
+async function viewClient(id) {
+  try {
+    const data = await request(
+      "/api/admin/clients/" + encodeURIComponent(id)
+    );
+    const client = data.client || data;
+    alert(
+      "Client: " + (client.full_name || client.name || "-") +
+      "\nEmail: " + (client.email || "-") +
+      "\nPhone: " + (client.phone || "-") +
+      "\nBusiness: " + (client.business_name || "-") +
+      "\nPlan: " + (client.plan || "-") +
+      "\nStatus: " + (client.status || "-")
+    );
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// Backend route: POST /api/admin/clients/:id/status
+async function changeClientStatus(id, status) {
+  if (!confirm("Change this client's status to " + status + "?")) return;
+
+  try {
+    await request(
+      "/api/admin/clients/" + encodeURIComponent(id) + "/status",
+      {
+        method: "POST",
+        body: JSON.stringify({status})
+      }
+    );
+
+    alert("Client status updated.");
+    await loadClients();
+    await loadDashboard();
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+$("refreshClients").addEventListener("click", loadClients);
+$("clientStatusFilter").addEventListener("change", loadClients);
+
+$("clientSearch").addEventListener("input", () => {
+  const q = $("clientSearch").value.toLowerCase();
+  const filtered = allClients.filter(client =>
+    [
+      client.full_name,
+      client.name,
+      client.email,
+      client.phone,
+      client.business_name,
+      client.status
+    ].some(value => String(value || "").toLowerCase().includes(q))
+  );
+  renderClients(filtered);
+});
+
+// PAYMENTS — backend route: GET /api/admin/payments
+async function loadPayments() {
+  try {
+    const status = $("paymentStatusFilter").value;
+    const query = status ? "?status=" + encodeURIComponent(status) : "";
+    const data = await request("/api/admin/payments" + query);
+
+    allPayments = data.payments || [];
+    renderPayments(allPayments);
+
+    $("pendingPayments").textContent =
+      allPayments.filter(p => p.status === "pending").length;
+
+    showMessage("paymentsMessage", allPayments.length + " payments loaded.");
+  } catch (error) {
+    showMessage("paymentsMessage", error.message, true);
+  }
+}
+
+function renderPayments(payments) {
+  const body = $("paymentsBody");
+  body.innerHTML = "";
+
+  if (!payments.length) {
+    body.innerHTML =
+      '<tr><td colspan="7">No payments found.</td></tr>';
+    return;
+  }
+
+  payments.forEach(payment => {
+    const tr = document.createElement("tr");
+    const customer = allClients.find(c => c.id === payment.customer_id);
+
+    const clientCell = document.createElement("td");
+    clientCell.textContent =
+      customer
+        ? (customer.full_name || customer.name || customer.email)
+        : (payment.customer_id || "-");
+
+    const amountCell = document.createElement("td");
+    amountCell.textContent = "₹" + (payment.amount ?? "-");
+
+    const utrCell = document.createElement("td");
+    utrCell.textContent = payment.utr || "-";
+
+    const methodCell = document.createElement("td");
+    methodCell.textContent = payment.payment_method || "UPI";
+
+    const statusCell = document.createElement("td");
+    statusCell.textContent = payment.status || "pending";
+
+    const proofCell = document.createElement("td");
+    const proofButton = document.createElement("button");
+    proofButton.textContent = "View Proof";
+    proofButton.className = "secondary";
+    proofButton.addEventListener("click", () => viewPaymentProof(payment.id));
+    proofCell.appendChild(proofButton);
+
+    const actionCell = document.createElement("td");
+    const approve = document.createElement("button");
+    approve.textContent = "Approve";
+    approve.disabled = payment.status === "approved";
+    approve.addEventListener("click", () =>
+      reviewPayment(payment.id, "approve")
+    );
+
+    const reject = document.createElement("button");
+    reject.textContent = "Reject";
+    reject.className = "danger";
+    reject.disabled = payment.status === "rejected";
+    reject.addEventListener("click", () =>
+      reviewPayment(payment.id, "reject")
+    );
+
+    actionCell.append(approve, reject);
+    tr.append(
+      clientCell, amountCell, utrCell,
+      methodCell, statusCell, proofCell, actionCell
+    );
+    body.appendChild(tr);
+  });
+}
+
+// Backend route: GET /api/admin/payments/:id/proof
+async function viewPaymentProof(id) {
+  try {
+    const data = await request(
+      "/api/admin/payments/" + encodeURIComponent(id) + "/proof"
+    );
+
+    const url = data.url || data.signed_url || data.proof_url;
+    if (!url) throw new Error("Proof URL was not returned.");
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// Backend route: POST /api/admin/payments/:id/review
+async function reviewPayment(id, action) {
+  if (!confirm("Are you sure you want to " + action + " this payment?")) return;
+
+  try {
+    await request(
+      "/api/admin/payments/" + encodeURIComponent(id) + "/review",
+      {
+        method: "POST",
+        body: JSON.stringify({action})
+      }
+    );
+
+    alert("Payment " + action + " successful.");
+    await Promise.all([loadPayments(), loadClients(), loadDashboard()]);
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+$("refreshPayments").addEventListener("click", loadPayments);
+$("paymentStatusFilter").addEventListener("change", loadPayments);
+
+// CREATE API KEY
+// Backend route: POST /api/admin/clients/:id/api-keys
+$("generateKeyBtn").addEventListener("click", async () => {
+  const customerId = $("keyCustomerId").value;
+  const name = $("keyName").value.trim();
+
+  if (!customerId || !name) {
+    showMessage("keysMessage", "Select a client and enter API key name.", true);
+    return;
+  }
+
+  const client = allClients.find(c => c.id === customerId);
+  if (!client || client.status !== "approved") {
+    showMessage("keysMessage", "Client must be approved first.", true);
+    return;
+  }
+
+  if (!confirm("Create an API key for this client?")) return;
+
+  $("generateKeyBtn").disabled = true;
+
+  try {
+    const data = await request(
+      "/api/admin/clients/" + encodeURIComponent(customerId) + "/api-keys",
+      {
+        method: "POST",
+        body: JSON.stringify({name})
+      }
+    );
+
+    const key = data.api_key || data.key;
+    if (!key) throw new Error("Server did not return the new API key.");
+
+    $("generatedKey").classList.remove("hidden");
+    $("generatedKey").textContent =
+      "NEW API KEY — COPY AND SAVE NOW: " + key;
+
+    showMessage("keysMessage", "API key created. Save it securely; this is the only time it is displayed.");
+    $("keyName").value = "";
+
+    await Promise.all([loadKeys(), loadDashboard()]);
+  } catch (error) {
+    showMessage("keysMessage", error.message, true);
+  } finally {
+    $("generateKeyBtn").disabled = false;
+  }
+});
+
+// Load API keys for each client because backend lists keys per client
+async function loadKeys() {
+  try {
+    if (!allClients.length) await loadClients();
+
+    const results = await Promise.all(
+      allClients.map(async client => {
+        try {
+          const data = await request(
+            "/api/admin/clients/" + encodeURIComponent(client.id) + "/api-keys"
+          );
+          return (data.api_keys || data.keys || []).map(key => ({
+            ...key,
+            customer_id: client.id
+          }));
+        } catch (error) {
+          console.warn("Could not load keys for client", client.id, error.message);
+          return [];
+        }
+      })
+    );
+
+    allKeys = results.flat();
+    renderKeys(allKeys);
+    $("totalKeys").textContent = allKeys.length;
+  } catch (error) {
+    showMessage("keysMessage", error.message, true);
+  }
+}
+
+function renderKeys(keys) {
+  const body = $("keysBody");
+  body.innerHTML = "";
+
+  if (!keys.length) {
+    body.innerHTML = '<tr><td colspan="6">No API keys found.</td></tr>';
+    return;
+  }
+
+  keys.forEach(key => {
+    const tr = document.createElement("tr");
+
+    const customer = document.createElement("td");
+    customer.textContent = key.customer_id || "-";
+
+    const name = document.createElement("td");
+    name.textContent = key.name || "API Key";
+
+    const prefix = document.createElement("td");
+    prefix.textContent = key.key_prefix || "adsg_...";
+
+    const status = document.createElement("td");
+    status.textContent = key.status || "-";
+
+    const created = document.createElement("td");
+    created.textContent = key.created_at
+      ? new Date(key.created_at).toLocaleString()
+      : "-";
+
+    const action = document.createElement("td");
+    const revoke = document.createElement("button");
+    revoke.textContent = "Revoke";
+    revoke.className = "danger";
+    revoke.disabled = key.status !== "active";
+    revoke.addEventListener("click", () => revokeApiKey(key.id));
+
+    action.appendChild(revoke);
+    tr.append(customer, name, prefix, status, created, action);
+    body.appendChild(tr);
+  });
+}
+
+// Backend route: POST /api/admin/api-keys/:id/revoke
+async function revokeApiKey(id) {
+  if (!confirm("Revoke this API key? It will stop working immediately.")) return;
+
+  try {
+    await request(
+      "/api/admin/api-keys/" + encodeURIComponent(id) + "/revoke",
+      {method: "POST"}
+    );
+    showMessage("keysMessage", "API key revoked.");
+    await Promise.all([loadKeys(), loadDashboard()]);
+  } catch (error) {
+    showMessage("keysMessage", error.message, true);
+  }
+}
+
+$("refreshKeys").addEventListener("click", loadKeys);
+ 
+// WHATSAPP CONNECTION
+// Backend route: GET /api/admin/clients/:id/whatsapp
+$("loadWaConnection").addEventListener("click", async () => {
+  const customerId = $("waCustomerId").value;
+
+  if (!customerId) {
+    showMessage("waCurrentStatus", "Please select a client.", true);
+    return;
+  }
+
+  try {
+    const data = await request(
+      "/api/admin/clients/" + encodeURIComponent(customerId) + "/whatsapp"
+    );
+
+    const connection = data.connection;
+
+    if (!connection) {
+      showMessage("waCurrentStatus", "No WhatsApp connection saved yet.");
+      $("waPhoneNumberId").value = "";
+      $("waWabaId").value = "";
+      $("waAccessToken").value = "";
+      return;
+    }
+
+    $("waPhoneNumberId").value = connection.phone_number_id || "";
+    $("waWabaId").value = connection.waba_id || "";
+
+    // Existing access token is never returned by the backend.
+    $("waAccessToken").value = "";
+
+    showMessage(
+      "waCurrentStatus",
+      "Connection status: " + (connection.status || "unknown") +
+      ". Enter a new token only if you want to replace it."
+    );
+  } catch (error) {
+    showMessage("waCurrentStatus", error.message, true);
+  }
+});
+
+// Backend route: POST /api/admin/clients/:id/whatsapp
+$("saveWaConnection").addEventListener("click", async () => {
+  const customerId = $("waCustomerId").value;
+  const phone_number_id = $("waPhoneNumberId").value.trim();
+  const waba_id = $("waWabaId").value.trim();
+  const access_token = $("waAccessToken").value.trim();
+
+  if (!customerId || !phone_number_id || !waba_id || !access_token) {
+    showMessage(
+      "waMessage",
+      "Select client and enter Phone Number ID, WABA ID and Access Token.",
+      true
+    );
+    return;
+  }
+
+  if (!confirm("Save this WhatsApp connection securely for the selected client?")) {
+    return;
+  }
+
+  $("saveWaConnection").disabled = true;
+
+  try {
+    await request(
+      "/api/admin/clients/" + encodeURIComponent(customerId) + "/whatsapp",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          phone_number_id,
+          waba_id,
+          access_token
+        })
+      }
+    );
+
+    $("waAccessToken").value = "";
+    showMessage("waMessage", "WhatsApp connection saved successfully.");
+    showMessage("waCurrentStatus", "WhatsApp connection is active.");
+  } catch (error) {
+    showMessage("waMessage", error.message, true);
+  } finally {
+    $("saveWaConnection").disabled = false;
+  }
+});
+
+// Reload client list when entering WhatsApp section
+async function loadClientOptions() {
+  if (!allClients.length) {
+    await loadClients();
+  }
+  fillClientSelectors();
+}
 
 // RESTORE ADMIN SESSION
-async function restoreSession(){
-
- if(!token){
-  showLogin();
-  return;
- }
-
- try{
-  const data=await request("/api/admin/me");
-
-  const admin=data.admin||data.user||{};
-
-  if(admin.email){
-   localStorage.setItem("ads_admin_email",admin.email);
+async function restoreSession() {
+  if (!token) {
+    showLogin();
+    return;
   }
 
-  showDashboard();
+  try {
+    const data = await request("/api/admin/me");
+    const admin = data.admin || data.user || {};
 
- }catch(error){
-  token="";
-  localStorage.removeItem("ads_admin_token");
-  showLogin();
- }
+    if (admin.email) {
+      localStorage.setItem("ads_admin_email", admin.email);
+    }
+
+    showDashboard();
+  } catch (error) {
+    token = "";
+    localStorage.removeItem("ads_admin_token");
+    localStorage.removeItem("ads_admin_email");
+    showLogin();
+  }
 }
 
 restoreSession();
 </script>
 
 </body>
-   </html>
- 
+</html>
