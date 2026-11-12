@@ -3,506 +3,385 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#075e45">
-<title>ADS GROWTH | Client Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e9f8ee">
+<title>ADS GROWTH | Create Account</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f3f8f5;color:#18352a}
-header{background:#075e45;color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:22px;font-weight:800}
-.logo span{color:#a8f0c7}
-.header-small{font-size:12px}
-.container{max-width:480px;margin:35px auto;padding:15px}
-.card{background:white;border:1px solid #e1ebe5;border-radius:17px;padding:25px;box-shadow:0 8px 28px #173d2710;margin-bottom:16px}
-.heading{text-align:center;margin-bottom:22px}
-.heading h2{color:#075e45;font-size:25px;margin-bottom:9px}
-.heading p{font-size:13px;color:#718078;line-height:1.5}
-.tabs{display:flex;gap:8px;margin-bottom:22px}
-.tab{flex:1;padding:13px;border:0;border-radius:9px;background:#eaf3ee;color:#075e45;font-weight:bold}
-.tab.active{background:#075e45;color:white}
-.group{margin-bottom:16px}
-label{display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
-input{width:100%;padding:14px;border:1px solid #dce7e1;border-radius:10px;font-size:15px;outline:none;background:white}
-input:focus{border-color:#07865e}
-button{cursor:pointer}
-.btn{width:100%;padding:14px;border:0;border-radius:10px;background:#07865e;color:white;font-size:15px;font-weight:bold}
-.btn:disabled{opacity:.6}
-.hidden{display:none!important}
-.message{display:none;padding:12px;border-radius:9px;margin-top:13px;font-size:13px;line-height:1.5}
-.success{display:block;background:#e6f8ed;color:#087443}
+
+:root{
+  --green:#39ad50;
+  --dark:#111827;
+  --muted:#8190a0;
+  --border:#dfe7e5;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#e8f7ec;
+  color:var(--dark);
+  min-height:100vh;
+  padding:25px 15px;
+  background-image:
+    radial-gradient(#bce8c7 1px,transparent 1px);
+  background-size:18px 18px;
+}
+
+.page{
+  max-width:630px;
+  margin:auto;
+  background:#fff;
+  border-radius:38px;
+  padding:42px 30px 35px;
+  box-shadow:0 15px 50px rgba(27,93,47,.10);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  margin:0 15px 105px;
+}
+
+.brand-logo{
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  background:white;
+  border:7px solid #f2f8f3;
+  box-shadow:0 8px 22px #00000012;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--green);
+  font-size:30px;
+  font-weight:900;
+}
+
+.brand-text{
+  font-size:34px;
+  font-weight:1000;
+  font-style:italic;
+  line-height:1.35;
+  letter-spacing:-1.5px;
+}
+
+.top-label{
+  text-align:center;
+  color:var(--green);
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:5px;
+  margin-bottom:15px;
+}
+
+.heading{
+  max-width:470px;
+  margin:0 auto 55px;
+}
+
+.heading h1{
+  font-size:39px;
+  font-weight:1000;
+  font-style:italic;
+  line-height:1.35;
+  letter-spacing:-1px;
+  text-transform:uppercase;
+}
+
+.heading p{
+  color:#778493;
+  font-size:20px;
+  margin-top:23px;
+  line-height:1.5;
+}
+
+.form-group{
+  margin-bottom:29px;
+}
+
+label{
+  display:block;
+  color:#344252;
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:15px;
+}
+
+.field{
+  display:flex;
+  align-items:center;
+  border:1px solid var(--border);
+  border-radius:24px;
+  height:86px;
+  padding:0 20px;
+  box-shadow:0 3px 6px #00000008;
+}
+
+.field:focus-within{
+  border:3px solid var(--green);
+}
+
+.field-icon{
+  color:#9aa9b9;
+  font-size:25px;
+  width:48px;
+  flex-shrink:0;
+}
+
+.field input{
+  width:100%;
+  border:0;
+  outline:0;
+  font-size:21px;
+  color:#263445;
+  min-width:0;
+  background:transparent;
+}
+
+.field input::placeholder{
+  color:#98a5b5;
+}
+
+.phone-row{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:14px;
+}
+
+.country{
+  height:86px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  font-size:20px;
+  color:#526172;
+}
+
+.country select{
+  border:0;
+  outline:0;
+  font-size:17px;
+  background:transparent;
+  width:85px;
+}
+
+.password-field{
+  display:flex;
+  align-items:center;
+  width:100%;
+}
+
+.password-field input{
+  flex:1;
+  min-width:0;
+}
+
+.show-btn{
+  color:var(--green);
+  background:none;
+  border:0;
+  font-size:18px;
+  font-weight:bold;
+  padding:8px;
+}
+
+.submit-btn{
+  width:100%;
+  height:82px;
+  background:var(--green);
+  color:white;
+  border:0;
+  border-radius:23px;
+  font-size:22px;
+  font-weight:900;
+  margin-top:0;
+  box-shadow:0 5px 12px #39ad5020;
+}
+
+.submit-btn:disabled{
+  opacity:.6;
+}
+
+.signin{
+  text-align:center;
+  color:#778493;
+  font-size:16px;
+  margin-top:28px;
+}
+
+.signin button{
+  background:none;
+  border:0;
+  color:var(--green);
+  font-weight:900;
+  font-size:16px;
+}
+
+.terms{
+  text-align:center;
+  font-size:12px;
+  color:#87938d;
+  line-height:1.7;
+  margin-top:30px;
+}
+
+.message{
+  display:none;
+  margin-top:18px;
+  padding:13px;
+  border-radius:10px;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.success{display:block;background:#e7f8ec;color:#087443}
 .error{display:block;background:#fff0ef;color:#b42318}
-.dashboard{max-width:850px}
-.dash-title{text-align:center;margin:25px 0;color:#075e45}
-.dash-card{background:white;border:1px solid #e1ebe5;border-radius:14px;padding:19px;margin-bottom:15px}
-.dash-card h3{color:#075e45;margin-bottom:13px}
-.dash-card p{font-size:14px;line-height:1.8;overflow-wrap:anywhere}
-.info{background:#edf8f1;padding:15px;border-radius:10px;margin:12px 0}
-.small{font-size:12px;color:#718078}
-.history-item,.key-item{padding:12px;border-bottom:1px solid #e5eee9;font-size:13px;line-height:1.8}
-.footer{text-align:center;color:#89968f;font-size:12px;padding:20px}
-.status{font-weight:bold;color:#087443}
-@media(max-width:500px){.container{margin:16px auto}.card{padding:20px}}
+.hidden{display:none!important}
+
+@media(max-width:520px){
+  body{padding:0;background:#e8f7ec}
+  .page{
+    border-radius:0 0 25px 25px;
+    padding:32px 28px 35px;
+  }
+  .brand{
+    margin:0 15px 105px;
+    gap:18px;
+  }
+  .brand-logo{
+    width:82px;
+    height:82px;
+  }
+  .brand-text{font-size:31px}
+  .heading{margin-bottom:52px}
+  .heading h1{font-size:39px}
+  .heading p{font-size:20px}
+  .field{height:86px}
+  .phone-row{grid-template-columns:42% 1fr;gap:12px}
+  .country{height:86px;gap:5px}
+  .country select{width:70px}
+  .field input{font-size:19px}
+  label{font-size:16px}
+}
+
+@media(max-width:370px){
+  .page{padding-left:19px;padding-right:19px}
+  .brand-text{font-size:27px}
+  .heading h1{font-size:34px}
+  .phone-row{grid-template-columns:40% 1fr}
+}
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">ADS <span>GROWTH</span></div>
-  <div class="header-small">CLIENT PORTAL</div>
-</header>
+<div class="page">
 
-<!-- REGISTRATION AND LOGIN -->
-<div class="container" id="authArea">
-  <div class="card">
-    <div class="heading">
-      <h2>Welcome to ADS GROWTH</h2>
-      <p>Create your account or login to manage your WhatsApp API services.</p>
+  <div class="top-label">WORKSPACE LOGIN</div>
+
+  <div class="brand">
+    <div class="brand-logo">AG</div>
+    <div class="brand-text">
+      ADS GROWTH
     </div>
+  </div>
 
-    <div class="tabs">
-      <button class="tab active" id="registerTab" type="button" onclick="showRegister()">Create Account</button>
-      <button class="tab" id="loginTab" type="button" onclick="showLogin()">Login</button>
+  <div id="registerScreen">
+
+    <div class="heading">
+      <h1>CREATE YOUR<br>ACCOUNT</h1>
+      <p>Get started with your free account today</p>
     </div>
 
     <form id="registerForm">
-      <div class="group">
-        <label>Business Name</label>
-        <input id="businessName" placeholder="Enter business name" required>
+
+      <div class="form-group">
+        <label>BUSINESS NAME</label>
+        <div class="field">
+          <span class="field-icon">▦</span>
+          <input id="businessName" type="text"
+            placeholder="Your Company Name" required>
+        </div>
       </div>
-      <div class="group">
-        <label>Full Name</label>
-        <input id="fullName" placeholder="Enter your full name" required>
+
+      <div class="form-group">
+        <label>FULL NAME</label>
+        <div class="field">
+          <span class="field-icon">♙</span>
+          <input id="fullName" type="text"
+            placeholder="John Doe" required>
+        </div>
       </div>
-      <div class="group">
-        <label>Email Address</label>
-        <input id="registerEmail" type="email" placeholder="Enter email address" required>
+
+      <div class="form-group">
+        <label>WORK EMAIL</label>
+        <div class="field">
+          <span class="field-icon">✉</span>
+          <input id="registerEmail" type="email"
+            placeholder="name@company.com" required>
+        </div>
       </div>
-      <div class="group">
-        <label>Mobile Number</label>
-        <input id="registerPhone" type="tel" placeholder="Enter mobile number with country code" required>
+
+      <div class="form-group">
+        <label>PHONE NUMBER</label>
+        <div class="phone-row">
+          <div class="country">
+            🇮🇳
+            <select id="countryCode">
+              <option value="+91">+91</option>
+            </select>
+          </div>
+          <div class="field">
+            <span class="field-icon">♧</span>
+            <input id="registerPhone" type="tel"
+              inputmode="numeric" maxlength="10"
+              placeholder="10-digit mobile number" required>
+          </div>
+        </div>
       </div>
-      <div class="group">
-        <label>Password</label>
-        <input id="registerPassword" type="password" minlength="8" placeholder="Create password (8+ characters)" required>
+
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <div class="field">
+          <span class="field-icon">♙</span>
+          <div class="password-field">
+            <input id="registerPassword" type="password"
+              minlength="8" placeholder="Create a strong password" required>
+            <button class="show-btn" type="button"
+              onclick="togglePassword('registerPassword',this)">Show</button>
+          </div>
+        </div>
       </div>
-      <button class="btn" id="registerBtn" type="submit">Create Account</button>
+
+      <button class="submit-btn" id="registerBtn" type="submit">
+        Create account →
+      </button>
+
     </form>
 
-    <form id="loginForm" class="hidden">
-      <div class="group">
-        <label>Email or Mobile Number</label>
-        <input id="loginIdentity" placeholder="Enter email or mobile number" required>
-      </div>
-      <div class="group">
-        <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="Enter password" required>
-      </div>
-      <button class="btn" id="loginBtn" type="submit">Login to Dashboard</button>
-    </form>
-    <div id="authMessage" class="message"></div>
-  </div>
-  <div class="footer">© 2026 ADS GROWTH AGENCY. All rights reserved.</div>
-</div>
-
-<!-- CLIENT DASHBOARD -->
-<div class="container dashboard hidden" id="dashboardArea">
-  <div class="dash-title">
-    <h2>Client Dashboard</h2>
-    <p class="small">Manage your account and services</p>
-  </div>
-
-  <div class="dash-card">
-    <h3>Account Details</h3>
-    <p>Name: <strong id="clientName">-</strong></p>
-    <p>Email: <span id="clientEmail">-</span></p>
-    <p>Business: <span id="clientBusiness">-</span></p>
-    <p>Account Status: <strong id="clientStatus">Pending</strong></p>
-    <button class="btn" style="margin-top:14px" type="button" onclick="logout()">Logout</button>
-  </div>
-
-  <div class="dash-card">
-    <h3>Subscription Plan</h3>
-    <p>Plan: <strong>Business</strong></p>
-    <p>Monthly Price: <strong>₹7,999</strong></p>
-    <p id="planStatus">Payment required</p>
-  </div>
-
-  <div class="dash-card" id="paymentCard">
-    <h3>UPI Payment</h3>
-    <p class="small">Pay ₹7,999 and submit your transaction details for admin verification.</p>
-    <div class="info">
-      <p>UPI ID</p>
-      <h3 id="upiId">Loading...</h3>
-      <p>Payee: <strong id="upiName">ADS GROWTH</strong></p>
-      <p>Amount: <strong>₹7,999</strong></p>
+    <div class="signin">
+      Already have an account?
+      <button type="button" onclick="showLogin()">Sign in</button>
     </div>
-    <button class="btn" type="button" onclick="copyUPI()">Copy UPI ID</button>
 
-    <form id="paymentForm" style="margin-top:18px">
-      <div class="group">
-        <label>UTR / Transaction ID</label>
-        <input id="paymentUTR" placeholder="Enter transaction ID" required>
-      </div>
-      <div class="group">
-        <label>Payment Screenshot (JPG, PNG or WEBP, max 5MB)</label>
-        <input id="paymentProof" type="file" accept="image/jpeg,image/png,image/webp" required>
-      </div>
-      <button class="btn" id="paymentBtn" type="submit">Submit Payment</button>
-    </form>
-    <div id="paymentMessage" class="message"></div>
+    <div id="authMessage" class="message"></div>
+
+    <div class="terms">
+      By creating an account, you agree to our
+      Terms & Conditions and Privacy Policy.
+    </div>
+
   </div>
 
-  <div class="dash-card">
-    <h3>Payment History</h3>
-    <div id="paymentHistory">Loading...</div>
-  </div>
-
-  <div class="dash-card">
-    <h3>WhatsApp API Connection</h3>
-    <p>Connection: <strong id="whatsappStatus">Checking...</strong></p>
-    <p class="small">Your WhatsApp Cloud API connection is managed by the admin.</p>
-  </div>
-
-  <div class="dash-card">
-    <h3>Your API Keys</h3>
-    <div id="apiKeysList">Loading...</div>
-  </div>
-  <div class="footer">ADS GROWTH AGENCY | Client Portal</div>
+  <!-- LOGIN SCREEN CONTINUES IN PART 2 -->
 </div>
-
-<script>
-"use strict";
-
-const API = "https://ads-growth-whatsapp-api.onrender.com";
-let token = localStorage.getItem("ads_growth_token") || "";
-let customer = null;
-const $ = id => document.getElementById(id);
-
-async function api(path, options = {}) {
-  const headers = new Headers(options.headers || {});
-  if (token) headers.set("Authorization", "Bearer " + token);
-
-  if (options.body && !(options.body instanceof FormData)) {
-    headers.set("Content-Type", "application/json");
-  }
-
-  const response = await fetch(API + path, {
-    ...options,
-    headers
-  });
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.message || data.error || "Request failed");
-  }
-  return data;
-}
-
-function showMessage(id, message, type) {
-  const el = $(id);
-  el.textContent = message;
-  el.className = "message " + type;
-}
-
-function showRegister() {
-  $("registerForm").classList.remove("hidden");
-  $("loginForm").classList.add("hidden");
-  $("registerTab").classList.add("active");
-  $("loginTab").classList.remove("active");
-  $("authMessage").className = "message";
-}
-
-function showLogin() {
-  $("loginForm").classList.remove("hidden");
-  $("registerForm").classList.add("hidden");
-  $("loginTab").classList.add("active");
-  $("registerTab").classList.remove("active");
-  $("authMessage").className = "message";
-}
-
-// REGISTER
-$("registerForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const btn = $("registerBtn");
-  btn.disabled = true;
-  btn.textContent = "Creating Account...";
-
-  try {
-    const payload = {
-      business_name: $("businessName").value.trim(),
-      name: $("fullName").value.trim(),
-      email: $("registerEmail").value.trim(),
-      phone: $("registerPhone").value.trim(),
-      password: $("registerPassword").value
-    };
-
-    const result = await api("/api/register", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-
-    showMessage("authMessage",
-      result.message || "Account created. Please login.",
-      "success");
-
-    $("registerForm").reset();
-    $("loginIdentity").value = payload.email;
-    showLogin();
-
-  } catch (err) {
-    showMessage("authMessage", err.message, "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Create Account";
-  }
-});
-
-// LOGIN
-$("loginForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const btn = $("loginBtn");
-  btn.disabled = true;
-  btn.textContent = "Logging in...";
-
-  try {
-    const result = await api("/api/client/login", {
-      method: "POST",
-      body: JSON.stringify({
-        login: $("loginIdentity").value.trim(),
-        password: $("loginPassword").value
-      })
-    });
-
-    if (!result.token) throw new Error("Login token missing.");
-
-    token = result.token;
-    localStorage.setItem("ads_growth_token", token);
-    await loadDashboard();
-
-  } catch (err) {
-    showMessage("authMessage", err.message, "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Login to Dashboard";
-  }
-});
-
-// LOAD CLIENT PROFILE AND DASHBOARD
-async function loadDashboard() {
-  try {
-    const result = await api("/api/client/me");
-    customer = result.customer;
-
-    if (!customer) throw new Error("Client profile not found.");
-
-    $("authArea").classList.add("hidden");
-    $("dashboardArea").classList.remove("hidden");
-
-    $("clientName").textContent = customer.full_name || customer.name || "-";
-    $("clientEmail").textContent = customer.email || "-";
-    $("clientBusiness").textContent = customer.business_name || "-";
-    $("clientStatus").textContent = customer.status || "pending";
-
-    $("planStatus").textContent =
-      customer.status === "approved"
-      ? "Payment approved"
-      : "Payment / admin approval pending";
-
-    if (customer.status === "approved") {
-      $("paymentCard").classList.add("hidden");
-    } else {
-      $("paymentCard").classList.remove("hidden");
-    }
-
-    await Promise.all([
-      loadPaymentDetails(),
-      loadPaymentHistory(),
-      loadWhatsAppStatus(),
-      loadApiKeys()
-    ]);
-
-  } catch (err) {
-    console.error(err);
-    logout();
-    showMessage("authMessage", err.message || "Please login again.", "error");
-  }
-}
-
-// LOAD UPI DETAILS
-async function loadPaymentDetails() {
-  try {
-    const data = await api("/api/payment/details");
-    $("upiId").textContent = data.upi_id || "Not configured";
-    $("upiName").textContent = data.payee_name || "ADS GROWTH";
-  } catch (err) {
-    $("upiId").textContent = "Contact Admin";
-    $("upiName").textContent = "ADS GROWTH";
-  }
-}
-
-function copyUPI() {
-  const value = $("upiId").textContent;
-  if (!value || value === "Contact Admin" || value === "Not configured") {
-    alert("UPI ID is not available. Contact admin.");
-    return;
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(value)
-      .then(() => alert("UPI ID copied"))
-      .catch(() => alert("Please copy manually: " + value));
-  } else {
-    alert("Please copy manually: " + value);
-  }
-}
-
-// PAYMENT SUBMISSION
-$("paymentForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const utr = $("paymentUTR").value.trim();
-  const proof = $("paymentProof").files[0];
-
-  if (!/^[A-Za-z0-9]{8,30}$/.test(utr)) {
-    showMessage("paymentMessage", "Enter a valid UTR (8-30 letters/numbers).", "error");
-    return;
-  }
-  if (!proof) {
-    showMessage("paymentMessage", "Please select payment screenshot.", "error");
-    return;
-  }
-  if (proof.size > 5 * 1024 * 1024) {
-    showMessage("paymentMessage", "Screenshot must be under 5MB.", "error");
-    return;
-  }
-
-  const btn = $("paymentBtn");
-  btn.disabled = true;
-  btn.textContent = "Submitting...";
-
-  try {
-    const form = new FormData();
-    form.append("utr", utr);
-    form.append("proof", proof);
-
-    const result = await api("/api/payment/submit", {
-      method: "POST",
-      body: form
-    });
-
-    showMessage("paymentMessage",
-      result.message || "Payment submitted for admin verification.",
-      "success");
-
-    $("paymentForm").reset();
-    await loadPaymentHistory();
-
-  } catch (err) {
-    showMessage("paymentMessage", err.message, "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Submit Payment";
-  }
-});
-
-// PAYMENT HISTORY
-async function loadPaymentHistory() {
-  try {
-    const data = await api("/api/payment/history");
-    const payments = data.payments || [];
-    const area = $("paymentHistory");
-    area.innerHTML = "";
-
-    if (!payments.length) {
-      area.textContent = "No payment history found.";
-      return;
-    }
-
-    payments.forEach(p => {
-      const item = document.createElement("div");
-      item.className = "history-item";
-
-      const amount = document.createElement("p");
-      amount.textContent = "Amount: ₹" + p.amount;
-
-      const utr = document.createElement("p");
-      utr.textContent = "UTR: " + p.utr;
-
-      const status = document.createElement("p");
-      status.textContent = "Status: " + p.status;
-
-      item.append(amount, utr, status);
-      area.appendChild(item);
-    });
-  } catch (err) {
-    $("paymentHistory").textContent = err.message;
-  }
-}
-
-// WHATSAPP STATUS
-async function loadWhatsAppStatus() {
-  try {
-    const data = await api("/api/client/whatsapp");
-    $("whatsappStatus").textContent =
-      data.connected ? "Connected" :
-      (data.connection?.status || "Not Connected");
-  } catch (err) {
-    $("whatsappStatus").textContent = "Not Connected";
-  }
-}
-
-// CLIENT API KEYS
-async function loadApiKeys() {
-  try {
-    const data = await api("/api/client/api-keys");
-    const keys = data.api_keys || [];
-    const area = $("apiKeysList");
-    area.innerHTML = "";
-
-    if (!keys.length) {
-      area.textContent = "No API key available. Contact admin.";
-      return;
-    }
-
-    keys.forEach(k => {
-      const item = document.createElement("div");
-      item.className = "key-item";
-
-      const name = document.createElement("p");
-      name.textContent = "Name: " + k.name;
-
-      const prefix = document.createElement("p");
-      prefix.textContent = "Key prefix: " + k.key_prefix;
-
-      const status = document.createElement("p");
-      status.textContent = "Status: " + k.status;
-
-      item.append(name, prefix, status);
-      area.appendChild(item);
-    });
-  } catch (err) {
-    $("apiKeysList").textContent =
-      "API keys will appear after payment approval.";
-  }
-}
-
-// LOGOUT
-function logout() {
-  localStorage.removeItem("ads_growth_token");
-  token = "";
-  customer = null;
-  $("dashboardArea").classList.add("hidden");
-  $("authArea").classList.remove("hidden");
-  $("loginForm").reset();
-  showLogin();
-}
-
-// RESTORE EXISTING SESSION
-if (token) {
-  loadDashboard();
-}
-</script>
-
 </body>
-  </html>
-          
+              </html>
+  
