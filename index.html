@@ -4,201 +4,947 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#08783e">
-<title>ADS GROWTH AGENCY | WhatsApp Cloud API</title>
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="ADS GROWTH WhatsApp Business API and automation platform">
+<title>ADS GROWTH | WhatsApp Business API</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#07843e;--dark:#064b2c}
-body{font-family:Arial,sans-serif;color:#172b24;background:#fff;line-height:1.6}
-a{text-decoration:none;color:inherit}
-header{padding:18px 7%;display:flex;align-items:center;justify-content:space-between;background:white;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px #0001}
-.logo{font-size:21px;font-weight:900;color:var(--dark)}
-.logo span{color:var(--green)}
-nav{display:flex;align-items:center;gap:20px;font-weight:bold;font-size:14px}
-.btn{display:inline-block;padding:13px 22px;background:var(--green);color:white;border-radius:9px;font-weight:bold}
-.btn:hover{background:var(--dark)}
-.outline{background:white;color:var(--green);border:1px solid var(--green)}
-.hero{padding:80px 7%;display:grid;grid-template-columns:1.1fr .9fr;gap:35px;align-items:center;background:linear-gradient(135deg,#effcf3,#fff,#e7f8ed)}
-.tag{display:inline-block;background:#dff4e6;color:var(--dark);padding:8px 15px;border-radius:30px;font-weight:bold;margin-bottom:20px}
-h1{font-size:clamp(42px,6vw,72px);line-height:1.08;color:var(--dark)}
-h1 span{color:var(--green)}
-.hero p{font-size:18px;color:#607168;margin:22px 0 28px}
-.actions{display:flex;gap:12px;flex-wrap:wrap}
-.visual{background:linear-gradient(145deg,#064b2c,#0a9b4e);padding:35px;border-radius:25px;box-shadow:0 20px 45px #08783e30}
-.phone{background:white;border-radius:25px;padding:35px 20px;text-align:center;color:var(--dark)}
-.whatsapp{height:100px;width:100px;border-radius:50%;background:#0b9b50;color:white;display:grid;place-items:center;margin:auto auto 20px;font-size:50px}
-.phone h2{font-size:24px}
-.phone p{font-size:14px;margin:10px}
-.phone small{color:var(--green);font-weight:bold}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--dark);color:white;text-align:center;padding:25px 7%;gap:15px}
-.stats strong{font-size:22px;display:block}
-.stats span{font-size:13px;color:#cce8d5}
-section{padding:75px 7%}
-.heading{text-align:center;margin:0 auto 40px;max-width:700px}
-.heading h2{font-size:36px;color:var(--dark)}
-.heading p{color:#66766d;margin-top:10px}
-.features{background:#f6fbf7}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:white;border:1px solid #e2eee6;border-radius:17px;padding:25px;transition:.2s}
-.card:hover{transform:translateY(-5px);box-shadow:0 12px 30px #0001}
-.icon{font-size:28px;background:#e3f6e9;color:var(--green);width:55px;height:55px;display:grid;place-items:center;border-radius:14px;margin-bottom:15px}
-.card h3{color:var(--dark);margin-bottom:8px}
-.card p{font-size:14px;color:#64746a}
-.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:850px;margin:auto}
-.price-card{padding:35px;border:1px solid #dcebe1;border-radius:20px;text-align:center}
-.price-card.primary{background:linear-gradient(145deg,#064b2c,#078b46);color:white}
-.price-card h3{font-size:18px}
-.price{font-size:45px;font-weight:900;color:var(--green);margin:15px}
-.primary .price{color:white}
-.price-card p{color:#68776e;font-size:14px}
-.primary p{color:#d5f1df}
-.price-card .btn{margin-top:20px}
-.primary .btn{background:white;color:var(--green)}
-.note{text-align:center;color:#78877e;font-size:12px;max-width:700px;margin:22px auto}
-.steps{background:#f6fbf7}
-.cta{background:var(--dark);color:white;border-radius:22px;text-align:center;padding:55px 25px}
-.cta h2{font-size:32px}
-.cta p{color:#d5e9dc;margin:15px auto 25px}
-.cta .btn{background:white;color:var(--green)}
-footer{background:#09271c;color:white;padding:40px 7% 20px}
-footer p{font-size:13px;color:#b6cfbf;margin-top:10px}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px;font-size:13px}
-.copy{text-align:center;border-top:1px solid #ffffff25;margin-top:25px;padding-top:18px;font-size:12px;color:#b6cfbf}
-@media(max-width:750px){
-header{padding:15px 5%;flex-wrap:wrap;gap:12px}
-nav{gap:12px;flex-wrap:wrap;font-size:12px}
-.hero{grid-template-columns:1fr;padding:55px 6%}
-.stats{grid-template-columns:repeat(2,1fr)}
-section{padding:55px 6%}
-.grid{grid-template-columns:repeat(2,1fr)}
+:root{
+  --bg:#07111f;
+  --panel:#101d30;
+  --panel2:#14243a;
+  --text:#f5f8ff;
+  --muted:#9aabc2;
+  --green:#21d49a;
+  --blue:#4b8dff;
+  --border:rgba(255,255,255,.1);
 }
-@media(max-width:520px){
-.logo{font-size:17px}
-nav{width:100%;justify-content:space-between}
-nav a{font-size:11px}
-.grid,.price-grid{grid-template-columns:1fr}
-.heading h2{font-size:29px}
-.cta h2{font-size:26px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;line-height:1.6;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.container{width:min(1160px,92%);margin:auto}
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(7,17,31,.94);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+}
+.nav{
+  min-height:76px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;
+}
+.logo{font-size:22px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--green)}
+.navlinks{
+  display:flex;align-items:center;gap:22px;
+  font-size:14px;color:#d3deed;
+}
+.navlinks a:hover,footer a:hover{color:var(--green)}
+.navbuttons{display:flex;gap:10px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:12px 19px;border-radius:9px;
+  border:1px solid var(--border);font-weight:700;
+  cursor:pointer;transition:.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{
+  color:#061b16;background:var(--green);
+  border-color:var(--green);
+}
+.btn-outline{background:transparent;color:white}
+.menu-btn{
+  display:none;background:none;border:0;
+  color:white;font-size:26px;cursor:pointer;
+}
+.hero{
+  padding:90px 0 75px;
+  background:
+  radial-gradient(ellipse at 80% 25%,rgba(33,212,154,.15),transparent 40%),
+  radial-gradient(ellipse at 15% 15%,rgba(75,141,255,.15),transparent 40%);
+}
+.hero-grid{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:50px;align-items:center;
+}
+.eyebrow{
+  display:inline-block;color:var(--green);
+  border:1px solid rgba(33,212,154,.3);
+  background:rgba(33,212,154,.08);
+  border-radius:30px;padding:7px 14px;
+  font-size:12px;font-weight:800;letter-spacing:1px;
+}
+h1{
+  font-size:clamp(38px,5.5vw,66px);
+  line-height:1.08;margin:22px 0;letter-spacing:-2px;
+}
+.gradient{
+  background:linear-gradient(90deg,var(--green),#71b8ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p,.section-intro{
+  color:var(--muted);font-size:17px;max-width:650px;
+}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-note{font-size:12px!important;margin-top:18px}
+.dashboard{
+  background:linear-gradient(145deg,#142943,#0d1a2c);
+  border:1px solid var(--border);border-radius:22px;
+  padding:23px;box-shadow:0 25px 80px rgba(0,0,0,.3);
+}
+.dash-top{display:flex;justify-content:space-between;align-items:center}
+.live{color:var(--green);font-size:12px}
+.dash-title{font-size:18px;font-weight:800;margin:20px 0}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{
+  padding:17px;background:rgba(255,255,255,.045);
+  border:1px solid var(--border);border-radius:13px;
+}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:5px}
+.chart{
+  height:120px;display:flex;align-items:end;
+  gap:9px;padding:15px 5px 0;
+}
+.chart i{
+  flex:1;border-radius:5px 5px 0 0;
+  background:linear-gradient(var(--green),#287c94);
+}
+.section{padding:85px 0}
+.section-heading{text-align:center;margin-bottom:42px}
+.section-heading h2{
+  font-size:clamp(29px,4vw,43px);
+  line-height:1.2;margin:12px 0;
+}
+.section-heading p{
+  color:var(--muted);max-width:700px;margin:auto;
+}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:17px;padding:25px;transition:.25s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(33,212,154,.5);
+}
+.card-icon{
+  width:48px;height:48px;display:grid;place-items:center;
+  background:rgba(33,212,154,.1);
+  border-radius:13px;font-size:24px;
+}
+.card h3{font-size:19px;margin:17px 0 8px}
+.card p{font-size:14px;color:var(--muted);margin:0}
+.split{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:45px;align-items:center;
+}
+.feature-list{display:grid;gap:16px;margin-top:25px}
+.feature{display:flex;gap:13px;align-items:flex-start}
+.check{color:var(--green);font-weight:900;font-size:20px}
+.feature strong{display:block}
+.feature small{color:var(--muted)}
+.demo-box{
+  background:linear-gradient(145deg,#142a40,#0b1929);
+  border:1px solid var(--border);border-radius:20px;padding:25px;
+}
+.phone{
+  width:min(300px,100%);margin:auto;
+  background:#e7f0e9;color:#17251d;
+  border-radius:25px;padding:12px;min-height:380px;
+  box-shadow:0 15px 50px rgba(0,0,0,.3);
+}
+.phone-head{
+  background:#087c5c;color:white;
+  padding:13px;border-radius:16px;font-weight:700;
+}
+.chat{
+  background:white;padding:11px;border-radius:12px;
+  margin:15px 0;font-size:13px;max-width:90%;
+}
+.chat.right{margin-left:auto;background:#d4f8d8}
+.demo-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.demo-actions button{
+  background:var(--panel2);color:white;
+  border:1px solid var(--border);padding:9px 12px;
+  border-radius:8px;cursor:pointer;
+}
+.demo-result{color:var(--green);font-size:13px;margin-top:12px;min-height:20px}
+.workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{
+  padding:22px;background:var(--panel);
+  border:1px solid var(--border);border-radius:14px;
+}
+.step b{color:var(--green);font-size:26px}
+.step h3{margin:9px 0}
+.step p{color:var(--muted);font-size:14px}
+.pricing-wrap{max-width:600px;margin:auto}
+.price-card{
+  background:linear-gradient(145deg,#142c40,#0e1a2b);
+  border:1px solid var(--green);border-radius:22px;
+  padding:35px;text-align:center;
+  box-shadow:0 20px 70px rgba(33,212,154,.08);
+}
+.price-tag{color:var(--green);font-weight:800;letter-spacing:1px}
+.price{font-size:52px;font-weight:900;margin:12px 0 0}
+.price small{font-size:15px;color:var(--muted)}
+.price-card ul{text-align:left;padding:0;list-style:none;margin:25px 0}
+.price-card li{padding:9px 0;border-bottom:1px solid var(--border)}
+.price-card li:before{content:"✓ ";color:var(--green);font-weight:bold}
+.faq{max-width:800px;margin:auto}
+.faq-item{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;margin:11px 0;overflow:hidden;
+}
+.faq-question{
+  width:100%;text-align:left;background:none;border:0;
+  color:white;padding:18px;font-weight:700;cursor:pointer;
+  display:flex;justify-content:space-between;
+}
+.faq-answer{
+  display:none;color:var(--muted);
+  padding:0 18px 18px;font-size:14px;
+}
+.faq-item.open .faq-answer{display:block}
+.contact-box{
+  text-align:center;padding:55px 25px;
+  border:1px solid var(--border);border-radius:22px;
+  background:radial-gradient(circle at top,rgba(33,212,154,.13),transparent 65%),var(--panel);
+}
+footer{padding:35px 0;border-top:1px solid var(--border);color:var(--muted)}
+.footer-grid{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap;
+}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.whatsapp-float{
+  position:fixed;right:20px;bottom:20px;z-index:60;
+  width:55px;height:55px;display:grid;place-items:center;
+  background:#20c978;color:#052317;font-size:27px;
+  border-radius:50%;box-shadow:0 8px 30px #0006;
+}
+@media(max-width:850px){
+  .navlinks{
+    display:none;position:absolute;top:76px;left:0;right:0;
+    background:#0b192a;padding:20px;flex-direction:column;
+    align-items:flex-start;border-bottom:1px solid var(--border);
+  }
+  .navlinks.show{display:flex}
+  .menu-btn{display:block}
+  .navbuttons .btn-outline{display:none}
+  .hero-grid,.split{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .workflow{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .hero{padding:60px 0}
+  .cards,.workflow{grid-template-columns:1fr}
+  .section{padding:65px 0}
+  .price-card{padding:25px 18px}
+  .price{font-size:43px}
+  .navbuttons .btn{padding:10px 12px;font-size:12px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
-<a class="logo" href="#">ADS GROWTH <span>AGENCY</span></a>
-<nav>
-<a href="#features">Features</a>
-<a href="#pricing">Pricing</a>
-<a href="#how">How It Works</a>
-<a href="client.html">Login</a>
-<a class="btn" href="client.html">Join Now</a>
-</nav>
+  <div class="container nav">
+    <a class="logo" href="#">ADS <span>GROWTH</span></a>
+
+    <nav class="navlinks" id="navlinks">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#automation">Automation</a>
+      <a href="#demo">Demo</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="navbuttons">
+      <a class="btn btn-outline" href="admin.html">Admin</a>
+      <a class="btn btn-primary" href="client.html">Login / Register</a>
+      <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+    </div>
+  </div>
 </header>
 
 <main>
-<div class="hero">
-<div>
-<div class="tag">● WHATSAPP CLOUD API PLATFORM</div>
-<h1>WhatsApp<br><span>Cloud API</span></h1>
-<p>Power your business communication with smart messaging, automation and campaign management from ADS GROWTH AGENCY.</p>
-<div class="actions">
-<a class="btn" href="client.html">Start Your Account →</a>
-<a class="btn outline" href="#features">Explore Features</a>
-</div>
-</div>
-<div class="visual">
-<div class="phone">
-<div class="whatsapp">☎</div>
-<h2>WhatsApp Cloud API</h2>
-<p>Business Messaging Platform</p>
-<small>Official Meta Cloud API Integration</small>
-</div>
-</div>
-</div>
 
-<div class="stats">
-<div><strong>Bulk</strong><span>Messaging</span></div>
-<div><strong>24/7</strong><span>Automation</span></div>
-<div><strong>Smart</strong><span>Campaigns</span></div>
-<div><strong>Live</strong><span>Analytics</span></div>
-</div>
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">WHATSAPP BUSINESS API PLATFORM</span>
+      <h1>Grow your business with <span class="gradient">WhatsApp Automation</span></h1>
+      <p>
+        Manage customer conversations, marketing campaigns,
+        WhatsApp automation and business communication
+        from one powerful platform.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="client.html">Get Started →</a>
+        <a class="btn btn-outline" href="#features">Explore Features</a>
+      </div>
+      <p class="hero-note">Powerful business communication. Simple management.</p>
+    </div>
 
-<section class="features" id="features">
-<div class="heading">
-<h2>Powerful Features for Your Business</h2>
-<p>Manage your WhatsApp business communication with one platform.</p>
-</div>
-<div class="grid">
-<div class="card"><div class="icon">➤</div><h3>Bulk Messaging</h3><p>Organize contacts and send approved WhatsApp template campaigns.</p></div>
-<div class="card"><div class="icon">🤖</div><h3>Automation & Chatbot</h3><p>Smart replies and automated customer communication workflows.</p></div>
-<div class="card"><div class="icon">📣</div><h3>Campaign Management</h3><p>Create, schedule and manage marketing campaigns.</p></div>
-<div class="card"><div class="icon">🔒</div><h3>Secure Platform</h3><p>Secure account access and API credential management.</p></div>
-<div class="card"><div class="icon">📊</div><h3>Real-Time Analytics</h3><p>View available delivery, read and response information.</p></div>
-<div class="card"><div class="icon">🔑</div><h3>API Key Management</h3><p>Manage API keys from your customer dashboard.</p></div>
-<div class="card"><div class="icon">📱</div><h3>Number Management</h3><p>Manage connected WhatsApp business numbers.</p></div>
-<div class="card"><div class="icon">🧾</div><h3>Payment Records</h3><p>Submit payment details and view approval status.</p></div>
-<div class="card"><div class="icon">🎧</div><h3>Customer Support</h3><p>Get help with platform setup and usage.</p></div>
-</div>
+    <div class="dashboard">
+      <div class="dash-top">
+        <strong>ADS GROWTH Dashboard</strong>
+        <span class="live">● Platform Preview</span>
+      </div>
+      <div class="dash-title">Business Overview</div>
+      <div class="stat-grid">
+        <div class="stat"><small>Campaigns</small><strong>Manage</strong></div>
+        <div class="stat"><small>Messages</small><strong>Track</strong></div>
+        <div class="stat"><small>Automation</small><strong>Build</strong></div>
+        <div class="stat"><small>Reports</small><strong>Review</strong></div>
+      </div>
+      <div class="dash-title">Campaign Activity Preview</div>
+      <div class="chart">
+        <i style="height:35%"></i><i style="height:55%"></i>
+        <i style="height:42%"></i><i style="height:75%"></i>
+        <i style="height:60%"></i><i style="height:90%"></i>
+        <i style="height:72%"></i><i style="height:100%"></i>
+      </div>
+      <small style="color:var(--muted)">Illustrative dashboard preview</small>
+    </div>
+  </div>
 </section>
 
-<section id="pricing">
-<div class="heading">
-<h2>Simple & Affordable Pricing</h2>
-<p>Start your WhatsApp business communication with ADS GROWTH AGENCY.</p>
-</div>
-<div class="price-grid">
-<div class="price-card primary">
-<h3>ONE-TIME SETUP</h3>
-<div class="price">₹7,999</div>
-<p>One-time platform setup charge</p>
-<a class="btn" href="client.html">Get Started Now</a>
-</div>
-<div class="price-card">
-<h3>MARKETING MESSAGE</h3>
-<div class="price">₹0.15</div>
-<p>Per marketing message</p>
-<a class="btn" href="client.html">Create Account</a>
-</div>
-</div>
-<p class="note">Applicable Meta/WhatsApp charges, taxes and provider fees may be additional. Confirm final charges before payment.</p>
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">OUR PLATFORM</span>
+      <h2>Everything you need for <span class="gradient">WhatsApp growth</span></h2>
+      <p>Connect your business communication, campaigns and customer engagement in one place.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-icon">💬</div>
+        <h3>WhatsApp Business API</h3>
+        <p>Connect your eligible WhatsApp Business Platform number and manage communication through the Cloud API.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">📢</div>
+        <h3>Marketing Broadcasts</h3>
+        <p>Prepare campaigns and send approved template messages to opted-in customers.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">🤖</div>
+        <h3>AI Automation</h3>
+        <p>Plan automated customer journeys and conversational experiences for your business.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">📊</div>
+        <h3>Campaign Reports</h3>
+        <p>Review campaign records and available message delivery status information.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">🔑</div>
+        <h3>API Key Management</h3>
+        <p>Create and manage API credentials for supported integrations.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">👥</div>
+        <h3>Customer Management</h3>
+        <p>Manage your account, WhatsApp connection and campaign information from your dashboard.</p>
+      </article>
+    </div>
+  </div>
+ </section>
+ 
+<!-- AUTOMATION SECTION -->
+<section class="section" id="automation">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">SMART AUTOMATION</span>
+      <h2>Automate Your WhatsApp Business</h2>
+      <p>Connect with customers, automate conversations and grow your business with ADS GROWTH.</p>
+    </div>
+
+    <div class="automation-grid">
+      <div class="automation-content">
+        <span class="eyebrow">AI POWERED WORKFLOW</span>
+        <h2>Turn conversations into customers</h2>
+        <p>Manage customer conversations, send approved WhatsApp templates and automate your business communication from one dashboard.</p>
+
+        <div class="automation-points">
+          <div class="automation-point">
+            <span class="point-icon">✓</span>
+            <div>
+              <h3>Automated Replies</h3>
+              <p>Respond to customer messages using configured automation.</p>
+            </div>
+          </div>
+
+          <div class="automation-point">
+            <span class="point-icon">✓</span>
+            <div>
+              <h3>Campaign Management</h3>
+              <p>Organize and manage WhatsApp marketing campaigns.</p>
+            </div>
+          </div>
+
+          <div class="automation-point">
+            <span class="point-icon">✓</span>
+            <div>
+              <h3>Customer Management</h3>
+              <p>Keep customer contacts and conversations organized.</p>
+            </div>
+          </div>
+
+          <div class="automation-point">
+            <span class="point-icon">✓</span>
+            <div>
+              <h3>Performance Reports</h3>
+              <p>Monitor campaign activity and available delivery reports.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="client.html" class="btn btn-primary">Get Started Now →</a>
+      </div>
+
+      <div class="workflow-card">
+        <div class="workflow-header">
+          <div>
+            <span class="status-dot"></span>
+            <strong>Automation Workflow</strong>
+          </div>
+          <span class="live-label">SMART FLOW</span>
+        </div>
+
+        <div class="workflow-step">
+          <div class="workflow-number">01</div>
+          <div class="workflow-info">
+            <h3>Customer Message</h3>
+            <p>Customer sends a WhatsApp message</p>
+          </div>
+          <span class="workflow-icon">💬</span>
+        </div>
+
+        <div class="workflow-line"></div>
+
+        <div class="workflow-step">
+          <div class="workflow-number">02</div>
+          <div class="workflow-info">
+            <h3>Automation Process</h3>
+            <p>Your configured rules process the message</p>
+          </div>
+          <span class="workflow-icon">⚙️</span>
+        </div>
+
+        <div class="workflow-line"></div>
+
+        <div class="workflow-step">
+          <div class="workflow-number">03</div>
+          <div class="workflow-info">
+            <h3>WhatsApp Response</h3>
+            <p>Send the configured response to the customer</p>
+          </div>
+          <span class="workflow-icon">🚀</span>
+        </div>
+
+        <div class="workflow-footer">
+          <span>ADS GROWTH</span>
+          <span>Business Automation Platform</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="steps" id="how">
-<div class="heading">
-<h2>Get Started in 3 Simple Steps</h2>
-<p>Start your journey with ADS GROWTH AGENCY.</p>
-</div>
-<div class="grid">
-<div class="card"><div class="icon">1</div><h3>Create Account</h3><p>Register your customer account.</p></div>
-<div class="card"><div class="icon">2</div><h3>Complete Setup</h3><p>Submit your setup and WhatsApp API details.</p></div>
-<div class="card"><div class="icon">3</div><h3>Start Messaging</h3><p>Use approved templates and connected API features.</p></div>
-</div>
+<!-- DEMO SECTION -->
+<section class="section demo-section" id="demo">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">INTERACTIVE DEMO</span>
+      <h2>Experience WhatsApp Automation</h2>
+      <p>Try this sample conversation to see how a business WhatsApp interaction can work.</p>
+    </div>
+
+    <div class="demo-layout">
+      <div class="demo-info">
+        <h2>Simple. Smart. Powerful.</h2>
+        <p>Give customers quick responses and make your communication more organized.</p>
+
+        <ul class="demo-list">
+          <li>✓ Quick customer responses</li>
+          <li>✓ Organized conversations</li>
+          <li>✓ Business communication</li>
+          <li>✓ Campaign management</li>
+        </ul>
+
+        <a href="client.html" class="btn btn-primary">Create Your Account →</a>
+      </div>
+
+      <div class="phone-demo">
+        <div class="phone-top">
+          <div class="phone-avatar">A</div>
+          <div>
+            <strong>ADS GROWTH</strong>
+            <small>Sample WhatsApp Demo</small>
+          </div>
+          <span class="phone-menu">⋮</span>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+          <div class="chat-date">TODAY</div>
+          <div class="chat-message received">
+            Hello! Welcome to ADS GROWTH.
+            <small>09:30</small>
+          </div>
+          <div class="chat-message sent">
+            I want to know about your services.
+            <small>09:31 ✓✓</small>
+          </div>
+          <div class="chat-message received">
+            We provide WhatsApp Business API and business automation solutions.
+            <small>09:31</small>
+          </div>
+        </div>
+
+        <div class="demo-buttons">
+          <button class="demo-btn" onclick="demoMessage('Tell me about pricing')">Pricing</button>
+          <button class="demo-btn" onclick="demoMessage('I need WhatsApp API')">WhatsApp API</button>
+          <button class="demo-btn" onclick="demoMessage('How can I register?')">Registration</button>
+        </div>
+        <p class="demo-note">This is a sample website demonstration, not a live WhatsApp conversation.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section>
-<div class="cta">
-<h2>Grow Your Business with WhatsApp</h2>
-<p>Take control of your customer communication with ADS GROWTH AGENCY.</p>
-<a class="btn" href="client.html">Register Your Account →</a>
-</div>
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">GET STARTED</span>
+      <h2>How ADS GROWTH Works</h2>
+      <p>Start managing your WhatsApp business communication in a few simple steps.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <div class="step-icon">👤</div>
+        <h3>Create Account</h3>
+        <p>Register your business account on ADS GROWTH.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <div class="step-icon">📱</div>
+        <h3>Connect WhatsApp</h3>
+        <p>Connect your eligible WhatsApp Business Platform account.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <div class="step-icon">⚡</div>
+        <h3>Configure Tools</h3>
+        <p>Set up contacts, approved templates and campaign settings.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <div class="step-icon">📊</div>
+        <h3>Manage Business</h3>
+        <p>Manage conversations and monitor available reports.</p>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- PRICING SECTION -->
+<section class="section pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">SIMPLE PRICING</span>
+      <h2>One Simple Monthly Plan</h2>
+      <p>Powerful WhatsApp business tools for your growing business.</p>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-top">
+        <span class="pricing-tag">BUSINESS PLAN</span>
+        <h3>ADS GROWTH</h3>
+        <p>Everything you need to manage your WhatsApp business communication.</p>
+      </div>
+
+      <div class="price">
+        <span class="currency">₹</span>7,999
+        <span class="price-period">/ month</span>
+      </div>
+
+      <p class="price-subtitle">Monthly subscription</p>
+
+      <div class="pricing-divider"></div>
+
+      <ul class="pricing-features">
+        <li><span>✓</span> WhatsApp Business API platform access</li>
+        <li><span>✓</span> Client dashboard</li>
+        <li><span>✓</span> Campaign management tools</li>
+        <li><span>✓</span> Contact management</li>
+        <li><span>✓</span> Automation configuration tools</li>
+        <li><span>✓</span> API key management</li>
+        <li><span>✓</span> Available campaign reports</li>
+        <li><span>✓</span> Customer support</li>
+      </ul>
+
+      <a href="client.html" class="btn btn-primary pricing-button">Get Started Now →</a>
+
+      <p class="pricing-note">
+        ₹7,999 is the ADS GROWTH monthly platform subscription.
+        WhatsApp/Meta usage charges, taxes or third-party provider charges,
+        if applicable, depend on the connected service and its billing terms.
+        Confirm your messaging allowance before purchase.
+      </p>
+    </div>
+  </div>
+ </section>
+         
+<!-- FAQ SECTION -->
+<section class="section faq-section" id="faq">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">FREQUENTLY ASKED QUESTIONS</span>
+      <h2>Have Questions?</h2>
+      <p>Find answers to common questions about ADS GROWTH.</p>
+    </div>
+
+    <div class="faq-container">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What is ADS GROWTH? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          ADS GROWTH is a business communication platform offering WhatsApp Business API tools, campaign management and automation features.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How much does the monthly plan cost? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          The ADS GROWTH monthly platform subscription is ₹7,999 per month. Applicable WhatsApp/Meta or third-party charges may be separate.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Is there a free trial? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          No. ADS GROWTH currently offers a paid monthly subscription.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How do I connect WhatsApp Business API? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          Create your ADS GROWTH account and follow the WhatsApp connection process. You will need an eligible Meta Business setup and WhatsApp Business Platform access.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Can I manage marketing campaigns? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          The platform provides campaign management tools. Actual sending depends on your WhatsApp connection, approved templates, permissions and configured backend features.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Can I contact customer support? <span>＋</span>
+        </button>
+        <div class="faq-answer">
+          Yes. You can contact the ADS GROWTH team using the contact details provided on this website.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">CONTACT US</span>
+      <h2>Let's Grow Your Business</h2>
+      <p>Have questions or need help getting started? Contact our team.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>Connect with ADS GROWTH for WhatsApp Business API and automation solutions.</p>
+
+        <div class="contact-detail">
+          <span class="contact-icon">✉️</span>
+          <div>
+            <strong>Email</strong>
+            <a href="mailto:sainiatul041@gmail.com">sainiatul041@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <span class="contact-icon">🌐</span>
+          <div>
+            <strong>Website</strong>
+            <a href="https://sainiatul041-source.github.io/Ads-growth-whatsapp-api/" target="_blank" rel="noopener">ADS GROWTH Website</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <span class="contact-icon">💬</span>
+          <div>
+            <strong>WhatsApp</strong>
+            <p>Contact us through your registered support channel.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <h3>Send Us a Message</h3>
+        <p>Fill in your details and your email app will open with the message.</p>
+
+        <form id="contactForm" onsubmit="sendContactMessage(event)">
+          <label for="contactName">Your Name</label>
+          <input type="text" id="contactName" placeholder="Enter your name" required>
+
+          <label for="contactEmail">Email Address</label>
+          <input type="email" id="contactEmail" placeholder="Enter your email" required>
+
+          <label for="contactSubject">Subject</label>
+          <input type="text" id="contactSubject" placeholder="How can we help?" required>
+
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" rows="4" placeholder="Write your message..." required></textarea>
+
+          <button type="submit" class="btn btn-primary contact-submit">
+            Send Message →
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<footer>
-<div class="logo">ADS GROWTH <span>AGENCY</span></div>
-<p>WhatsApp Cloud API Business Communication Platform.</p>
-<div class="footer-links">
-<a href="#features">Features</a>
-<a href="#pricing">Pricing</a>
-<a href="client.html">Client Login</a>
-<a href="admin.html">Admin</a>
-</div>
-<div class="copy">© <span id="year"></span> ADS GROWTH AGENCY. All rights reserved.</div>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo footer-logo">
+          <span class="logo-icon">A</span>
+          <span>ADS <strong>GROWTH</strong></span>
+        </a>
+        <p>
+          Smart WhatsApp Business API solutions, customer communication
+          and business automation tools.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#automation">Automation</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+
+      <div class="footer-links">
+        <h3>Account</h3>
+        <a href="client.html">Client Login</a>
+        <a href="client.html">Create Account</a>
+        <a href="admin.html">Admin Login</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-links">
+        <h3>Contact</h3>
+        <a href="mailto:sainiatul041@gmail.com">Email Support</a>
+        <a href="#faq">FAQs</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="currentYear"></span> ADS GROWTH. All Rights Reserved.</p>
+      <p>Powered by ADS GROWTH</p>
+    </div>
+  </div>
 </footer>
 
+<!-- BACK TO TOP -->
+<a href="#home" class="back-to-top" aria-label="Back to top">↑</a>
+
+<!-- JAVASCRIPT -->
 <script>
-document.getElementById("year").textContent=new Date().getFullYear();
+/* MOBILE MENU */
+function toggleMenu() {
+  const nav = document.querySelector(".nav-links");
+  if (nav) {
+    nav.classList.toggle("active");
+  }
+}
+
+/* CLOSE MOBILE MENU AFTER CLICK */
+document.querySelectorAll(".nav-links a").forEach(function(link) {
+  link.addEventListener("click", function() {
+    const nav = document.querySelector(".nav-links");
+    if (nav) nav.classList.remove("active");
+  });
+});
+
+/* FAQ ACCORDION */
+function toggleFaq(button) {
+  const currentItem = button.parentElement;
+  const allItems = document.querySelectorAll(".faq-item");
+
+  allItems.forEach(function(item) {
+    if (item !== currentItem) {
+      item.classList.remove("active");
+    }
+  });
+
+  currentItem.classList.toggle("active");
+
+  const icon = button.querySelector("span");
+  if (icon) {
+    icon.textContent = currentItem.classList.contains("active") ? "－" : "＋";
+  }
+
+  allItems.forEach(function(item) {
+    if (item !== currentItem) {
+      const otherIcon = item.querySelector(".faq-question span");
+      if (otherIcon) otherIcon.textContent = "＋";
+    }
+  });
+}
+
+/* WHATSAPP DEMO */
+function demoMessage(message) {
+  const chatArea = document.getElementById("chatArea");
+  if (!chatArea) return;
+
+  const userMessage = document.createElement("div");
+  userMessage.className = "chat-message sent";
+  userMessage.textContent = message;
+
+  const time = document.createElement("small");
+  time.textContent = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  userMessage.appendChild(time);
+  chatArea.appendChild(userMessage);
+
+  const reply = document.createElement("div");
+  reply.className = "chat-message received";
+  reply.textContent = getDemoReply(message);
+
+  const replyTime = document.createElement("small");
+  replyTime.textContent = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  reply.appendChild(replyTime);
+
+  setTimeout(function() {
+    chatArea.appendChild(reply);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }, 600);
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/* SAMPLE REPLIES */
+function getDemoReply(message) {
+  const text = message.toLowerCase();
+
+  if (text.includes("pricing")) {
+    return "Our monthly platform subscription is ₹7,999. Contact our team for details.";
+  }
+
+  if (text.includes("api")) {
+    return "We provide WhatsApp Business API platform tools. You need an eligible Meta setup to connect.";
+  }
+
+  if (text.includes("register")) {
+    return "You can create your account using the Get Started or Create Account button.";
+  }
+
+  return "Thank you for contacting ADS GROWTH. Our team will be happy to help you.";
+}
+
+/* CONTACT FORM */
+function sendContactMessage(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("contactName").value.trim();
+  const email = document.getElementById("contactEmail").value.trim();
+  const subject = document.getElementById("contactSubject").value.trim();
+  const message = document.getElementById("contactMessage").value.trim();
+
+  if (!name || !email || !subject || !message) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  const body =
+    "Name: " + name + "\n" +
+    "Email: " + email + "\n\n" +
+    "Message:\n" + message;
+
+  const mailto =
+    "mailto:sainiatul041@gmail.com" +
+    "?subject=" + encodeURIComponent(subject) +
+    "&body=" + encodeURIComponent(body);
+
+  window.location.href = mailto;
+}
+
+/* CURRENT YEAR */
+document.getElementById("currentYear").textContent =
+  new Date().getFullYear();
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener("click", function(event) {
+    const target = document.querySelector(this.getAttribute("href"));
+
+    if (target) {
+      event.preventDefault();
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  });
+});
 </script>
+
 </body>
- </html>
+                                                </html>
  
