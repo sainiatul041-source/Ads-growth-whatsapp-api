@@ -3,399 +3,199 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#075e45">
 <title>ADS GROWTH | Client Portal</title>
-
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-body{
-  font-family:Arial,sans-serif;
-  background:#f4f8f6;
-  color:#172b24;
-}
-header{
-  background:#075e45;
-  color:white;
-  padding:17px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{
-  font-size:21px;
-  font-weight:800;
-}
-.logo span{
-  color:#a6f3c9;
-}
-.header-text{
-  font-size:12px;
-  opacity:.9;
-}
-.container{
-  width:100%;
-  max-width:480px;
-  margin:35px auto;
-  padding:15px;
-}
-.card{
-  background:white;
-  padding:25px;
-  border-radius:16px;
-  box-shadow:0 8px 30px rgba(0,0,0,.07);
-  border:1px solid #e5eee9;
-}
-.heading{
-  text-align:center;
-  margin-bottom:22px;
-}
-.heading h2{
-  font-size:25px;
-  color:#075e45;
-  margin-bottom:8px;
-}
-.heading p{
-  font-size:13px;
-  color:#718078;
-  line-height:1.5;
-}
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:22px;
-}
-.tab{
-  flex:1;
-  padding:12px;
-  border:0;
-  border-radius:9px;
-  background:#eaf3ee;
-  color:#075e45;
-  font-weight:bold;
-  cursor:pointer;
-}
-.tab.active{
-  background:#075e45;
-  color:white;
-}
-.form-group{
-  margin-bottom:15px;
-}
-label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin-bottom:7px;
-}
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid #dce7e1;
-  border-radius:9px;
-  font-size:14px;
-  outline:none;
-}
-input:focus{
-  border-color:#07865e;
-}
-.main-btn{
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:9px;
-  background:#07865e;
-  color:white;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.main-btn:disabled{
-  opacity:.6;
-}
-.message{
-  margin-top:14px;
-  padding:11px;
-  border-radius:8px;
-  font-size:13px;
-  display:none;
-  line-height:1.5;
-}
-.success{
-  display:block;
-  background:#e5f8ed;
-  color:#087443;
-}
-.error{
-  display:block;
-  background:#fff0ef;
-  color:#b42318;
-}
-.hidden{
-  display:none!important;
-}
-.footer{
-  text-align:center;
-  font-size:12px;
-  color:#84918a;
-  margin:22px 0;
-}
-.dashboard{
-  max-width:850px;
-}
-.dash-card{
-  background:white;
-  border:1px solid #e5eee9;
-  border-radius:13px;
-  padding:18px;
-  margin-bottom:15px;
-}
-.dash-card h3{
-  color:#075e45;
-  margin-bottom:12px;
-}
-@media(max-width:500px){
-  .container{
-    margin:18px auto;
-  }
-  .card{
-    padding:20px;
-  }
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f3f8f5;color:#18352a}
+header{background:#075e45;color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:800}
+.logo span{color:#a8f0c7}
+.header-small{font-size:12px}
+.container{max-width:480px;margin:35px auto;padding:15px}
+.card{background:white;border:1px solid #e1ebe5;border-radius:17px;padding:25px;box-shadow:0 8px 28px #173d2710;margin-bottom:16px}
+.heading{text-align:center;margin-bottom:22px}
+.heading h2{color:#075e45;font-size:25px;margin-bottom:9px}
+.heading p{font-size:13px;color:#718078;line-height:1.5}
+.tabs{display:flex;gap:8px;margin-bottom:22px}
+.tab{flex:1;padding:13px;border:0;border-radius:9px;background:#eaf3ee;color:#075e45;font-weight:bold}
+.tab.active{background:#075e45;color:white}
+.group{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
+input{width:100%;padding:14px;border:1px solid #dce7e1;border-radius:10px;font-size:15px;outline:none;background:white}
+input:focus{border-color:#07865e}
+button{cursor:pointer}
+.btn{width:100%;padding:14px;border:0;border-radius:10px;background:#07865e;color:white;font-size:15px;font-weight:bold}
+.btn:disabled{opacity:.6}
+.hidden{display:none!important}
+.message{display:none;padding:12px;border-radius:9px;margin-top:13px;font-size:13px;line-height:1.5}
+.success{display:block;background:#e6f8ed;color:#087443}
+.error{display:block;background:#fff0ef;color:#b42318}
+.dashboard{max-width:850px}
+.dash-title{text-align:center;margin:25px 0;color:#075e45}
+.dash-card{background:white;border:1px solid #e1ebe5;border-radius:14px;padding:19px;margin-bottom:15px}
+.dash-card h3{color:#075e45;margin-bottom:13px}
+.dash-card p{font-size:14px;line-height:1.8;overflow-wrap:anywhere}
+.info{background:#edf8f1;padding:15px;border-radius:10px;margin:12px 0}
+.small{font-size:12px;color:#718078}
+.history-item,.key-item{padding:12px;border-bottom:1px solid #e5eee9;font-size:13px;line-height:1.8}
+.footer{text-align:center;color:#89968f;font-size:12px;padding:20px}
+.status{font-weight:bold;color:#087443}
+@media(max-width:500px){.container{margin:16px auto}.card{padding:20px}}
 </style>
 </head>
-
 <body>
 
 <header>
   <div class="logo">ADS <span>GROWTH</span></div>
-  <div class="header-text">CLIENT PORTAL</div>
+  <div class="header-small">CLIENT PORTAL</div>
 </header>
 
+<!-- REGISTRATION AND LOGIN -->
 <div class="container" id="authArea">
-
   <div class="card">
-
     <div class="heading">
       <h2>Welcome to ADS GROWTH</h2>
       <p>Create your account or login to manage your WhatsApp API services.</p>
     </div>
 
     <div class="tabs">
-      <button class="tab active" id="registerTab"
-        onclick="showRegister()">Create Account</button>
-
-      <button class="tab" id="loginTab"
-        onclick="showLogin()">Login</button>
+      <button class="tab active" id="registerTab" type="button" onclick="showRegister()">Create Account</button>
+      <button class="tab" id="loginTab" type="button" onclick="showLogin()">Login</button>
     </div>
 
     <form id="registerForm">
-
-      <div class="form-group">
+      <div class="group">
         <label>Business Name</label>
-        <input id="businessName" type="text"
-          placeholder="Enter business name" required>
+        <input id="businessName" placeholder="Enter business name" required>
       </div>
-
-      <div class="form-group">
+      <div class="group">
         <label>Full Name</label>
-        <input id="fullName" type="text"
-          placeholder="Enter your full name" required>
+        <input id="fullName" placeholder="Enter your full name" required>
       </div>
-
-      <div class="form-group">
+      <div class="group">
         <label>Email Address</label>
-        <input id="registerEmail" type="email"
-          placeholder="Enter email address" required>
+        <input id="registerEmail" type="email" placeholder="Enter email address" required>
       </div>
-
-      <div class="form-group">
+      <div class="group">
         <label>Mobile Number</label>
-        <input id="registerPhone" type="tel"
-          placeholder="Enter mobile number" required>
+        <input id="registerPhone" type="tel" placeholder="Enter mobile number with country code" required>
       </div>
-
-      <div class="form-group">
+      <div class="group">
         <label>Password</label>
-        <input id="registerPassword" type="password"
-          placeholder="Create password" minlength="8" required>
+        <input id="registerPassword" type="password" minlength="8" placeholder="Create password (8+ characters)" required>
       </div>
-
-      <button class="main-btn" type="submit" id="registerBtn">
-        Create Account
-      </button>
-
+      <button class="btn" id="registerBtn" type="submit">Create Account</button>
     </form>
 
     <form id="loginForm" class="hidden">
-
-      <div class="form-group">
+      <div class="group">
         <label>Email or Mobile Number</label>
-        <input id="loginIdentity" type="text"
-          placeholder="Enter email or mobile number" required>
+        <input id="loginIdentity" placeholder="Enter email or mobile number" required>
       </div>
-
-      <div class="form-group">
+      <div class="group">
         <label>Password</label>
-        <input id="loginPassword" type="password"
-          placeholder="Enter password" required>
+        <input id="loginPassword" type="password" placeholder="Enter password" required>
       </div>
-
-      <button class="main-btn" type="submit" id="loginBtn">
-        Login to Dashboard
-      </button>
-
+      <button class="btn" id="loginBtn" type="submit">Login to Dashboard</button>
     </form>
-
     <div id="authMessage" class="message"></div>
-
   </div>
-
-  <div class="footer">
-    © 2026 ADS GROWTH AGENCY. All rights reserved.
-  </div>
-
+  <div class="footer">© 2026 ADS GROWTH AGENCY. All rights reserved.</div>
 </div>
 
-<!-- DASHBOARD STARTS IN PART 2 -->
- 
+<!-- CLIENT DASHBOARD -->
 <div class="container dashboard hidden" id="dashboardArea">
-
-  <div class="heading">
+  <div class="dash-title">
     <h2>Client Dashboard</h2>
-    <p>Manage your ADS GROWTH account and WhatsApp API.</p>
+    <p class="small">Manage your account and services</p>
   </div>
 
   <div class="dash-card">
-    <h3>Welcome, <span id="clientName">Client</span></h3>
+    <h3>Account Details</h3>
+    <p>Name: <strong id="clientName">-</strong></p>
     <p>Email: <span id="clientEmail">-</span></p>
     <p>Business: <span id="clientBusiness">-</span></p>
-    <p>Account Status:
-      <strong id="clientStatus">Pending</strong>
-    </p>
-    <button class="main-btn" style="margin-top:15px"
-      onclick="logout()">Logout</button>
+    <p>Account Status: <strong id="clientStatus">Pending</strong></p>
+    <button class="btn" style="margin-top:14px" type="button" onclick="logout()">Logout</button>
   </div>
 
   <div class="dash-card">
     <h3>Subscription Plan</h3>
-    <p>Selected Plan: <strong>Business Plan</strong></p>
+    <p>Plan: <strong>Business</strong></p>
     <p>Monthly Price: <strong>₹7,999</strong></p>
     <p id="planStatus">Payment required</p>
   </div>
 
   <div class="dash-card" id="paymentCard">
-    <h3>Complete Your Payment</h3>
-    <p style="font-size:13px;color:#718078;margin-bottom:15px">
-      Pay ₹7,999 using UPI and submit your payment details for admin approval.
-    </p>
-
-    <div style="background:#eaf6ef;padding:15px;border-radius:10px;margin-bottom:15px">
+    <h3>UPI Payment</h3>
+    <p class="small">Pay ₹7,999 and submit your transaction details for admin verification.</p>
+    <div class="info">
       <p>UPI ID</p>
       <h3 id="upiId">Loading...</h3>
-      <p style="font-size:12px">Payee: <span id="upiName">Loading...</span></p>
-      <p style="font-size:12px;margin-top:8px">
-        Amount: <strong>₹7,999</strong>
-      </p>
+      <p>Payee: <strong id="upiName">ADS GROWTH</strong></p>
+      <p>Amount: <strong>₹7,999</strong></p>
     </div>
+    <button class="btn" type="button" onclick="copyUPI()">Copy UPI ID</button>
 
-    <button class="main-btn" type="button"
-      onclick="copyUPI()">Copy UPI ID</button>
-
-    <form id="paymentForm" style="margin-top:20px">
-
-      <div class="form-group">
-        <label>Payment UTR / Transaction ID</label>
-        <input id="paymentUTR" type="text"
-          placeholder="Enter 12-digit UTR number" required>
+    <form id="paymentForm" style="margin-top:18px">
+      <div class="group">
+        <label>UTR / Transaction ID</label>
+        <input id="paymentUTR" placeholder="Enter transaction ID" required>
       </div>
-
-      <div class="form-group">
-        <label>Payment Screenshot</label>
-        <input id="paymentProof" type="file"
-          accept="image/*" required>
+      <div class="group">
+        <label>Payment Screenshot (JPG, PNG or WEBP, max 5MB)</label>
+        <input id="paymentProof" type="file" accept="image/jpeg,image/png,image/webp" required>
       </div>
-
-      <button class="main-btn" id="paymentBtn" type="submit">
-        Submit Payment for Approval
-      </button>
-
+      <button class="btn" id="paymentBtn" type="submit">Submit Payment</button>
     </form>
-
     <div id="paymentMessage" class="message"></div>
   </div>
 
   <div class="dash-card">
     <h3>Payment History</h3>
-    <div id="paymentHistory">
-      <p>Payment history will appear here.</p>
-    </div>
+    <div id="paymentHistory">Loading...</div>
   </div>
 
   <div class="dash-card">
     <h3>WhatsApp API Connection</h3>
-    <p>Connection Status:
-      <strong id="whatsappStatus">Not Connected</strong>
-    </p>
-    <p style="font-size:13px;color:#718078;margin-top:8px">
-      Your WhatsApp Cloud API connection will be managed by the admin.
-    </p>
+    <p>Connection: <strong id="whatsappStatus">Checking...</strong></p>
+    <p class="small">Your WhatsApp Cloud API connection is managed by the admin.</p>
   </div>
 
   <div class="dash-card">
     <h3>Your API Keys</h3>
-    <p style="font-size:13px;color:#718078;margin-bottom:12px">
-      Your platform API keys will appear here after admin approval.
-    </p>
-    <div id="apiKeysList">
-      No API key available.
-    </div>
+    <div id="apiKeysList">Loading...</div>
   </div>
-
-  <div class="footer">
-    ADS GROWTH AGENCY | Client Dashboard
-  </div>
-
+  <div class="footer">ADS GROWTH AGENCY | Client Portal</div>
 </div>
 
-<!-- JAVASCRIPT WILL BE ADDED IN PART 3 -->
-</body>
-       </html>
- 
 <script>
-const API = "https://ads-growth-whatsapp-api.onrender.com";
+"use strict";
 
+const API = "https://ads-growth-whatsapp-api.onrender.com";
 let token = localStorage.getItem("ads_growth_token") || "";
 let customer = null;
-
 const $ = id => document.getElementById(id);
 
 async function api(path, options = {}) {
-  const headers = options.headers || {};
+  const headers = new Headers(options.headers || {});
+  if (token) headers.set("Authorization", "Bearer " + token);
 
-  if (token) {
-    headers.Authorization = "Bearer " + token;
-  }
-
-  if (!(options.body instanceof FormData) && options.body) {
-    headers["Content-Type"] = "application/json";
+  if (options.body && !(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
   }
 
   const response = await fetch(API + path, {
     ...options,
     headers
   });
-
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
     throw new Error(data.message || data.error || "Request failed");
   }
-
   return data;
 }
 
@@ -422,12 +222,11 @@ function showLogin() {
 }
 
 // REGISTER
-$("registerForm").addEventListener("submit", async function(e) {
+$("registerForm").addEventListener("submit", async e => {
   e.preventDefault();
-
-  const button = $("registerBtn");
-  button.disabled = true;
-  button.textContent = "Creating Account...";
+  const btn = $("registerBtn");
+  btn.disabled = true;
+  btn.textContent = "Creating Account...";
 
   try {
     const payload = {
@@ -438,43 +237,33 @@ $("registerForm").addEventListener("submit", async function(e) {
       password: $("registerPassword").value
     };
 
-    await api("/api/register", {
+    const result = await api("/api/register", {
       method: "POST",
       body: JSON.stringify(payload)
     });
 
-    const loginData = await api("/api/client/login", {
-      method: "POST",
-      body: JSON.stringify({
-        login: payload.email,
-        password: payload.password
-      })
-    });
+    showMessage("authMessage",
+      result.message || "Account created. Please login.",
+      "success");
 
-    token = loginData.token || loginData.access_token || "";
+    $("registerForm").reset();
+    $("loginIdentity").value = payload.email;
+    showLogin();
 
-    if (!token) {
-      throw new Error("Account created. Please login now.");
-    }
-
-    localStorage.setItem("ads_growth_token", token);
-    await loadDashboard();
-
-  } catch (error) {
-    showMessage("authMessage", error.message, "error");
+  } catch (err) {
+    showMessage("authMessage", err.message, "error");
   } finally {
-    button.disabled = false;
-    button.textContent = "Create Account";
+    btn.disabled = false;
+    btn.textContent = "Create Account";
   }
 });
 
 // LOGIN
-$("loginForm").addEventListener("submit", async function(e) {
+$("loginForm").addEventListener("submit", async e => {
   e.preventDefault();
-
-  const button = $("loginBtn");
-  button.disabled = true;
-  button.textContent = "Logging in...";
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "Logging in...";
 
   try {
     const result = await api("/api/client/login", {
@@ -485,155 +274,168 @@ $("loginForm").addEventListener("submit", async function(e) {
       })
     });
 
-    token = result.token || result.access_token || "";
+    if (!result.token) throw new Error("Login token missing.");
 
-    if (!token) {
-      throw new Error("Login token not received from server.");
-    }
-
+    token = result.token;
     localStorage.setItem("ads_growth_token", token);
     await loadDashboard();
 
-  } catch (error) {
-    showMessage("authMessage", error.message, "error");
+  } catch (err) {
+    showMessage("authMessage", err.message, "error");
   } finally {
-    button.disabled = false;
-    button.textContent = "Login to Dashboard";
+    btn.disabled = false;
+    btn.textContent = "Login to Dashboard";
   }
 });
 
-// LOAD DASHBOARD
+// LOAD CLIENT PROFILE AND DASHBOARD
 async function loadDashboard() {
   try {
     const result = await api("/api/client/me");
-    customer = result.customer || result.data || result;
+    customer = result.customer;
+
+    if (!customer) throw new Error("Client profile not found.");
 
     $("authArea").classList.add("hidden");
     $("dashboardArea").classList.remove("hidden");
 
-    $("clientName").textContent =
-      customer.full_name || customer.name || "Client";
-
+    $("clientName").textContent = customer.full_name || customer.name || "-";
     $("clientEmail").textContent = customer.email || "-";
     $("clientBusiness").textContent = customer.business_name || "-";
-    $("clientStatus").textContent = customer.status || "Pending";
+    $("clientStatus").textContent = customer.status || "pending";
 
-    await loadPaymentDetails();
-    await loadPaymentHistory();
-    await loadWhatsAppStatus();
-    await loadApiKeys();
+    $("planStatus").textContent =
+      customer.status === "approved"
+      ? "Payment approved"
+      : "Payment / admin approval pending";
 
-  } catch (error) {
-    console.error(error);
+    if (customer.status === "approved") {
+      $("paymentCard").classList.add("hidden");
+    } else {
+      $("paymentCard").classList.remove("hidden");
+    }
+
+    await Promise.all([
+      loadPaymentDetails(),
+      loadPaymentHistory(),
+      loadWhatsAppStatus(),
+      loadApiKeys()
+    ]);
+
+  } catch (err) {
+    console.error(err);
     logout();
-    showMessage("authMessage", "Please login again.", "error");
+    showMessage("authMessage", err.message || "Please login again.", "error");
   }
 }
 
-// PAYMENT DETAILS
+// LOAD UPI DETAILS
 async function loadPaymentDetails() {
   try {
     const data = await api("/api/payment/details");
-
-    $("upiId").textContent = data.upi_id || "Contact Admin";
+    $("upiId").textContent = data.upi_id || "Not configured";
     $("upiName").textContent = data.payee_name || "ADS GROWTH";
-  } catch (error) {
+  } catch (err) {
     $("upiId").textContent = "Contact Admin";
     $("upiName").textContent = "ADS GROWTH";
   }
 }
 
 function copyUPI() {
-  const upi = $("upiId").textContent;
-
-  if (!upi || upi === "Loading..." || upi === "Contact Admin") {
-    alert("UPI ID is not available. Please contact admin.");
+  const value = $("upiId").textContent;
+  if (!value || value === "Contact Admin" || value === "Not configured") {
+    alert("UPI ID is not available. Contact admin.");
     return;
   }
-
-  navigator.clipboard.writeText(upi)
-    .then(() => alert("UPI ID copied"))
-    .catch(() => alert("Please copy UPI ID manually: " + upi));
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(value)
+      .then(() => alert("UPI ID copied"))
+      .catch(() => alert("Please copy manually: " + value));
+  } else {
+    alert("Please copy manually: " + value);
+  }
 }
 
-// SUBMIT PAYMENT
-$("paymentForm").addEventListener("submit", async function(e) {
+// PAYMENT SUBMISSION
+$("paymentForm").addEventListener("submit", async e => {
   e.preventDefault();
 
   const utr = $("paymentUTR").value.trim();
   const proof = $("paymentProof").files[0];
 
-  if (!utr || !proof) {
-    showMessage("paymentMessage",
-      "Please enter UTR and upload payment screenshot.", "error");
+  if (!/^[A-Za-z0-9]{8,30}$/.test(utr)) {
+    showMessage("paymentMessage", "Enter a valid UTR (8-30 letters/numbers).", "error");
+    return;
+  }
+  if (!proof) {
+    showMessage("paymentMessage", "Please select payment screenshot.", "error");
+    return;
+  }
+  if (proof.size > 5 * 1024 * 1024) {
+    showMessage("paymentMessage", "Screenshot must be under 5MB.", "error");
     return;
   }
 
-  const button = $("paymentBtn");
-  button.disabled = true;
-  button.textContent = "Submitting...";
+  const btn = $("paymentBtn");
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
 
   try {
-    const formData = new FormData();
-    formData.append("utr", utr);
-    formData.append("amount", "7999");
-    formData.append("payment_method", "UPI");
-    formData.append("proof", proof);
+    const form = new FormData();
+    form.append("utr", utr);
+    form.append("proof", proof);
 
-    await api("/api/payment/submit", {
+    const result = await api("/api/payment/submit", {
       method: "POST",
-      body: formData
+      body: form
     });
 
     showMessage("paymentMessage",
-      "Payment details submitted. Admin approval is pending.", "success");
+      result.message || "Payment submitted for admin verification.",
+      "success");
 
     $("paymentForm").reset();
     await loadPaymentHistory();
 
-  } catch (error) {
-    showMessage("paymentMessage", error.message, "error");
+  } catch (err) {
+    showMessage("paymentMessage", err.message, "error");
   } finally {
-    button.disabled = false;
-    button.textContent = "Submit Payment for Approval";
+    btn.disabled = false;
+    btn.textContent = "Submit Payment";
   }
 });
-</script>
+
 // PAYMENT HISTORY
 async function loadPaymentHistory() {
   try {
     const data = await api("/api/payment/history");
-    const payments = data.payments || data.data || [];
+    const payments = data.payments || [];
+    const area = $("paymentHistory");
+    area.innerHTML = "";
 
     if (!payments.length) {
-      $("paymentHistory").textContent = "No payment history found.";
+      area.textContent = "No payment history found.";
       return;
     }
 
-    $("paymentHistory").innerHTML = "";
-
-    payments.forEach(payment => {
+    payments.forEach(p => {
       const item = document.createElement("div");
-      item.style.cssText =
-        "padding:12px;border-bottom:1px solid #e5eee9;margin-bottom:10px";
+      item.className = "history-item";
 
       const amount = document.createElement("p");
-      amount.textContent = "Amount: ₹" + (payment.amount || 0);
+      amount.textContent = "Amount: ₹" + p.amount;
 
       const utr = document.createElement("p");
-      utr.textContent = "UTR: " + (payment.utr || "-");
+      utr.textContent = "UTR: " + p.utr;
 
       const status = document.createElement("p");
-      status.textContent = "Status: " + (payment.status || "Pending");
-      status.style.fontWeight = "bold";
+      status.textContent = "Status: " + p.status;
 
       item.append(amount, utr, status);
-      $("paymentHistory").appendChild(item);
+      area.appendChild(item);
     });
-
-  } catch (error) {
-    $("paymentHistory").textContent =
-      "Payment history could not be loaded.";
+  } catch (err) {
+    $("paymentHistory").textContent = err.message;
   }
 }
 
@@ -641,52 +443,46 @@ async function loadPaymentHistory() {
 async function loadWhatsAppStatus() {
   try {
     const data = await api("/api/client/whatsapp");
-    const connection = data.connection || data.data || data;
-
     $("whatsappStatus").textContent =
-      connection.status || "Not Connected";
-
-  } catch (error) {
+      data.connected ? "Connected" :
+      (data.connection?.status || "Not Connected");
+  } catch (err) {
     $("whatsappStatus").textContent = "Not Connected";
   }
 }
 
-// API KEYS
+// CLIENT API KEYS
 async function loadApiKeys() {
   try {
     const data = await api("/api/client/api-keys");
-    const keys = data.api_keys || data.keys || data.data || [];
+    const keys = data.api_keys || [];
+    const area = $("apiKeysList");
+    area.innerHTML = "";
 
     if (!keys.length) {
-      $("apiKeysList").textContent =
-        "No API key available. Contact admin.";
+      area.textContent = "No API key available. Contact admin.";
       return;
     }
 
-    $("apiKeysList").innerHTML = "";
-
-    keys.forEach(key => {
+    keys.forEach(k => {
       const item = document.createElement("div");
-      item.style.cssText =
-        "padding:12px;background:#f4f8f6;border-radius:8px;margin-bottom:10px";
+      item.className = "key-item";
 
       const name = document.createElement("p");
-      name.textContent = key.name || "API Key";
+      name.textContent = "Name: " + k.name;
 
       const prefix = document.createElement("p");
-      prefix.textContent =
-        "Key: " + (key.key_prefix || "Hidden for security");
+      prefix.textContent = "Key prefix: " + k.key_prefix;
 
       const status = document.createElement("p");
-      status.textContent = "Status: " + (key.status || "Active");
+      status.textContent = "Status: " + k.status;
 
       item.append(name, prefix, status);
-      $("apiKeysList").appendChild(item);
+      area.appendChild(item);
     });
-
-  } catch (error) {
+  } catch (err) {
     $("apiKeysList").textContent =
-      "API keys could not be loaded.";
+      "API keys will appear after payment approval.";
   }
 }
 
@@ -695,25 +491,18 @@ function logout() {
   localStorage.removeItem("ads_growth_token");
   token = "";
   customer = null;
-
   $("dashboardArea").classList.add("hidden");
   $("authArea").classList.remove("hidden");
-
   $("loginForm").reset();
-  $("registerForm").reset();
-
   showLogin();
 }
 
-// RESTORE SESSION
-async function restoreSession() {
-  if (token) {
-    await loadDashboard();
-  }
+// RESTORE EXISTING SESSION
+if (token) {
+  loadDashboard();
 }
-
-restoreSession();
 </script>
 
 </body>
-</html>
+  </html>
+          
