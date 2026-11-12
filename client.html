@@ -379,9 +379,503 @@ label{
     </div>
 
   </div>
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="hidden">
 
-  <!-- LOGIN SCREEN CONTINUES IN PART 2 -->
+  <div class="heading">
+    <h1>WELCOME<br>BACK</h1>
+    <p>Sign in to your ADS GROWTH workspace</p>
+  </div>
+
+  <form id="loginForm">
+
+    <div class="form-group">
+      <label>WORK EMAIL OR PHONE</label>
+      <div class="field">
+        <span class="field-icon">✉</span>
+        <input id="loginIdentity" type="text"
+          placeholder="Enter email or phone number" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>PASSWORD</label>
+      <div class="field">
+        <span class="field-icon">♙</span>
+        <div class="password-field">
+          <input id="loginPassword" type="password"
+            placeholder="Enter your password" required>
+          <button class="show-btn" type="button"
+            onclick="togglePassword('loginPassword',this)">Show</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="loginBtn" type="submit">
+      Sign in →
+    </button>
+
+  </form>
+
+  <div class="signin">
+    Don't have an account?
+    <button type="button" onclick="showRegister()">Create account</button>
+  </div>
+
 </div>
+
+<!-- CLIENT DASHBOARD -->
+<div id="dashboardScreen" class="hidden">
+
+  <div class="heading">
+    <h1>YOUR<br>WORKSPACE</h1>
+    <p>Manage your ADS GROWTH account</p>
+  </div>
+
+  <div class="dash-card">
+    <h3>Account Details</h3>
+    <p>Name: <strong id="clientName">-</strong></p>
+    <p>Email: <span id="clientEmail">-</span></p>
+    <p>Business: <span id="clientBusiness">-</span></p>
+    <p>Status: <strong id="clientStatus">Pending</strong></p>
+  </div>
+
+  <div class="dash-card">
+    <h3>Business Plan</h3>
+    <p>Monthly Subscription: <strong>₹7,999</strong></p>
+    <p id="planStatus">Payment pending</p>
+  </div>
+
+  <div class="dash-card" id="paymentCard">
+    <h3>UPI Payment</h3>
+    <div class="info">
+      <p>UPI ID</p>
+      <h3 id="upiId">Loading...</h3>
+      <p>Payee: <strong id="upiName">ADS GROWTH</strong></p>
+      <p>Amount: <strong>₹7,999</strong></p>
+    </div>
+
+    <button class="submit-btn" type="button" onclick="copyUPI()">
+      Copy UPI ID
+    </button>
+
+    <form id="paymentForm" style="margin-top:20px">
+      <div class="form-group">
+        <label>PAYMENT UTR</label>
+        <div class="field">
+          <input id="paymentUTR" placeholder="Enter transaction ID" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>PAYMENT SCREENSHOT</label>
+        <input id="paymentProof" type="file"
+          accept="image/jpeg,image/png,image/webp" required>
+      </div>
+
+      <button class="submit-btn" id="paymentBtn" type="submit">
+        Submit Payment →
+      </button>
+    </form>
+    <div id="paymentMessage" class="message"></div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Payment History</h3>
+    <div id="paymentHistory">No payment history yet.</div>
+  </div>
+
+  <div class="dash-card">
+    <h3>WhatsApp API</h3>
+    <p>Connection: <strong id="whatsappStatus">Not Connected</strong></p>
+  </div>
+
+  <div class="dash-card">
+    <h3>Your API Keys</h3>
+    <div id="apiKeysList">No API key available.</div>
+  </div>
+
+  <button class="submit-btn" type="button" onclick="logout()">
+    Logout
+  </button>
+
+</div>
+</div>
+<script>
+"use strict";
+
+const API = "https://ads-growth-whatsapp-api.onrender.com";
+let token = localStorage.getItem("ads_growth_token") || "";
+let customer = null;
+
+const $ = id => document.getElementById(id);
+
+async function api(path, options = {}) {
+  const headers = new Headers(options.headers || {});
+
+  if (token) {
+    headers.set("Authorization", "Bearer " + token);
+  }
+
+  if (options.body && !(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const response = await fetch(API + path, {
+    ...options,
+    headers
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.message || data.error || "Request failed");
+  }
+
+  return data;
+}
+
+function message(id, text, type) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "message " + type;
+}
+
+function showRegister() {
+  $("registerScreen").classList.remove("hidden");
+  $("loginScreen").classList.add("hidden");
+  $("dashboardScreen").classList.add("hidden");
+  $("authMessage").className = "message";
+}
+
+function showLogin() {
+  $("registerScreen").classList.add("hidden");
+  $("loginScreen").classList.remove("hidden");
+  $("dashboardScreen").classList.add("hidden");
+}
+
+function togglePassword(id, button) {
+  const field = $(id);
+
+  if (field.type === "password") {
+    field.type = "text";
+    button.textContent = "Hide";
+  } else {
+    field.type = "password";
+    button.textContent = "Show";
+  }
+}
+
+// REGISTRATION
+$("registerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const btn = $("registerBtn");
+  btn.disabled = true;
+  btn.textContent = "Creating account...";
+
+  try {
+    const phone = $("registerPhone").value.trim();
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+      throw new Error("Enter a valid 10-digit Indian mobile number.");
+    }
+
+    const payload = {
+      business_name: $("businessName").value.trim(),
+      name: $("fullName").value.trim(),
+      email: $("registerEmail").value.trim(),
+      phone: $("countryCode").value + phone,
+      password: $("registerPassword").value
+    };
+
+    await api("/api/register", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+
+    $("loginIdentity").value = payload.email;
+    $("loginPassword").value = "";
+
+    showLogin();
+
+    alert("Account created successfully. Please login.");
+
+  } catch (err) {
+    message("authMessage", err.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Create account →";
+  }
+});
+
+// LOGIN
+$("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "Signing in...";
+
+  try {
+    const result = await api("/api/client/login", {
+      method: "POST",
+      body: JSON.stringify({
+        login: $("loginIdentity").value.trim(),
+        password: $("loginPassword").value
+      })
+    });
+
+    token = result.token || result.access_token || "";
+
+    if (!token) {
+      throw new Error("Login token was not received.");
+    }
+
+    localStorage.setItem("ads_growth_token", token);
+
+    await loadDashboard();
+
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Sign in →";
+  }
+});
+
+// LOAD DASHBOARD
+async function loadDashboard() {
+  try {
+    const result = await api("/api/client/me");
+    customer = result.customer || result.data || result;
+
+    $("registerScreen").classList.add("hidden");
+    $("loginScreen").classList.add("hidden");
+    $("dashboardScreen").classList.remove("hidden");
+
+    $("clientName").textContent =
+      customer.full_name || customer.name || "-";
+
+    $("clientEmail").textContent = customer.email || "-";
+    $("clientBusiness").textContent =
+      customer.business_name || "-";
+
+    $("clientStatus").textContent =
+      customer.status || "Pending";
+
+    $("planStatus").textContent =
+      customer.status === "approved"
+      ? "Account approved"
+      : "Waiting for payment approval";
+
+    if (customer.status === "approved") {
+      $("paymentCard").classList.add("hidden");
+    } else {
+      $("paymentCard").classList.remove("hidden");
+    }
+
+    await Promise.all([
+      loadPaymentDetails(),
+      loadPaymentHistory(),
+      loadWhatsApp(),
+      loadApiKeys()
+    ]);
+
+  } catch (err) {
+    logout();
+    alert("Session expired or login failed. Please login again.");
+  }
+}
+
+// UPI DETAILS
+async function loadPaymentDetails() {
+  try {
+    const data = await api("/api/payment/details");
+
+    $("upiId").textContent = data.upi_id || "Contact Admin";
+    $("upiName").textContent =
+      data.payee_name || "ADS GROWTH";
+
+  } catch (err) {
+    $("upiId").textContent = "Contact Admin";
+  }
+}
+
+// COPY UPI
+function copyUPI() {
+  const value = $("upiId").textContent;
+
+  if (!value || value === "Contact Admin") {
+    alert("UPI ID is not configured.");
+    return;
+  }
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(value)
+      .then(() => alert("UPI ID copied successfully"))
+      .catch(() => alert("Copy UPI ID manually: " + value));
+  } else {
+    alert("Copy UPI ID manually: " + value);
+  }
+}
+
+// PAYMENT SUBMISSION
+$("paymentForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const utr = $("paymentUTR").value.trim();
+  const proof = $("paymentProof").files[0];
+
+  if (!utr || !proof) {
+    message("paymentMessage",
+      "Enter UTR and upload screenshot.", "error");
+    return;
+  }
+
+  if (proof.size > 5 * 1024 * 1024) {
+    message("paymentMessage",
+      "Screenshot must be below 5MB.", "error");
+    return;
+  }
+
+  const btn = $("paymentBtn");
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
+
+  try {
+    const form = new FormData();
+
+    form.append("utr", utr);
+    form.append("amount", "7999");
+    form.append("payment_method", "UPI");
+    form.append("proof", proof);
+
+    const result = await api("/api/payment/submit", {
+      method: "POST",
+      body: form
+    });
+
+    message("paymentMessage",
+      result.message || "Payment submitted for admin approval.",
+      "success");
+
+    $("paymentForm").reset();
+    await loadPaymentHistory();
+
+  } catch (err) {
+    message("paymentMessage", err.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Submit Payment →";
+  }
+});
+
+// PAYMENT HISTORY
+async function loadPaymentHistory() {
+  try {
+    const data = await api("/api/payment/history");
+    const payments = data.payments || data.data || [];
+
+    const area = $("paymentHistory");
+    area.innerHTML = "";
+
+    if (!payments.length) {
+      area.textContent = "No payment history found.";
+      return;
+    }
+
+    payments.forEach(p => {
+      const item = document.createElement("div");
+      item.className = "history-item";
+
+      const amount = document.createElement("p");
+      amount.textContent = "Amount: ₹" + p.amount;
+
+      const utr = document.createElement("p");
+      utr.textContent = "UTR: " + (p.utr || "-");
+
+      const status = document.createElement("p");
+      status.textContent = "Status: " + (p.status || "Pending");
+
+      item.append(amount, utr, status);
+      area.appendChild(item);
+    });
+
+  } catch (err) {
+    $("paymentHistory").textContent =
+      "Payment history could not be loaded.";
+  }
+}
+
+// WHATSAPP STATUS
+async function loadWhatsApp() {
+  try {
+    const data = await api("/api/client/whatsapp");
+    const connection = data.connection || data.data || data;
+
+    $("whatsappStatus").textContent =
+      connection.status || "Not Connected";
+
+  } catch (err) {
+    $("whatsappStatus").textContent = "Not Connected";
+  }
+}
+
+// API KEYS
+async function loadApiKeys() {
+  try {
+    const data = await api("/api/client/api-keys");
+    const keys = data.api_keys || data.keys || [];
+
+    const area = $("apiKeysList");
+    area.innerHTML = "";
+
+    if (!keys.length) {
+      area.textContent = "No API key available yet.";
+      return;
+    }
+
+    keys.forEach(k => {
+      const item = document.createElement("div");
+      item.className = "key-item";
+
+      const name = document.createElement("p");
+      name.textContent = "Name: " + (k.name || "API Key");
+
+      const prefix = document.createElement("p");
+      prefix.textContent =
+        "Key: " + (k.key_prefix || "Protected");
+
+      const status = document.createElement("p");
+      status.textContent = "Status: " + (k.status || "Active");
+
+      item.append(name, prefix, status);
+      area.appendChild(item);
+    });
+
+  } catch (err) {
+    $("apiKeysList").textContent =
+      "API keys are currently unavailable.";
+  }
+}
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem("ads_growth_token");
+  token = "";
+  customer = null;
+
+  $("dashboardScreen").classList.add("hidden");
+  $("loginScreen").classList.remove("hidden");
+}
+
+// RESTORE LOGIN SESSION
+if (token) {
+  loadDashboard();
+}
+</script>
+
 </body>
-              </html>
+  </html>
   
