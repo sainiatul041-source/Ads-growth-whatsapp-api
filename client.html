@@ -1,506 +1,349 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#e9f8ee">
-<title>ADS GROWTH | Create Account</title>
+<meta name="theme-color" content="#e8f7ec">
+<title>ADS GROWTH | Client Portal</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
 :root{
-  --green:#39ad50;
-  --dark:#111827;
-  --muted:#8190a0;
-  --border:#dfe7e5;
+ --green:#39ad50;
+ --dark:#111827;
+ --muted:#8492a1;
+ --border:#dfe7e5;
 }
-
 body{
-  font-family:Arial,sans-serif;
-  background:#e8f7ec;
-  color:var(--dark);
-  min-height:100vh;
-  padding:25px 15px;
-  background-image:
-    radial-gradient(#bce8c7 1px,transparent 1px);
-  background-size:18px 18px;
+ font-family:Arial,sans-serif;
+ background:#e8f7ec;
+ color:var(--dark);
+ min-height:100vh;
+ padding:20px 14px;
+ background-image:radial-gradient(#bce8c7 1px,transparent 1px);
+ background-size:18px 18px;
 }
-
 .page{
-  max-width:630px;
-  margin:auto;
-  background:#fff;
-  border-radius:38px;
-  padding:42px 30px 35px;
-  box-shadow:0 15px 50px rgba(27,93,47,.10);
+ max-width:590px;
+ margin:auto;
+ background:#fff;
+ border-radius:32px;
+ padding:32px 27px 30px;
+ box-shadow:0 15px 45px #1b5d2f12;
 }
-
 .brand{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  margin:0 15px 105px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:17px;
+ margin:0 10px 75px;
 }
-
 .brand-logo{
-  width:85px;
-  height:85px;
-  border-radius:50%;
-  background:white;
-  border:7px solid #f2f8f3;
-  box-shadow:0 8px 22px #00000012;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--green);
-  font-size:30px;
-  font-weight:900;
+ width:70px;height:70px;
+ flex-shrink:0;
+ border-radius:50%;
+ background:white;
+ border:6px solid #f2f8f3;
+ box-shadow:0 7px 20px #00000012;
+ display:flex;align-items:center;justify-content:center;
+ color:var(--green);
+ font-size:26px;font-weight:900;
 }
-
 .brand-text{
-  font-size:34px;
-  font-weight:1000;
-  font-style:italic;
-  line-height:1.35;
-  letter-spacing:-1.5px;
+ font-size:29px;
+ font-weight:1000;
+ font-style:italic;
+ letter-spacing:-1.3px;
 }
-
 .top-label{
-  text-align:center;
-  color:var(--green);
-  font-size:14px;
-  font-weight:900;
-  letter-spacing:5px;
-  margin-bottom:15px;
+ text-align:center;
+ color:var(--green);
+ font-size:12px;
+ font-weight:900;
+ letter-spacing:4px;
+ margin-bottom:13px;
 }
-
 .heading{
-  max-width:470px;
-  margin:0 auto 55px;
+ max-width:440px;
+ margin:0 auto 38px;
 }
-
 .heading h1{
-  font-size:39px;
-  font-weight:1000;
-  font-style:italic;
-  line-height:1.35;
-  letter-spacing:-1px;
-  text-transform:uppercase;
+ font-size:35px;
+ font-weight:1000;
+ font-style:italic;
+ line-height:1.3;
+ letter-spacing:-1px;
 }
-
 .heading p{
-  color:#778493;
-  font-size:20px;
-  margin-top:23px;
-  line-height:1.5;
+ color:#778493;
+ font-size:17px;
+ margin-top:16px;
+ line-height:1.5;
 }
-
-.form-group{
-  margin-bottom:29px;
-}
-
+.form-group{margin-bottom:22px}
 label{
-  display:block;
-  color:#344252;
-  font-size:17px;
-  font-weight:800;
-  letter-spacing:1px;
-  margin-bottom:15px;
+ display:block;
+ color:#344252;
+ font-size:14px;
+ font-weight:800;
+ letter-spacing:.8px;
+ margin-bottom:11px;
 }
-
 .field{
-  display:flex;
-  align-items:center;
-  border:1px solid var(--border);
-  border-radius:24px;
-  height:86px;
-  padding:0 20px;
-  box-shadow:0 3px 6px #00000008;
+ display:flex;
+ align-items:center;
+ height:70px;
+ border:1px solid var(--border);
+ border-radius:19px;
+ padding:0 17px;
+ box-shadow:0 3px 6px #00000008;
 }
-
-.field:focus-within{
-  border:3px solid var(--green);
-}
-
+.field:focus-within{border:2px solid var(--green)}
 .field-icon{
-  color:#9aa9b9;
-  font-size:25px;
-  width:48px;
-  flex-shrink:0;
+ width:42px;
+ flex-shrink:0;
+ color:#9aa9b9;
+ font-size:22px;
 }
-
 .field input{
-  width:100%;
-  border:0;
-  outline:0;
-  font-size:21px;
-  color:#263445;
-  min-width:0;
-  background:transparent;
+ width:100%;
+ min-width:0;
+ border:0;
+ outline:0;
+ background:transparent;
+ font-size:18px;
+ color:#263445;
 }
-
-.field input::placeholder{
-  color:#98a5b5;
-}
-
+.field input::placeholder{color:#98a5b5}
 .phone-row{
-  display:grid;
-  grid-template-columns:200px 1fr;
-  gap:14px;
+ display:grid;
+ grid-template-columns:155px 1fr;
+ gap:10px;
 }
-
 .country{
-  height:86px;
-  border:1px solid var(--border);
-  border-radius:20px;
-  background:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  font-size:20px;
-  color:#526172;
+ height:70px;
+ border:1px solid var(--border);
+ border-radius:18px;
+ background:white;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:7px;
 }
-
 .country select{
-  border:0;
-  outline:0;
-  font-size:17px;
-  background:transparent;
-  width:85px;
+ width:76px;
+ border:0;
+ outline:0;
+ background:transparent;
+ font-size:16px;
 }
-
 .password-field{
-  display:flex;
-  align-items:center;
-  width:100%;
+ display:flex;
+ align-items:center;
+ width:100%;
 }
-
-.password-field input{
-  flex:1;
-  min-width:0;
-}
-
+.password-field input{flex:1;min-width:0}
 .show-btn{
-  color:var(--green);
-  background:none;
-  border:0;
-  font-size:18px;
-  font-weight:bold;
-  padding:8px;
+ color:var(--green);
+ background:none;
+ border:0;
+ font-size:16px;
+ font-weight:bold;
+ padding:8px;
 }
-
 .submit-btn{
-  width:100%;
-  height:82px;
-  background:var(--green);
-  color:white;
-  border:0;
-  border-radius:23px;
-  font-size:22px;
-  font-weight:900;
-  margin-top:0;
-  box-shadow:0 5px 12px #39ad5020;
+ width:100%;
+ height:68px;
+ background:var(--green);
+ color:white;
+ border:0;
+ border-radius:19px;
+ font-size:19px;
+ font-weight:900;
+ box-shadow:0 5px 12px #39ad5020;
 }
-
-.submit-btn:disabled{
-  opacity:.6;
-}
-
+.submit-btn:disabled{opacity:.6}
 .signin{
-  text-align:center;
-  color:#778493;
-  font-size:16px;
-  margin-top:28px;
+ text-align:center;
+ color:#778493;
+ font-size:14px;
+ margin-top:23px;
 }
-
 .signin button{
-  background:none;
-  border:0;
-  color:var(--green);
-  font-weight:900;
-  font-size:16px;
+ background:none;border:0;
+ color:var(--green);
+ font-weight:900;
+ font-size:14px;
 }
-
 .terms{
-  text-align:center;
-  font-size:12px;
-  color:#87938d;
-  line-height:1.7;
-  margin-top:30px;
+ text-align:center;
+ font-size:11px;
+ color:#87938d;
+ line-height:1.7;
+ margin-top:25px;
 }
-
 .message{
-  display:none;
-  margin-top:18px;
-  padding:13px;
-  border-radius:10px;
-  font-size:14px;
-  line-height:1.5;
+ display:none;
+ margin-top:15px;
+ padding:12px;
+ border-radius:9px;
+ font-size:13px;
+ line-height:1.5;
 }
-
 .success{display:block;background:#e7f8ec;color:#087443}
 .error{display:block;background:#fff0ef;color:#b42318}
 .hidden{display:none!important}
-
-@media(max-width:520px){
-  body{padding:0;background:#e8f7ec}
-  .page{
-    border-radius:0 0 25px 25px;
-    padding:32px 28px 35px;
-  }
-  .brand{
-    margin:0 15px 105px;
-    gap:18px;
-  }
-  .brand-logo{
-    width:82px;
-    height:82px;
-  }
-  .brand-text{font-size:31px}
-  .heading{margin-bottom:52px}
-  .heading h1{font-size:39px}
-  .heading p{font-size:20px}
-  .field{height:86px}
-  .phone-row{grid-template-columns:42% 1fr;gap:12px}
-  .country{height:86px;gap:5px}
-  .country select{width:70px}
-  .field input{font-size:19px}
-  label{font-size:16px}
+.dash-card{
+ background:white;
+ border:1px solid #e1ebe5;
+ border-radius:14px;
+ padding:17px;
+ margin-bottom:14px;
 }
-
-@media(max-width:370px){
-  .page{padding-left:19px;padding-right:19px}
-  .brand-text{font-size:27px}
-  .heading h1{font-size:34px}
-  .phone-row{grid-template-columns:40% 1fr}
+.dash-card h3{color:#075e45;margin-bottom:11px}
+.dash-card p{font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+.info{
+ background:#edf8f1;
+ padding:13px;
+ border-radius:10px;
+ margin:12px 0;
+}
+.history-item,.key-item{
+ padding:11px;
+ border-bottom:1px solid #e5eee9;
+ font-size:13px;
+ line-height:1.8;
+}
+.footer{
+ text-align:center;
+ color:#89968f;
+ font-size:11px;
+ padding:18px 0;
+}
+@media(max-width:520px){
+ body{padding:12px 10px}
+ .page{padding:27px 21px 25px;border-radius:27px}
+ .brand{margin-bottom:69px;gap:14px}
+ .brand-logo{width:65px;height:65px}
+ .brand-text{font-size:27px}
+ .heading{margin-bottom:34px}
+ .heading h1{font-size:33px}
+ .heading p{font-size:16px}
+ .form-group{margin-bottom:19px}
+ .field,.country{height:66px}
+ .field input{font-size:16px}
+ .phone-row{grid-template-columns:125px 1fr;gap:8px}
+ .country select{width:65px;font-size:14px}
+ .submit-btn{height:64px;font-size:17px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="page">
 
-  <div class="top-label">WORKSPACE LOGIN</div>
+<div class="top-label">WORKSPACE LOGIN</div>
 
-  <div class="brand">
-    <div class="brand-logo">AG</div>
-    <div class="brand-text">
-      ADS GROWTH
-    </div>
-  </div>
-
-  <div id="registerScreen">
-
-    <div class="heading">
-      <h1>CREATE YOUR<br>ACCOUNT</h1>
-      <p>Get started with your free account today</p>
-    </div>
-
-    <form id="registerForm">
-
-      <div class="form-group">
-        <label>BUSINESS NAME</label>
-        <div class="field">
-          <span class="field-icon">▦</span>
-          <input id="businessName" type="text"
-            placeholder="Your Company Name" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>FULL NAME</label>
-        <div class="field">
-          <span class="field-icon">♙</span>
-          <input id="fullName" type="text"
-            placeholder="John Doe" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>WORK EMAIL</label>
-        <div class="field">
-          <span class="field-icon">✉</span>
-          <input id="registerEmail" type="email"
-            placeholder="name@company.com" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>PHONE NUMBER</label>
-        <div class="phone-row">
-          <div class="country">
-            🇮🇳
-            <select id="countryCode">
-              <option value="+91">+91</option>
-            </select>
-          </div>
-          <div class="field">
-            <span class="field-icon">♧</span>
-            <input id="registerPhone" type="tel"
-              inputmode="numeric" maxlength="10"
-              placeholder="10-digit mobile number" required>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>PASSWORD</label>
-        <div class="field">
-          <span class="field-icon">♙</span>
-          <div class="password-field">
-            <input id="registerPassword" type="password"
-              minlength="8" placeholder="Create a strong password" required>
-            <button class="show-btn" type="button"
-              onclick="togglePassword('registerPassword',this)">Show</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="submit-btn" id="registerBtn" type="submit">
-        Create account →
-      </button>
-
-    </form>
-
-    <div class="signin">
-      Already have an account?
-      <button type="button" onclick="showLogin()">Sign in</button>
-    </div>
-
-    <div id="authMessage" class="message"></div>
-
-    <div class="terms">
-      By creating an account, you agree to our
-      Terms & Conditions and Privacy Policy.
-    </div>
-
-  </div>
-<!-- LOGIN SCREEN -->
-<div id="loginScreen" class="hidden">
-
-  <div class="heading">
-    <h1>WELCOME<br>BACK</h1>
-    <p>Sign in to your ADS GROWTH workspace</p>
-  </div>
-
-  <form id="loginForm">
-
-    <div class="form-group">
-      <label>WORK EMAIL OR PHONE</label>
-      <div class="field">
-        <span class="field-icon">✉</span>
-        <input id="loginIdentity" type="text"
-          placeholder="Enter email or phone number" required>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>PASSWORD</label>
-      <div class="field">
-        <span class="field-icon">♙</span>
-        <div class="password-field">
-          <input id="loginPassword" type="password"
-            placeholder="Enter your password" required>
-          <button class="show-btn" type="button"
-            onclick="togglePassword('loginPassword',this)">Show</button>
-        </div>
-      </div>
-    </div>
-
-    <button class="submit-btn" id="loginBtn" type="submit">
-      Sign in →
-    </button>
-
-  </form>
-
-  <div class="signin">
-    Don't have an account?
-    <button type="button" onclick="showRegister()">Create account</button>
-  </div>
-
+<div class="brand">
+ <div class="brand-logo">AG</div>
+ <div class="brand-text">ADS GROWTH</div>
 </div>
+
+<!-- REGISTRATION -->
+<div id="registerScreen">
+ <div class="heading">
+  <h1>CREATE YOUR<br>ACCOUNT</h1>
+  <p>Get started with your account today</p>
+ </div>
 
 <!-- CLIENT DASHBOARD -->
 <div id="dashboardScreen" class="hidden">
 
-  <div class="heading">
-    <h1>YOUR<br>WORKSPACE</h1>
-    <p>Manage your ADS GROWTH account</p>
+ <div class="heading" style="margin-top:25px">
+  <h1>YOUR<br>WORKSPACE</h1>
+  <p>Manage your ADS GROWTH account</p>
+ </div>
+
+ <div class="dash-card">
+  <h3>Account Details</h3>
+  <p>Name: <strong id="clientName">-</strong></p>
+  <p>Email: <span id="clientEmail">-</span></p>
+  <p>Business: <span id="clientBusiness">-</span></p>
+  <p>Status: <strong id="clientStatus">Pending</strong></p>
+ </div>
+
+ <div class="dash-card">
+  <h3>Subscription Plan</h3>
+  <p>Plan: <strong>Business Plan</strong></p>
+  <p>Monthly Price: <strong>₹7,999</strong></p>
+  <p id="planStatus">Payment pending</p>
+ </div>
+
+ <div class="dash-card" id="paymentCard">
+  <h3>UPI Payment</h3>
+  <p>Pay ₹7,999 and submit your transaction details for verification.</p>
+
+  <div class="info">
+   <p>UPI ID</p>
+   <h3 id="upiId">Loading...</h3>
+   <p>Payee: <strong id="upiName">ADS GROWTH</strong></p>
+   <p>Amount: <strong>₹7,999</strong></p>
   </div>
 
-  <div class="dash-card">
-    <h3>Account Details</h3>
-    <p>Name: <strong id="clientName">-</strong></p>
-    <p>Email: <span id="clientEmail">-</span></p>
-    <p>Business: <span id="clientBusiness">-</span></p>
-    <p>Status: <strong id="clientStatus">Pending</strong></p>
-  </div>
-
-  <div class="dash-card">
-    <h3>Business Plan</h3>
-    <p>Monthly Subscription: <strong>₹7,999</strong></p>
-    <p id="planStatus">Payment pending</p>
-  </div>
-
-  <div class="dash-card" id="paymentCard">
-    <h3>UPI Payment</h3>
-    <div class="info">
-      <p>UPI ID</p>
-      <h3 id="upiId">Loading...</h3>
-      <p>Payee: <strong id="upiName">ADS GROWTH</strong></p>
-      <p>Amount: <strong>₹7,999</strong></p>
-    </div>
-
-    <button class="submit-btn" type="button" onclick="copyUPI()">
-      Copy UPI ID
-    </button>
-
-    <form id="paymentForm" style="margin-top:20px">
-      <div class="form-group">
-        <label>PAYMENT UTR</label>
-        <div class="field">
-          <input id="paymentUTR" placeholder="Enter transaction ID" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>PAYMENT SCREENSHOT</label>
-        <input id="paymentProof" type="file"
-          accept="image/jpeg,image/png,image/webp" required>
-      </div>
-
-      <button class="submit-btn" id="paymentBtn" type="submit">
-        Submit Payment →
-      </button>
-    </form>
-    <div id="paymentMessage" class="message"></div>
-  </div>
-
-  <div class="dash-card">
-    <h3>Payment History</h3>
-    <div id="paymentHistory">No payment history yet.</div>
-  </div>
-
-  <div class="dash-card">
-    <h3>WhatsApp API</h3>
-    <p>Connection: <strong id="whatsappStatus">Not Connected</strong></p>
-  </div>
-
-  <div class="dash-card">
-    <h3>Your API Keys</h3>
-    <div id="apiKeysList">No API key available.</div>
-  </div>
-
-  <button class="submit-btn" type="button" onclick="logout()">
-    Logout
+  <button class="submit-btn" type="button" onclick="copyUPI()">
+   Copy UPI ID
   </button>
 
+  <form id="paymentForm" style="margin-top:18px">
+   <div class="form-group">
+    <label>PAYMENT UTR / TRANSACTION ID</label>
+    <div class="field">
+     <input id="paymentUTR" placeholder="Enter transaction ID" required>
+    </div>
+   </div>
+
+   <div class="form-group">
+    <label>PAYMENT SCREENSHOT</label>
+    <input id="paymentProof" type="file"
+     accept="image/jpeg,image/png,image/webp" required>
+   </div>
+
+   <button class="submit-btn" id="paymentBtn" type="submit">
+    Submit Payment →
+   </button>
+  </form>
+
+  <div id="paymentMessage" class="message"></div>
+ </div>
+
+ <div class="dash-card">
+  <h3>Payment History</h3>
+  <div id="paymentHistory">No payment history yet.</div>
+ </div>
+
+ <div class="dash-card">
+  <h3>WhatsApp API Connection</h3>
+  <p>Connection: <strong id="whatsappStatus">Not Connected</strong></p>
+  <p>WhatsApp Cloud API connection will be managed by admin.</p>
+ </div>
+
+ <div class="dash-card">
+  <h3>Your API Keys</h3>
+  <div id="apiKeysList">No API key available.</div>
+ </div>
+
+ <button class="submit-btn" type="button" onclick="logout()">
+  Logout
+ </button>
 </div>
+
+<div class="footer">
+ © 2026 ADS GROWTH AGENCY. All rights reserved.
 </div>
+
+</div>
+<!-- MAIN PAGE ENDS HERE -->
+  
 <script>
 "use strict";
 
@@ -511,368 +354,356 @@ let customer = null;
 const $ = id => document.getElementById(id);
 
 async function api(path, options = {}) {
-  const headers = new Headers(options.headers || {});
+ const headers = new Headers(options.headers || {});
 
-  if (token) {
-    headers.set("Authorization", "Bearer " + token);
-  }
+ if (token) headers.set("Authorization", "Bearer " + token);
 
-  if (options.body && !(options.body instanceof FormData)) {
-    headers.set("Content-Type", "application/json");
-  }
+ if (options.body && !(options.body instanceof FormData)) {
+  headers.set("Content-Type", "application/json");
+ }
 
-  const response = await fetch(API + path, {
-    ...options,
-    headers
-  });
+ const response = await fetch(API + path, {
+  ...options,
+  headers
+ });
 
-  const data = await response.json().catch(() => ({}));
+ const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    throw new Error(data.message || data.error || "Request failed");
-  }
+ if (!response.ok) {
+  throw new Error(data.message || data.error || "Request failed");
+ }
 
-  return data;
+ return data;
 }
 
-function message(id, text, type) {
-  const el = $(id);
-  el.textContent = text;
-  el.className = "message " + type;
+function showMessage(id, text, type) {
+ const el = $(id);
+ el.textContent = text;
+ el.className = "message " + type;
 }
 
 function showRegister() {
-  $("registerScreen").classList.remove("hidden");
-  $("loginScreen").classList.add("hidden");
-  $("dashboardScreen").classList.add("hidden");
-  $("authMessage").className = "message";
+ $("registerScreen").classList.remove("hidden");
+ $("loginScreen").classList.add("hidden");
+ $("dashboardScreen").classList.add("hidden");
+ $("authMessage").className = "message";
 }
 
 function showLogin() {
-  $("registerScreen").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
-  $("dashboardScreen").classList.add("hidden");
+ $("registerScreen").classList.add("hidden");
+ $("loginScreen").classList.remove("hidden");
+ $("dashboardScreen").classList.add("hidden");
 }
 
 function togglePassword(id, button) {
-  const field = $(id);
+ const field = $(id);
 
-  if (field.type === "password") {
-    field.type = "text";
-    button.textContent = "Hide";
-  } else {
-    field.type = "password";
-    button.textContent = "Show";
-  }
+ if (field.type === "password") {
+  field.type = "text";
+  button.textContent = "Hide";
+ } else {
+  field.type = "password";
+  button.textContent = "Show";
+ }
 }
 
 // REGISTRATION
 $("registerForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+ e.preventDefault();
 
-  const btn = $("registerBtn");
-  btn.disabled = true;
-  btn.textContent = "Creating account...";
+ const btn = $("registerBtn");
+ btn.disabled = true;
+ btn.textContent = "Creating account...";
 
-  try {
-    const phone = $("registerPhone").value.trim();
+ try {
+  const phone = $("registerPhone").value.trim();
 
-    if (!/^[0-9]{10}$/.test(phone)) {
-      throw new Error("Enter a valid 10-digit Indian mobile number.");
-    }
-
-    const payload = {
-      business_name: $("businessName").value.trim(),
-      name: $("fullName").value.trim(),
-      email: $("registerEmail").value.trim(),
-      phone: $("countryCode").value + phone,
-      password: $("registerPassword").value
-    };
-
-    await api("/api/register", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-
-    $("loginIdentity").value = payload.email;
-    $("loginPassword").value = "";
-
-    showLogin();
-
-    alert("Account created successfully. Please login.");
-
-  } catch (err) {
-    message("authMessage", err.message, "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Create account →";
+  if (!/^[0-9]{10}$/.test(phone)) {
+   throw new Error("Enter a valid 10-digit mobile number.");
   }
+
+  const payload = {
+   business_name: $("businessName").value.trim(),
+   name: $("fullName").value.trim(),
+   email: $("registerEmail").value.trim(),
+   phone: $("countryCode").value + phone,
+   password: $("registerPassword").value
+  };
+
+  const result = await api("/api/register", {
+   method: "POST",
+   body: JSON.stringify(payload)
+  });
+
+  $("registerForm").reset();
+  $("loginIdentity").value = payload.email;
+
+  showLogin();
+  alert(result.message || "Account created. Please login.");
+
+ } catch (err) {
+  showMessage("authMessage", err.message, "error");
+ } finally {
+  btn.disabled = false;
+  btn.textContent = "Create account →";
+ }
 });
 
 // LOGIN
 $("loginForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+ e.preventDefault();
 
-  const btn = $("loginBtn");
-  btn.disabled = true;
-  btn.textContent = "Signing in...";
+ const btn = $("loginBtn");
+ btn.disabled = true;
+ btn.textContent = "Signing in...";
 
-  try {
-    const result = await api("/api/client/login", {
-      method: "POST",
-      body: JSON.stringify({
-        login: $("loginIdentity").value.trim(),
-        password: $("loginPassword").value
-      })
-    });
+ try {
+  const result = await api("/api/client/login", {
+   method: "POST",
+   body: JSON.stringify({
+    login: $("loginIdentity").value.trim(),
+    password: $("loginPassword").value
+   })
+  });
 
-    token = result.token || result.access_token || "";
+  token = result.token || result.access_token || "";
 
-    if (!token) {
-      throw new Error("Login token was not received.");
-    }
-
-    localStorage.setItem("ads_growth_token", token);
-
-    await loadDashboard();
-
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Sign in →";
+  if (!token) {
+   throw new Error("Login token not received.");
   }
+
+  localStorage.setItem("ads_growth_token", token);
+  await loadDashboard();
+
+ } catch (err) {
+  alert(err.message);
+ } finally {
+  btn.disabled = false;
+  btn.textContent = "Sign in →";
+ }
 });
 
 // LOAD DASHBOARD
 async function loadDashboard() {
-  try {
-    const result = await api("/api/client/me");
-    customer = result.customer || result.data || result;
+ try {
+  const result = await api("/api/client/me");
+  customer = result.customer || result.data || result;
 
-    $("registerScreen").classList.add("hidden");
-    $("loginScreen").classList.add("hidden");
-    $("dashboardScreen").classList.remove("hidden");
+  $("registerScreen").classList.add("hidden");
+  $("loginScreen").classList.add("hidden");
+  $("dashboardScreen").classList.remove("hidden");
 
-    $("clientName").textContent =
-      customer.full_name || customer.name || "-";
+  $("clientName").textContent =
+   customer.full_name || customer.name || "-";
 
-    $("clientEmail").textContent = customer.email || "-";
-    $("clientBusiness").textContent =
-      customer.business_name || "-";
+  $("clientEmail").textContent = customer.email || "-";
+  $("clientBusiness").textContent = customer.business_name || "-";
+  $("clientStatus").textContent = customer.status || "Pending";
 
-    $("clientStatus").textContent =
-      customer.status || "Pending";
+  $("planStatus").textContent =
+   customer.status === "approved"
+   ? "Account approved"
+   : "Payment / admin approval pending";
 
-    $("planStatus").textContent =
-      customer.status === "approved"
-      ? "Account approved"
-      : "Waiting for payment approval";
+  $("paymentCard").classList.toggle(
+   "hidden", customer.status === "approved"
+  );
 
-    if (customer.status === "approved") {
-      $("paymentCard").classList.add("hidden");
-    } else {
-      $("paymentCard").classList.remove("hidden");
-    }
+  await Promise.all([
+   loadPaymentDetails(),
+   loadPaymentHistory(),
+   loadWhatsApp(),
+   loadApiKeys()
+  ]);
 
-    await Promise.all([
-      loadPaymentDetails(),
-      loadPaymentHistory(),
-      loadWhatsApp(),
-      loadApiKeys()
-    ]);
-
-  } catch (err) {
-    logout();
-    alert("Session expired or login failed. Please login again.");
-  }
+ } catch (err) {
+  console.error(err);
+  logout();
+  alert("Session expired. Please login again.");
+ }
 }
 
 // UPI DETAILS
 async function loadPaymentDetails() {
-  try {
-    const data = await api("/api/payment/details");
+ try {
+  const data = await api("/api/payment/details");
 
-    $("upiId").textContent = data.upi_id || "Contact Admin";
-    $("upiName").textContent =
-      data.payee_name || "ADS GROWTH";
+  $("upiId").textContent = data.upi_id || "Contact Admin";
+  $("upiName").textContent = data.payee_name || "ADS GROWTH";
 
-  } catch (err) {
-    $("upiId").textContent = "Contact Admin";
-  }
+ } catch (err) {
+  $("upiId").textContent = "Contact Admin";
+ }
 }
 
 // COPY UPI
 function copyUPI() {
-  const value = $("upiId").textContent;
+ const value = $("upiId").textContent;
 
-  if (!value || value === "Contact Admin") {
-    alert("UPI ID is not configured.");
-    return;
-  }
+ if (!value || value === "Contact Admin") {
+  alert("UPI ID is not configured.");
+  return;
+ }
 
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(value)
-      .then(() => alert("UPI ID copied successfully"))
-      .catch(() => alert("Copy UPI ID manually: " + value));
-  } else {
-    alert("Copy UPI ID manually: " + value);
-  }
+ if (navigator.clipboard) {
+  navigator.clipboard.writeText(value)
+   .then(() => alert("UPI ID copied"))
+   .catch(() => alert("Copy manually: " + value));
+ } else {
+  alert("Copy manually: " + value);
+ }
 }
 
 // PAYMENT SUBMISSION
 $("paymentForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+ e.preventDefault();
 
-  const utr = $("paymentUTR").value.trim();
-  const proof = $("paymentProof").files[0];
+ const utr = $("paymentUTR").value.trim();
+ const proof = $("paymentProof").files[0];
 
-  if (!utr || !proof) {
-    message("paymentMessage",
-      "Enter UTR and upload screenshot.", "error");
-    return;
-  }
+ if (!utr || !proof) {
+  showMessage("paymentMessage", "Enter UTR and screenshot.", "error");
+  return;
+ }
 
-  if (proof.size > 5 * 1024 * 1024) {
-    message("paymentMessage",
-      "Screenshot must be below 5MB.", "error");
-    return;
-  }
+ if (proof.size > 5 * 1024 * 1024) {
+  showMessage("paymentMessage", "Screenshot must be below 5MB.", "error");
+  return;
+ }
 
-  const btn = $("paymentBtn");
-  btn.disabled = true;
-  btn.textContent = "Submitting...";
+ const btn = $("paymentBtn");
+ btn.disabled = true;
+ btn.textContent = "Submitting...";
 
-  try {
-    const form = new FormData();
+ try {
+  const form = new FormData();
+  form.append("utr", utr);
+  form.append("amount", "7999");
+  form.append("payment_method", "UPI");
+  form.append("proof", proof);
 
-    form.append("utr", utr);
-    form.append("amount", "7999");
-    form.append("payment_method", "UPI");
-    form.append("proof", proof);
+  const result = await api("/api/payment/submit", {
+   method: "POST",
+   body: form
+  });
 
-    const result = await api("/api/payment/submit", {
-      method: "POST",
-      body: form
-    });
+  showMessage(
+   "paymentMessage",
+   result.message || "Payment submitted for admin approval.",
+   "success"
+  );
 
-    message("paymentMessage",
-      result.message || "Payment submitted for admin approval.",
-      "success");
+  $("paymentForm").reset();
+  await loadPaymentHistory();
 
-    $("paymentForm").reset();
-    await loadPaymentHistory();
-
-  } catch (err) {
-    message("paymentMessage", err.message, "error");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Submit Payment →";
-  }
+ } catch (err) {
+  showMessage("paymentMessage", err.message, "error");
+ } finally {
+  btn.disabled = false;
+  btn.textContent = "Submit Payment →";
+ }
 });
 
 // PAYMENT HISTORY
 async function loadPaymentHistory() {
-  try {
-    const data = await api("/api/payment/history");
-    const payments = data.payments || data.data || [];
+ try {
+  const data = await api("/api/payment/history");
+  const payments = data.payments || data.data || [];
+  const area = $("paymentHistory");
 
-    const area = $("paymentHistory");
-    area.innerHTML = "";
+  area.innerHTML = "";
 
-    if (!payments.length) {
-      area.textContent = "No payment history found.";
-      return;
-    }
-
-    payments.forEach(p => {
-      const item = document.createElement("div");
-      item.className = "history-item";
-
-      const amount = document.createElement("p");
-      amount.textContent = "Amount: ₹" + p.amount;
-
-      const utr = document.createElement("p");
-      utr.textContent = "UTR: " + (p.utr || "-");
-
-      const status = document.createElement("p");
-      status.textContent = "Status: " + (p.status || "Pending");
-
-      item.append(amount, utr, status);
-      area.appendChild(item);
-    });
-
-  } catch (err) {
-    $("paymentHistory").textContent =
-      "Payment history could not be loaded.";
+  if (!payments.length) {
+   area.textContent = "No payment history found.";
+   return;
   }
+
+  payments.forEach(p => {
+   const item = document.createElement("div");
+   item.className = "history-item";
+
+   const amount = document.createElement("p");
+   amount.textContent = "Amount: ₹" + p.amount;
+
+   const utr = document.createElement("p");
+   utr.textContent = "UTR: " + (p.utr || "-");
+
+   const status = document.createElement("p");
+   status.textContent = "Status: " + (p.status || "Pending");
+
+   item.append(amount, utr, status);
+   area.appendChild(item);
+  });
+
+ } catch (err) {
+  $("paymentHistory").textContent = "History could not be loaded.";
+ }
 }
 
 // WHATSAPP STATUS
 async function loadWhatsApp() {
-  try {
-    const data = await api("/api/client/whatsapp");
-    const connection = data.connection || data.data || data;
+ try {
+  const data = await api("/api/client/whatsapp");
+  const connection = data.connection || data.data || data;
 
-    $("whatsappStatus").textContent =
-      connection.status || "Not Connected";
+  $("whatsappStatus").textContent =
+   connection.status || "Not Connected";
 
-  } catch (err) {
-    $("whatsappStatus").textContent = "Not Connected";
-  }
+ } catch (err) {
+  $("whatsappStatus").textContent = "Not Connected";
+ }
 }
 
 // API KEYS
 async function loadApiKeys() {
-  try {
-    const data = await api("/api/client/api-keys");
-    const keys = data.api_keys || data.keys || [];
+ try {
+  const data = await api("/api/client/api-keys");
+  const keys = data.api_keys || data.keys || data.data || [];
+  const area = $("apiKeysList");
 
-    const area = $("apiKeysList");
-    area.innerHTML = "";
+  area.innerHTML = "";
 
-    if (!keys.length) {
-      area.textContent = "No API key available yet.";
-      return;
-    }
-
-    keys.forEach(k => {
-      const item = document.createElement("div");
-      item.className = "key-item";
-
-      const name = document.createElement("p");
-      name.textContent = "Name: " + (k.name || "API Key");
-
-      const prefix = document.createElement("p");
-      prefix.textContent =
-        "Key: " + (k.key_prefix || "Protected");
-
-      const status = document.createElement("p");
-      status.textContent = "Status: " + (k.status || "Active");
-
-      item.append(name, prefix, status);
-      area.appendChild(item);
-    });
-
-  } catch (err) {
-    $("apiKeysList").textContent =
-      "API keys are currently unavailable.";
+  if (!Array.isArray(keys) || !keys.length) {
+   area.textContent = "No API key available yet.";
+   return;
   }
+
+  keys.forEach(k => {
+   const item = document.createElement("div");
+   item.className = "key-item";
+
+   const name = document.createElement("p");
+   name.textContent = "Name: " + (k.name || "API Key");
+
+   const prefix = document.createElement("p");
+   prefix.textContent = "Key prefix: " + (k.key_prefix || "Protected");
+
+   const status = document.createElement("p");
+   status.textContent = "Status: " + (k.status || "Active");
+
+   item.append(name, prefix, status);
+   area.appendChild(item);
+  });
+
+ } catch (err) {
+  $("apiKeysList").textContent = "API keys unavailable.";
+ }
 }
 
 // LOGOUT
 function logout() {
-  localStorage.removeItem("ads_growth_token");
-  token = "";
-  customer = null;
+ localStorage.removeItem("ads_growth_token");
+ token = "";
+ customer = null;
 
-  $("dashboardScreen").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
+ $("dashboardScreen").classList.add("hidden");
+ $("loginScreen").classList.remove("hidden");
+ $("loginForm").reset();
 }
 
-// RESTORE LOGIN SESSION
+// RESTORE SESSION
 if (token) {
-  loadDashboard();
+ loadDashboard();
 }
 </script>
 
