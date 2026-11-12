@@ -6,414 +6,886 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
 <title>ADS GROWTH | Admin Control Center</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
- --bg:#07111f;--panel:#101d2d;--panel2:#142438;
- --green:#20c779;--green2:#13a968;--text:#f3f7fb;
- --muted:#91a2b6;--line:#25364a;--red:#fb6474;
- --yellow:#f5bd4f;--blue:#60a5fa;
+--bg:#07111f;
+--panel:#101d2d;
+--panel2:#142438;
+--green:#20c779;
+--green2:#13a968;
+--text:#f3f7fb;
+--muted:#91a2b6;
+--line:#25364a;
+--red:#fb6474;
+--yellow:#f5bd4f;
 }
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}
+
+body{
+font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+button,input,select{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;
- background:radial-gradient(circle at top right,#123c35 0,transparent 38%)}
-.login-card{width:100%;max-width:420px;background:var(--panel);
- border:1px solid var(--line);border-radius:23px;padding:32px;
- box-shadow:0 25px 70px #0008}
-.logo{width:52px;height:52px;border-radius:16px;background:#123f32;
- display:grid;place-items:center;color:var(--green);font-weight:900;font-size:21px}
-.brand{display:flex;align-items:center;gap:13px;margin-bottom:30px}
+
+.login-wrap{
+min-height:100vh;
+display:grid;
+place-items:center;
+padding:20px;
+background:radial-gradient(circle at top right,#123c35,transparent 45%);
+}
+
+.login-card{
+width:100%;
+max-width:420px;
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:23px;
+padding:30px;
+box-shadow:0 25px 70px #0008;
+}
+
+.logo{
+width:52px;
+height:52px;
+border-radius:16px;
+background:#123f32;
+display:grid;
+place-items:center;
+color:var(--green);
+font-weight:900;
+font-size:21px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:13px;
+margin-bottom:30px;
+}
+
 .brand h2{font-size:20px;font-style:italic}
 .brand p{font-size:11px;color:var(--muted);margin-top:5px}
+
 .login-card h1{font-size:27px;margin-bottom:9px}
-.sub{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:25px}
-.field-label{display:block;color:#b9c7d6;font-size:12px;font-weight:bold;margin:17px 0 9px}
-.field{width:100%;height:48px;border-radius:11px;border:1px solid var(--line);
- background:#091625;color:white;padding:0 14px;outline:none}
+
+.sub{
+color:var(--muted);
+font-size:13px;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.field-label{
+display:block;
+color:#b9c7d6;
+font-size:12px;
+font-weight:bold;
+margin:17px 0 9px;
+}
+
+.field{
+width:100%;
+height:49px;
+border-radius:11px;
+border:1px solid var(--line);
+background:#091625;
+color:white;
+padding:0 14px;
+outline:none;
+}
+
 .field:focus{border-color:var(--green)}
-.btn{border:0;border-radius:11px;padding:13px 17px;font-weight:800}
+
+.btn{
+border:0;
+border-radius:11px;
+padding:13px 17px;
+font-weight:800;
+}
+
 .btn-green{background:var(--green);color:#062416}
 .btn-dark{background:#203249;color:white;border:1px solid #34465a}
 .btn-red{background:#51232d;color:#ffb5bd}
 .btn-small{padding:8px 11px;font-size:12px}
 .full{width:100%;margin-top:22px}
-.error{color:#ff8b97;font-size:13px;margin-top:12px}
+
+.error{
+color:#ff8b97;
+font-size:13px;
+margin-top:12px;
+}
+
 .app{min-height:100vh}
-.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#0b1726;
- border-right:1px solid var(--line);padding:22px 15px;z-index:10}
-.side-brand{display:flex;align-items:center;gap:11px;padding:5px 7px 28px}
+
+.sidebar{
+position:fixed;
+inset:0 auto 0 0;
+width:245px;
+background:#0b1726;
+border-right:1px solid var(--line);
+padding:22px 15px;
+z-index:10;
+}
+
+.side-brand{
+display:flex;
+align-items:center;
+gap:11px;
+padding:5px 7px 28px;
+}
+
 .side-brand .logo{width:43px;height:43px}
 .side-brand h2{font-size:17px;font-style:italic}
 .side-brand p{font-size:10px;color:var(--muted);margin-top:4px}
-.nav-title{font-size:10px;letter-spacing:2px;color:#6f8299;
- padding:17px 10px 9px;font-weight:bold}
-.nav-btn{width:100%;border:0;background:transparent;color:#aab9ca;
- padding:12px 13px;border-radius:10px;text-align:left;
- display:flex;align-items:center;gap:12px;font-size:13px;margin:3px 0}
-.nav-btn:hover,.nav-btn.active{background:#123c32;color:#55e4a0}
+
+.nav-title{
+font-size:10px;
+letter-spacing:2px;
+color:#6f8299;
+padding:17px 10px 9px;
+font-weight:bold;
+}
+
+.nav-btn{
+width:100%;
+border:0;
+background:transparent;
+color:#aab9ca;
+padding:12px 13px;
+border-radius:10px;
+text-align:left;
+display:flex;
+align-items:center;
+gap:12px;
+font-size:13px;
+margin:3px 0;
+}
+
+.nav-btn:hover,.nav-btn.active{
+background:#123c32;
+color:#55e4a0;
+}
+
 .nav-icon{width:20px;text-align:center;font-size:16px}
-.side-bottom{position:absolute;bottom:20px;left:15px;right:15px}
-.admin-tag{border:1px solid var(--line);padding:12px;border-radius:12px;
- color:var(--muted);font-size:11px;margin-bottom:10px;overflow-wrap:anywhere}
-.main{margin-left:245px;padding:25px 30px;min-height:100vh}
-.topbar{display:flex;justify-content:space-between;align-items:center;
- gap:15px;margin-bottom:27px}
+
+.side-bottom{
+position:absolute;
+bottom:20px;
+left:15px;
+right:15px;
+}
+
+.admin-tag{
+border:1px solid var(--line);
+padding:12px;
+border-radius:12px;
+color:var(--muted);
+font-size:11px;
+margin-bottom:10px;
+overflow-wrap:anywhere;
+}
+
+.main{
+margin-left:245px;
+padding:25px 30px;
+min-height:100vh;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:27px;
+}
+
 .topbar h1{font-size:24px}
 .topbar p{font-size:12px;color:var(--muted);margin-top:6px}
+
 .top-actions{display:flex;gap:9px;align-items:center}
-.status-pill{font-size:11px;color:#5be5a0;background:#12382f;
- padding:8px 11px;border-radius:20px}
+
+.status-pill{
+font-size:11px;
+color:#5be5a0;
+background:#12382f;
+padding:8px 11px;
+border-radius:20px;
+}
+
 .mobile-menu{display:none}
+
 .section{display:none}
 .section.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
-.stat-card{background:var(--panel);border:1px solid var(--line);
- border-radius:15px;padding:18px;min-width:0}
-.stat-top{display:flex;justify-content:space-between;align-items:center}
-.stat-icon{width:37px;height:37px;border-radius:11px;background:#16382f;
- display:grid;place-items:center;font-size:17px}
-.stat-card p{font-size:12px;color:var(--muted);margin-top:14px}
-.stat-card h2{font-size:25px;margin-top:7px;overflow-wrap:anywhere}
-.panel{background:var(--panel);border:1px solid var(--line);
- border-radius:15px;padding:19px;margin-bottom:18px;min-width:0}
-.panel-head{display:flex;align-items:center;justify-content:space-between;
- gap:12px;margin-bottom:17px;flex-wrap:wrap}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:14px;
+margin-bottom:22px;
+}
+
+.stat-card{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:15px;
+padding:18px;
+min-width:0;
+}
+
+.stat-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.stat-icon{
+width:37px;
+height:37px;
+border-radius:11px;
+background:#16382f;
+display:grid;
+place-items:center;
+font-size:17px;
+}
+
+.stat-card p{
+font-size:12px;
+color:var(--muted);
+margin-top:14px;
+}
+
+.stat-card h2{
+font-size:25px;
+margin-top:7px;
+overflow-wrap:anywhere;
+}
+
+.panel{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:15px;
+padding:19px;
+margin-bottom:18px;
+min-width:0;
+}
+
+.panel-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin-bottom:17px;
+flex-wrap:wrap;
+}
+
 .panel-head h3{font-size:16px}
 .panel-head p{font-size:11px;color:var(--muted);margin-top:5px}
+
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:620px}
-th{text-align:left;color:#8497ac;font-size:10px;letter-spacing:1px;
- padding:12px 10px;border-bottom:1px solid var(--line)}
-td{padding:13px 10px;border-bottom:1px solid #1e3043;
- font-size:12px;color:#dce5ef}
-.badge{display:inline-block;padding:6px 9px;border-radius:20px;
- font-size:10px;background:#273448;color:#cbd5e1}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:620px;
+}
+
+th{
+text-align:left;
+color:#8497ac;
+font-size:10px;
+letter-spacing:1px;
+padding:12px 10px;
+border-bottom:1px solid var(--line);
+}
+
+td{
+padding:13px 10px;
+border-bottom:1px solid #1e3043;
+font-size:12px;
+color:#dce5ef;
+}
+
+.badge{
+display:inline-block;
+padding:6px 9px;
+border-radius:20px;
+font-size:10px;
+background:#273448;
+color:#cbd5e1;
+}
+
 .badge.pending{background:#47391d;color:#f6d27e}
 .badge.approved{background:#123b2d;color:#6de6a8}
 .badge.rejected{background:#49232d;color:#ff9ca8}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+
+.toolbar{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
 .toolbar .field{max-width:260px}
-.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.notice{padding:12px;border-radius:10px;background:#142b3c;
- color:#b8d6ed;font-size:12px;line-height:1.6;margin-bottom:14px}
-.empty{padding:25px;text-align:center;color:var(--muted);font-size:13px}
-.modal{position:fixed;inset:0;background:#000b;z-index:30;
- display:none;place-items:center;padding:15px}
-.modal.show{display:grid}
-.modal-card{background:var(--panel);border:1px solid var(--line);
- border-radius:17px;padding:22px;width:100%;max-width:520px;
- max-height:90vh;overflow:auto}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.modal-head button{background:none;border:0;color:white;font-size:22px}
+
+.grid-two{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+}
+
+.notice{
+padding:12px;
+border-radius:10px;
+background:#142b3c;
+color:#b8d6ed;
+font-size:12px;
+line-height:1.6;
+margin-bottom:14px;
+}
+
+.empty{
+padding:25px;
+text-align:center;
+color:var(--muted);
+font-size:13px;
+}
+
+.small-btn{
+border:0;
+border-radius:7px;
+padding:7px 9px;
+font-size:11px;
+background:#203249;
+color:white;
+margin:2px;
+}
+
+.small-btn.success{background:#145c40;color:#a4f4c9}
+.small-btn.danger{background:#572a34;color:#ffb5bd}
+
 .form-row{margin:12px 0}
-.form-row label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
-.form-row input,.form-row textarea,.form-row select{width:100%;
- background:#091625;border:1px solid var(--line);border-radius:9px;
- color:white;padding:12px;outline:none}
-.form-row textarea{min-height:90px;resize:vertical}
-#toast{position:fixed;bottom:20px;right:20px;z-index:50;
- background:#143c30;color:#8ff0ba;padding:13px 18px;border-radius:10px;
- display:none;font-size:13px;max-width:90vw}
+.form-row label{
+display:block;
+color:var(--muted);
+font-size:11px;
+margin-bottom:7px;
+}
+
+.form-row input{
+width:100%;
+background:#091625;
+border:1px solid var(--line);
+border-radius:9px;
+color:white;
+padding:12px;
+outline:none;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:#000b;
+z-index:30;
+display:none;
+place-items:center;
+padding:15px;
+}
+
+.modal.show{display:grid}
+
+.modal-card{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:17px;
+padding:22px;
+width:100%;
+max-width:520px;
+max-height:90vh;
+overflow:auto;
+}
+
+.modal-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.modal-head button{
+background:none;
+border:0;
+color:white;
+font-size:22px;
+}
+
+#toast{
+position:fixed;
+bottom:20px;
+right:20px;
+z-index:50;
+background:#143c30;
+color:#8ff0ba;
+padding:13px 18px;
+border-radius:10px;
+display:none;
+font-size:13px;
+max-width:90vw;
+}
+
+#toast.show{display:block}
+
 @media(max-width:1050px){
- .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
 @media(max-width:760px){
- .sidebar{transform:translateX(-100%);transition:.25s}
- .sidebar.open{transform:translateX(0)}
- .main{margin-left:0;padding:19px 14px}
- .mobile-menu{display:inline-block}
- .topbar h1{font-size:20px}
- .grid-two{grid-template-columns:1fr}
+.sidebar{transform:translateX(-100%);transition:.25s}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;padding:19px 14px}
+.mobile-menu{display:inline-block}
+.topbar h1{font-size:20px}
+.grid-two{grid-template-columns:1fr}
 }
+
 @media(max-width:420px){
- .stats{grid-template-columns:1fr 1fr;gap:9px}
- .stat-card{padding:13px}
- .stat-card h2{font-size:21px}
- .topbar{align-items:flex-start}
- .status-pill{display:none}
+.stats{grid-template-columns:1fr 1fr;gap:9px}
+.stat-card{padding:13px}
+.stat-card h2{font-size:21px}
+.status-pill{display:none}
 }
 </style>
 </head>
+
 <body>
 
 <!-- ADMIN LOGIN -->
 <div id="loginScreen" class="login-wrap">
- <div class="login-card">
-  <div class="brand">
-   <div class="logo">AG</div>
-   <div>
-    <h2>ADS GROWTH</h2>
-    <p>ADMIN CONTROL CENTER</p>
-   </div>
-  </div>
-  <h1>Welcome back</h1>
-  <p class="sub">Sign in to manage clients, payments and WhatsApp API services.</p>
-  <form id="loginForm">
-   <label class="field-label">ADMIN EMAIL</label>
-   <input class="field" id="adminEmail" type="email"
-    placeholder="Enter admin email" required>
-   <label class="field-label">PASSWORD</label>
-   <input class="field" id="adminPassword" type="password"
-    placeholder="Enter password" required>
-   <button class="btn btn-green full" id="loginBtn">Secure Login →</button>
-  </form>
-  <div id="loginError" class="error"></div>
- </div>
+<div class="login-card">
+
+<div class="brand">
+<div class="logo">AG</div>
+<div>
+<h2>ADS GROWTH</h2>
+<p>ADMIN CONTROL CENTER</p>
+</div>
+</div>
+
+<h1>Welcome back</h1>
+<p class="sub">Sign in to manage clients, payments and WhatsApp API services.</p>
+
+<form id="loginForm" autocomplete="on">
+
+<label class="field-label" for="adminEmail">ADMIN EMAIL</label>
+<input
+class="field"
+id="adminEmail"
+name="email"
+type="email"
+placeholder="Enter admin email"
+autocomplete="username"
+autocapitalize="none"
+spellcheck="false"
+required
+>
+
+<label class="field-label" for="adminPassword">PASSWORD</label>
+<input
+class="field"
+id="adminPassword"
+name="password"
+type="password"
+placeholder="Enter password"
+autocomplete="current-password"
+required
+>
+
+<button type="submit" class="btn btn-green full" id="loginBtn">
+Secure Login →
+</button>
+
+</form>
+
+<div id="loginError" class="error" role="alert"></div>
+</div>
 </div>
 
 <!-- ADMIN APPLICATION -->
 <div id="adminApp" class="app hidden">
 
 <aside class="sidebar" id="sidebar">
- <div class="side-brand">
-  <div class="logo">AG</div>
-  <div><h2>ADS GROWTH</h2><p>ADMIN CONTROL CENTER</p></div>
- </div>
 
- <div class="nav-title">MAIN MENU</div>
- <button class="nav-btn active" data-section="overview"><span class="nav-icon">▦</span>Overview</button>
- <button class="nav-btn" data-section="payments"><span class="nav-icon">₹</span>Payments</button>
- <button class="nav-btn" data-section="clients"><span class="nav-icon">♙</span>Clients</button>
+<div class="side-brand">
+<div class="logo">AG</div>
+<div>
+<h2>ADS GROWTH</h2>
+<p>ADMIN CONTROL CENTER</p>
+</div>
+</div>
 
- <div class="nav-title">MANAGEMENT</div>
- <button class="nav-btn" data-section="keys"><span class="nav-icon">⚿</span>API Keys</button>
- <button class="nav-btn" data-section="whatsapp"><span class="nav-icon">◉</span>WhatsApp API</button>
+<div class="nav-title">MAIN MENU</div>
 
- <div class="side-bottom">
-  <div class="admin-tag" id="adminIdentity">Administrator</div>
-  <button class="nav-btn" id="logoutBtn">⇥ Logout</button>
- </div>
+<button class="nav-btn active" data-section="overview">
+<span class="nav-icon">▦</span>Overview
+</button>
+
+<button class="nav-btn" data-section="payments">
+<span class="nav-icon">₹</span>Payments
+</button>
+
+<button class="nav-btn" data-section="clients">
+<span class="nav-icon">♙</span>Clients
+</button>
+
+<div class="nav-title">MANAGEMENT</div>
+
+<button class="nav-btn" data-section="keys">
+<span class="nav-icon">⚿</span>API Keys
+</button>
+
+<button class="nav-btn" data-section="whatsapp">
+<span class="nav-icon">◉</span>WhatsApp API
+</button>
+
+<div class="side-bottom">
+<div class="admin-tag" id="adminIdentity">Administrator</div>
+<button class="nav-btn" id="logoutBtn">⇥ Logout</button>
+</div>
+
 </aside>
 
 <main class="main">
- <header class="topbar">
-  <div style="display:flex;align-items:center;gap:12px">
-   <button class="btn btn-dark mobile-menu" id="menuBtn">☰</button>
-   <div><h1 id="pageTitle">Dashboard Overview</h1>
-   <p>Manage your ADS GROWTH agency platform</p></div>
-  </div>
-  <div class="top-actions">
-   <span class="status-pill">● SYSTEM ONLINE</span>
-   <button class="btn btn-dark btn-small" id="refreshBtn">↻ Refresh</button>
-  </div>
- </header>
 
- <!-- OVERVIEW -->
- <section class="section active" id="overview">
-  <div class="stats">
-   <div class="stat-card"><div class="stat-top"><span>Clients</span><span class="stat-icon">♙</span></div><h2 id="totalClients">0</h2><p>Total registered clients</p></div>
-   <div class="stat-card"><div class="stat-top"><span>Payments</span><span class="stat-icon">₹</span></div><h2 id="totalPayments">0</h2><p>Total payment records</p></div>
-   <div class="stat-card"><div class="stat-top"><span>Pending</span><span class="stat-icon">◷</span></div><h2 id="pendingPayments">0</h2><p>Awaiting verification</p></div>
-   <div class="stat-card"><div class="stat-top"><span>Revenue</span><span class="stat-icon">↗</span></div><h2 id="totalRevenue">₹0</h2><p>Approved payments</p></div>
-  </div>
+<header class="topbar">
+<div style="display:flex;align-items:center;gap:12px">
+<button class="btn btn-dark mobile-menu" id="menuBtn">☰</button>
+<div>
+<h1 id="pageTitle">Dashboard Overview</h1>
+<p>Manage your ADS GROWTH agency platform</p>
+</div>
+</div>
 
-  <div class="panel">
-   <div class="panel-head"><div><h3>Recent Payments</h3><p>Latest customer payment activity</p></div>
-    <button class="btn btn-dark btn-small" data-go="payments">View all</button>
-   </div>
-   <div class="table-wrap">
-    <table><thead><tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th></tr></thead>
-    <tbody id="recentPayments"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody></table>
-   </div>
-  </div>
+<div class="top-actions">
+<span class="status-pill">● SYSTEM ONLINE</span>
+<button class="btn btn-dark btn-small" id="refreshBtn">↻ Refresh</button>
+</div>
+</header>
 
-  <div class="panel">
-   <div class="panel-head"><div><h3>Latest Clients</h3><p>Recently registered accounts</p></div>
-    <button class="btn btn-dark btn-small" data-go="clients">View clients</button>
-   </div>
-   <div class="table-wrap">
-    <table><thead><tr><th>NAME</th><th>BUSINESS</th><th>EMAIL</th><th>STATUS</th></tr></thead>
-    <tbody id="recentClients"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody></table>
-   </div>
-  </div>
- </section>
+<!-- OVERVIEW -->
+<section class="section active" id="overview">
 
- <!-- PAYMENTS -->
- <section class="section" id="payments">
-  <div class="panel">
-   <div class="panel-head"><div><h3>Payment Management</h3><p>Verify UPI payments and review proofs</p></div></div>
-   <div class="toolbar">
-    <input class="field" id="paymentSearch" placeholder="Search client or UTR">
-    <select class="field" id="paymentFilter"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
-   </div>
-   <div class="table-wrap">
-    <table><thead><tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th><th>ACTION</th></tr></thead>
-    <tbody id="paymentsTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table>
-   </div>
-  </div>
- </section>
+<div class="stats">
 
- <!-- CLIENTS -->
- <section class="section" id="clients">
-  <div class="panel">
-   <div class="panel-head"><div><h3>Client Management</h3><p>View and manage registered customers</p></div></div>
-   <div class="toolbar">
-    <input class="field" id="clientSearch" placeholder="Search name, email, business">
-   </div>
-   <div class="table-wrap">
-    <table><thead><tr><th>CLIENT</th><th>BUSINESS</th><th>EMAIL</th><th>PHONE</th><th>STATUS</th><th>ACTION</th></tr></thead>
-    <tbody id="clientsTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table>
-   </div>
-  </div>
- </section>
+<div class="stat-card">
+<div class="stat-top"><span>Clients</span><span class="stat-icon">♙</span></div>
+<h2 id="totalClients">0</h2>
+<p>Total registered clients</p>
+</div>
 
- <!-- API KEYS -->
- <section class="section" id="keys">
-  <div class="panel">
-   <div class="panel-head"><div><h3>Platform API Keys</h3><p>Create or revoke a client's ADS GROWTH API key</p></div></div>
-   <div class="notice">API keys are platform credentials. They are different from Meta WhatsApp access tokens.</div>
-   <div class="toolbar">
-    <input class="field" id="keyClientId" placeholder="Client ID">
-    <button class="btn btn-green" id="loadKeysBtn">Load client keys</button>
-   </div>
-   <div class="toolbar">
-    <input class="field" id="keyName" placeholder="API key name">
-    <button class="btn btn-green" id="createKeyBtn">＋ Create API Key</button>
-   </div>
-   <div id="newKeyResult" class="notice hidden"></div>
-   <div class="table-wrap">
-    <table><thead><tr><th>NAME</th><th>KEY PREFIX</th><th>STATUS</th><th>CREATED</th><th>ACTION</th></tr></thead>
-    <tbody id="keysTable"><tr><td colspan="5" class="empty">Enter a client ID to load keys.</td></tr></tbody></table>
-   </div>
-  </div>
- </section>
+<div class="stat-card">
+<div class="stat-top"><span>Payments</span><span class="stat-icon">₹</span></div>
+<h2 id="totalPayments">0</h2>
+<p>Total payment records</p>
+</div>
 
- <!-- WHATSAPP -->
- <section class="section" id="whatsapp">
-  <div class="panel">
-   <div class="panel-head"><div><h3>WhatsApp Cloud API Management</h3><p>Connect a client's authorized Meta WhatsApp account</p></div></div>
-   <div class="notice">Only save credentials supplied or authorized by the client. Meta access tokens are sensitive. Never share them in chat or expose them in the client dashboard.</div>
-   <div class="form-row"><label>CLIENT ID</label><input id="waClientId" placeholder="Enter client ID"></div>
-   <div class="form-row"><label>PHONE NUMBER ID</label><input id="waPhoneId" placeholder="Meta Phone Number ID"></div>
-   <div class="form-row"><label>WHATSAPP BUSINESS ACCOUNT ID (WABA ID)</label><input id="waWabaId" placeholder="Meta WABA ID"></div>
-   <div class="form-row"><label>META ACCESS TOKEN</label><input id="waToken" type="password" placeholder="Paste authorized Meta access token"></div>
-   <div class="toolbar">
-    <button class="btn btn-green" id="saveWaBtn">Save WhatsApp Connection</button>
-    <button class="btn btn-dark" id="loadWaBtn">Load connection status</button>
-   </div>
-   <div id="waResult" class="notice hidden"></div>
-  </div>
- </section>
+<div class="stat-card">
+<div class="stat-top"><span>Pending</span><span class="stat-icon">◷</span></div>
+<h2 id="pendingPayments">0</h2>
+<p>Awaiting verification</p>
+</div>
+
+<div class="stat-card">
+<div class="stat-top"><span>Revenue</span><span class="stat-icon">↗</span></div>
+<h2 id="totalRevenue">₹0</h2>
+<p>Approved payments</p>
+</div>
+
+</div>
+
+<div class="panel">
+<div class="panel-head">
+<div><h3>Recent Payments</h3><p>Latest customer payment activity</p></div>
+<button class="btn btn-dark btn-small" data-go="payments">View all</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th></tr>
+</thead>
+<tbody id="recentPayments">
+<tr><td colspan="5" class="empty">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="panel">
+<div class="panel-head">
+<div><h3>Latest Clients</h3><p>Recently registered accounts</p></div>
+<button class="btn btn-dark btn-small" data-go="clients">View clients</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>NAME</th><th>BUSINESS</th><th>EMAIL</th><th>STATUS</th></tr>
+</thead>
+<tbody id="recentClients">
+<tr><td colspan="4" class="empty">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</section>
+
+<!-- PAYMENTS -->
+<section class="section" id="payments">
+<div class="panel">
+
+<div class="panel-head">
+<div><h3>Payment Management</h3><p>Verify UPI payments and review proofs</p></div>
+</div>
+
+<div class="toolbar">
+<input class="field" id="paymentSearch" placeholder="Search client or UTR">
+<select class="field" id="paymentFilter">
+<option value="all">All statuses</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="rejected">Rejected</option>
+</select>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th><th>ACTION</th></tr>
+</thead>
+<tbody id="paymentsTable">
+<tr><td colspan="6" class="empty">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- CLIENTS -->
+<section class="section" id="clients">
+<div class="panel">
+
+<div class="panel-head">
+<div><h3>Client Management</h3><p>View and manage registered customers</p></div>
+</div>
+
+<div class="toolbar">
+<input class="field" id="clientSearch" placeholder="Search name, email, business">
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>CLIENT</th><th>BUSINESS</th><th>EMAIL</th><th>PHONE</th><th>STATUS</th><th>ACTION</th></tr>
+</thead>
+<tbody id="clientsTable">
+<tr><td colspan="6" class="empty">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- API KEYS -->
+<section class="section" id="keys">
+<div class="panel">
+
+<div class="panel-head">
+<div><h3>Platform API Keys</h3><p>Create or revoke a client's ADS GROWTH API key</p></div>
+</div>
+
+<div class="notice">
+API keys are platform credentials. They are different from Meta WhatsApp access tokens.
+</div>
+
+<div class="toolbar">
+<input class="field" id="keyClientId" placeholder="Client ID">
+<button class="btn btn-green" id="loadKeysBtn">Load client keys</button>
+</div>
+
+<div class="toolbar">
+<input class="field" id="keyName" placeholder="API key name">
+<button class="btn btn-green" id="createKeyBtn">＋ Create API Key</button>
+</div>
+
+<div id="newKeyResult" class="notice hidden"></div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>NAME</th><th>KEY PREFIX</th><th>STATUS</th><th>CREATED</th><th>ACTION</th></tr>
+</thead>
+<tbody id="keysTable">
+<tr><td colspan="5" class="empty">Enter a client ID to load keys.</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- WHATSAPP -->
+<section class="section" id="whatsapp">
+<div class="panel">
+
+<div class="panel-head">
+<div><h3>WhatsApp Cloud API Management</h3><p>Connect a client's authorized Meta WhatsApp account</p></div>
+</div>
+
+<div class="notice">
+Only save credentials supplied or authorized by the client. Meta access tokens are sensitive. Never share them in chat.
+</div>
+
+<div class="form-row">
+<label>CLIENT ID</label>
+<input id="waClientId" placeholder="Enter client ID">
+</div>
+
+<div class="form-row">
+<label>PHONE NUMBER ID</label>
+<input id="waPhoneId" placeholder="Meta Phone Number ID">
+</div>
+
+<div class="form-row">
+<label>WHATSAPP BUSINESS ACCOUNT ID (WABA ID)</label>
+<input id="waWabaId" placeholder="Meta WABA ID">
+</div>
+
+<div class="form-row">
+<label>META ACCESS TOKEN</label>
+<input id="waToken" type="password" placeholder="Paste authorized Meta access token">
+</div>
+
+<div class="toolbar">
+<button class="btn btn-green" id="saveWaBtn">Save WhatsApp Connection</button>
+<button class="btn btn-dark" id="loadWaBtn">Load connection status</button>
+</div>
+
+<div id="waResult" class="notice hidden"></div>
+
+</div>
+</section>
+
 </main>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
- <div class="modal-card">
-  <div class="modal-head"><h3 id="modalTitle">Details</h3><button id="closeModal">×</button></div>
-  <div id="modalBody"></div>
- </div>
+<div class="modal-card">
+<div class="modal-head">
+<h3 id="modalTitle">Details</h3>
+<button id="closeModal">×</button>
 </div>
-<div id="toast"></div>
-  
-<script>
-const API = "https://ads-growth-whatsapp-api.onrender.com";
-const TOKEN_KEY = "ads_growth_admin_token";
+<div id="modalBody"></div>
+</div>
+</div>
 
-let adminToken = localStorage.getItem(TOKEN_KEY) || "";
+<div id="toast"></div>
+<script>
+"use strict";
+
+const API_BASE = "https://ads-growth-whatsapp-api.onrender.com";
+const $ = (id) => document.getElementById(id);
+
+let adminToken = localStorage.getItem("ads_growth_admin_token") || "";
 let allPayments = [];
 let allClients = [];
-let allKeys = [];
 
-const $ = id => document.getElementById(id);
-
-function authHeaders(extra = {}) {
-  return {
-    ...extra,
-    Authorization: "Bearer " + adminToken
-  };
-}
-
-async function api(path, options = {}) {
-  const response = await fetch(API + path, {
-    ...options,
-    headers: authHeaders({
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    })
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.message || data.error || "Request failed: " + response.status);
-  }
-  return data;
-}
-
-function showToast(message, error = false) {
+function showToast(message, type = "success") {
   const el = $("toast");
   if (!el) return;
   el.textContent = message;
-  el.style.background = error ? "#dc3545" : "#159b69";
-  el.classList.add("show");
-  setTimeout(() => el.classList.remove("show"), 3000);
+  el.className = "toast show " + type;
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    el.className = "toast";
+  }, 3500);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
 }
 
 function money(value) {
   return "₹" + Number(value || 0).toLocaleString("en-IN");
 }
 
-function safe(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#039;"
-  }[char]));
+function dateText(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? "—"
+    : date.toLocaleString("en-IN");
 }
 
-function getArray(data, keys) {
+function getRows(data, key) {
   if (Array.isArray(data)) return data;
-  for (const key of keys) {
-    if (Array.isArray(data?.[key])) return data[key];
-    if (Array.isArray(data?.data?.[key])) return data.data[key];
-  }
+  if (Array.isArray(data?.[key])) return data[key];
+  if (Array.isArray(data?.data?.[key])) return data.data[key];
   if (Array.isArray(data?.data)) return data.data;
   return [];
 }
 
-function statusBadge(status) {
-  const s = String(status || "pending").toLowerCase();
-  return `<span class="status ${safe(s)}">${safe(s)}</span>`;
-}
+async function api(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
 
-function openSection(name) {
-  document.querySelectorAll(".section").forEach(el => {
-    el.classList.toggle("active", el.id === "section-" + name);
+  if (adminToken) {
+    headers.Authorization = "Bearer " + adminToken;
+  }
+
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const response = await fetch(API_BASE + path, {
+    ...options,
+    headers
   });
 
-  document.querySelectorAll(".nav-btn").forEach(el => {
-    el.classList.toggle("active", el.dataset.section === name);
-  });
+  const contentType = response.headers.get("content-type") || "";
+  let result;
 
-  const titles = {
-    overview:"Overview",
-    payments:"Payments",
-    clients:"Clients",
-    keys:"API Keys",
-    whatsapp:"WhatsApp API"
-  };
+  if (contentType.includes("application/json")) {
+    result = await response.json();
+  } else {
+    result = await response.text();
+  }
 
-  if ($("pageTitle")) $("pageTitle").textContent = titles[name] || "Dashboard";
-  $("sidebar")?.classList.remove("open");
+  if (!response.ok) {
+    throw new Error(
+      result?.message ||
+      result?.error ||
+      (typeof result === "string" ? result : "Request failed")
+    );
+  }
 
-  if (name === "payments") loadPayments();
-  if (name === "clients") loadClients();
+  return result;
 }
 
-function showLogin() {
-  $("loginScreen")?.classList.remove("hidden");
-  $("adminApp")?.classList.add("hidden");
-}
-
-function showDashboard() {
-  $("loginScreen")?.classList.add("hidden");
-  $("adminApp")?.classList.remove("hidden");
-  openSection("overview");
-  loadDashboard();
-}
+/* ADMIN LOGIN */
 
 async function loginAdmin(event) {
   event.preventDefault();
@@ -422,143 +894,285 @@ async function loginAdmin(event) {
   const password = $("adminPassword")?.value;
 
   if (!email || !password) {
-    $("loginError").textContent = "Email aur password enter karein.";
+    showToast("Email aur password dono bharo", "error");
     return;
   }
 
-  $("loginBtn").disabled = true;
-  $("loginBtn").textContent = "Please wait...";
+  const button = $("loginBtn");
+  const originalText = button?.textContent;
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Logging in...";
+  }
 
   try {
-    const response = await fetch(API + "/api/admin/login", {
+    const result = await api("/api/admin/login", {
       method: "POST",
-      headers: { "Content-Type":"application/json" },
       body: JSON.stringify({ email, password })
     });
 
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(data.message || data.error || "Login failed");
+    const token =
+      result?.token ||
+      result?.access_token ||
+      result?.session?.access_token ||
+      result?.data?.token ||
+      result?.data?.access_token ||
+      result?.data?.session?.access_token;
+
+    if (!token) {
+      throw new Error("Login response mein access token nahi mila");
     }
 
-    const token = data.token || data.access_token || data.data?.token;
-    if (!token) throw new Error("Login response mein token nahi mila.");
-
     adminToken = token;
-    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem("ads_growth_admin_token", token);
 
     await api("/api/admin/me");
-    $("loginError").textContent = "";
-    showDashboard();
+
+    $("loginScreen").style.display = "none";
+    $("adminApp").style.display = "flex";
+
+    if ($("adminIdentity")) {
+      $("adminIdentity").textContent = email;
+    }
+
     showToast("Admin login successful");
+    await loadDashboard();
+
   } catch (error) {
-    $("loginError").textContent = error.message;
+    adminToken = "";
+    localStorage.removeItem("ads_growth_admin_token");
+    showToast(error.message || "Login failed", "error");
+
   } finally {
-    $("loginBtn").disabled = false;
-    $("loginBtn").textContent = "Login to Dashboard";
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText || "Login";
+    }
   }
 }
 
+/* LOGOUT */
+
 function logoutAdmin() {
-  localStorage.removeItem(TOKEN_KEY);
   adminToken = "";
-  showLogin();
+  localStorage.removeItem("ads_growth_admin_token");
+
+  $("adminApp").style.display = "none";
+  $("loginScreen").style.display = "flex";
+
+  if ($("adminPassword")) {
+    $("adminPassword").value = "";
+  }
+
+  showToast("Logged out successfully");
 }
+
+/* NAVIGATION */
+
+function openSection(section) {
+  document.querySelectorAll(".section").forEach(item => {
+    item.style.display = "none";
+  });
+
+  const selected = $(section);
+  if (selected) selected.style.display = "block";
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.section === section
+    );
+  });
+
+  const titles = {
+    overview: "Dashboard Overview",
+    payments: "Payment Management",
+    clients: "Client Management",
+    keys: "API Key Management",
+    whatsapp: "WhatsApp Connections"
+  };
+
+  if ($("pageTitle")) {
+    $("pageTitle").textContent = titles[section] || "Admin Panel";
+  }
+
+  if (section === "overview") loadDashboard();
+  if (section === "payments") loadPayments();
+  if (section === "clients") loadClients();
+}
+
+/* DASHBOARD */
 
 async function loadDashboard() {
   try {
-    const data = await api("/api/admin/dashboard");
-    const summary = data.summary || data.stats || data.data || data;
+    const [dashboard, summary, clientsData, paymentsData] =
+      await Promise.all([
+        api("/api/admin/dashboard"),
+        api("/api/admin/payment-summary"),
+        api("/api/admin/clients"),
+        api("/api/admin/payments")
+      ]);
 
-    if ($("totalClients"))
-      $("totalClients").textContent = summary.total_clients ?? summary.totalClients ?? "—";
+    const clients = getRows(clientsData, "clients");
+    const payments = getRows(paymentsData, "payments");
 
-    if ($("totalPayments"))
-      $("totalPayments").textContent = summary.total_payments ?? summary.totalPayments ?? "—";
+    allClients = clients;
+    allPayments = payments;
 
-    if ($("pendingPayments"))
-      $("pendingPayments").textContent = summary.pending_payments ?? summary.pendingPayments ?? "—";
+    const stats = dashboard?.stats || dashboard?.data || dashboard || {};
+    const paymentStats = summary?.summary || summary?.data || summary || {};
 
-    if ($("totalRevenue"))
-      $("totalRevenue").textContent = money(summary.total_revenue ?? summary.totalRevenue ?? 0);
+    const totalClients =
+      stats.total_clients ??
+      stats.totalClients ??
+      clients.length;
 
-    const payments = getArray(data, ["recent_payments","payments"]);
-    const clients = getArray(data, ["recent_clients","clients"]);
+    const totalPayments =
+      paymentStats.total_payments ??
+      paymentStats.totalPayments ??
+      payments.length;
 
-    renderRecentPayments(payments);
-    renderRecentClients(clients);
+    const pendingPayments =
+      paymentStats.pending_payments ??
+      paymentStats.pendingPayments ??
+      payments.filter(p => p.status === "pending").length;
+
+    const totalRevenue =
+      paymentStats.total_revenue ??
+      paymentStats.totalRevenue ??
+      payments
+        .filter(p => p.status === "approved")
+        .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+    if ($("totalClients")) $("totalClients").textContent = totalClients;
+    if ($("totalPayments")) $("totalPayments").textContent = totalPayments;
+    if ($("pendingPayments")) $("pendingPayments").textContent = pendingPayments;
+    if ($("totalRevenue")) $("totalRevenue").textContent = money(totalRevenue);
+
+    renderRecentPayments(payments.slice(0, 5));
+    renderRecentClients(clients.slice(0, 5));
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast("Dashboard: " + error.message, "error");
   }
 }
 
 function renderRecentPayments(rows) {
-  if (!$("recentPayments")) return;
+  const el = $("recentPayments");
+  if (!el) return;
 
-  $("recentPayments").innerHTML = rows.length ? rows.slice(0, 6).map(p => `
-    <tr>
-      <td>${safe(p.utr || p.id)}</td>
-      <td>${money(p.amount)}</td>
-      <td>${statusBadge(p.status)}</td>
-      <td>${safe(p.created_at ? new Date(p.created_at).toLocaleDateString("en-IN") : "—")}</td>
-    </tr>
-  `).join("") : `<tr><td colspan="4">No recent payments</td></tr>`;
+  if (!rows.length) {
+    el.innerHTML = "<p>No payments found.</p>";
+    return;
+  }
+
+  el.innerHTML = rows.map(p => `
+    <div class="table-row">
+      <strong>${escapeHTML(p.utr || p.id || "Payment")}</strong>
+      <span>${money(p.amount)}</span>
+      <span class="status ${escapeHTML(p.status || "pending")}">
+        ${escapeHTML(p.status || "pending")}
+      </span>
+    </div>
+  `).join("");
 }
 
 function renderRecentClients(rows) {
-  if (!$("recentClients")) return;
+  const el = $("recentClients");
+  if (!el) return;
 
-  $("recentClients").innerHTML = rows.length ? rows.slice(0, 6).map(c => `
-    <tr>
-      <td>${safe(c.business_name || c.full_name || c.name || "—")}</td>
-      <td>${safe(c.email || "—")}</td>
-      <td>${statusBadge(c.status)}</td>
-    </tr>
-  `).join("") : `<tr><td colspan="3">No recent clients</td></tr>`;
+  if (!rows.length) {
+    el.innerHTML = "<p>No clients found.</p>";
+    return;
+  }
+
+  el.innerHTML = rows.map(c => `
+    <div class="table-row">
+      <strong>${escapeHTML(c.business_name || c.full_name || c.name || "Client")}</strong>
+      <span>${escapeHTML(c.email || "—")}</span>
+      <span class="status ${escapeHTML(c.status || "pending")}">
+        ${escapeHTML(c.status || "pending")}
+      </span>
+    </div>
+  `).join("");
 }
+
+/* PAYMENTS */
 
 async function loadPayments() {
   try {
-    const data = await api("/api/admin/payments");
-    allPayments = getArray(data, ["payments","items"]);
+    const result = await api("/api/admin/payments");
+    allPayments = getRows(result, "payments");
     renderPayments();
   } catch (error) {
-    showToast(error.message, true);
+    showToast("Payments: " + error.message, "error");
   }
 }
 
 function renderPayments() {
-  if (!$("paymentsTable")) return;
+  const table = $("paymentsTable");
+  if (!table) return;
 
-  const query = ($("paymentSearch")?.value || "").toLowerCase();
+  const search = ($("paymentSearch")?.value || "").toLowerCase();
   const filter = $("paymentFilter")?.value || "all";
 
   const rows = allPayments.filter(p => {
-    const matchText = [
-      p.utr, p.id, p.email, p.business_name, p.customer_name
-    ].join(" ").toLowerCase().includes(query);
+    const text = [
+      p.utr, p.id, p.email, p.customer_id,
+      p.business_name, p.status
+    ].join(" ").toLowerCase();
 
-    const matchStatus = filter === "all" ||
-      String(p.status).toLowerCase() === filter;
-
-    return matchText && matchStatus;
+    return text.includes(search) &&
+      (filter === "all" || p.status === filter);
   });
 
-  $("paymentsTable").innerHTML = rows.length ? rows.map(p => `
+  if (!rows.length) {
+    table.innerHTML = "<tr><td colspan='6'>No payments found</td></tr>";
+    return;
+  }
+
+  table.innerHTML = rows.map(p => `
     <tr>
-      <td>${safe(p.utr || "—")}</td>
-      <td>${safe(p.business_name || p.customer_name || p.email || p.customer_id || "—")}</td>
+      <td>${escapeHTML(p.utr || "—")}</td>
       <td>${money(p.amount)}</td>
-      <td>${statusBadge(p.status)}</td>
+      <td>${escapeHTML(p.business_name || p.email || p.customer_id || "—")}</td>
+      <td>${escapeHTML(p.payment_method || "UPI")}</td>
+      <td><span class="status ${escapeHTML(p.status || "pending")}">${escapeHTML(p.status || "pending")}</span></td>
       <td>
-        <button class="small-btn" onclick="viewPayment('${safe(p.id)}')">View</button>
-        ${String(p.status).toLowerCase() === "pending" ? `
-          <button class="small-btn success" onclick="reviewPayment('${safe(p.id)}','approve')">Approve</button>
-          <button class="small-btn danger" onclick="reviewPayment('${safe(p.id)}','reject')">Reject</button>
+        <button class="small-btn" onclick="viewPayment('${escapeHTML(p.id)}')">View</button>
+        ${p.status === "pending" ? `
+          <button class="small-btn success-btn" onclick="reviewPayment('${escapeHTML(p.id)}','approve')">Approve</button>
+          <button class="small-btn danger-btn" onclick="reviewPayment('${escapeHTML(p.id)}','reject')">Reject</button>
         ` : ""}
       </td>
     </tr>
-  `).join("") : `<tr><td colspan="5">No payments found</td></tr>`;
+  `).join("");
+}
+
+async function viewPayment(id) {
+  try {
+    const result = await api("/api/admin/payments/" + encodeURIComponent(id) + "/proof");
+
+    let url = result?.url || result?.signedUrl || result?.signed_url;
+
+    if (!url && result instanceof Blob) {
+      url = URL.createObjectURL(result);
+    }
+
+    if (!url) {
+      showModal("Payment Proof", "Proof URL response mein nahi mila.");
+      return;
+    }
+
+    showModal(
+      "Payment Proof",
+      `<a href="${escapeHTML(url)}" target="_blank" rel="noopener">Open payment screenshot</a>`
+    );
+
+  } catch (error) {
+    showToast("Proof: " + error.message, "error");
+  }
 }
 
 async function reviewPayment(id, action) {
@@ -569,197 +1183,228 @@ async function reviewPayment(id, action) {
   if (!confirm(message)) return;
 
   try {
-    await api(`/api/admin/payments/${encodeURIComponent(id)}/review`, {
+    await api("/api/admin/payments/" + encodeURIComponent(id) + "/review", {
       method: "POST",
       body: JSON.stringify({ action })
     });
 
-    showToast("Payment " + action + " ho gaya.");
+    showToast("Payment " + action + " ho gaya");
     await loadPayments();
     await loadDashboard();
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
   }
 }
 
-async function viewPayment(id) {
-  try {
-    const response = await fetch(
-      API + `/api/admin/payments/${encodeURIComponent(id)}/proof`,
-      { headers: authHeaders() }
-    );
-
-    if (!response.ok) throw new Error("Payment proof load nahi hua.");
-
-    const type = response.headers.get("content-type") || "";
-
-    if (type.includes("application/json")) {
-      const data = await response.json();
-      const url = data.url || data.signedUrl || data.proof_url || data.data?.url;
-
-      if (!url) throw new Error("Proof URL response mein nahi mila.");
-
-      $("modalTitle").textContent = "Payment Proof";
-      $("modalBody").innerHTML = `<a href="${safe(url)}" target="_blank" rel="noopener">Open payment screenshot</a>`;
-      $("modal").classList.add("show");
-      return;
-    }
-
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-
-    $("modalTitle").textContent = "Payment Proof";
-    $("modalBody").innerHTML = `<img src="${url}" style="width:100%;border-radius:12px" alt="Payment proof">`;
-    $("modal").classList.add("show");
-  } catch (error) {
-    showToast(error.message, true);
-  }
-}
+/* CLIENTS */
 
 async function loadClients() {
   try {
-    const data = await api("/api/admin/clients");
-    allClients = getArray(data, ["clients","items"]);
+    const result = await api("/api/admin/clients");
+    allClients = getRows(result, "clients");
     renderClients();
   } catch (error) {
-    showToast(error.message, true);
+    showToast("Clients: " + error.message, "error");
   }
 }
 
 function renderClients() {
-  if (!$("clientsTable")) return;
+  const table = $("clientsTable");
+  if (!table) return;
 
-  const query = ($("clientSearch")?.value || "").toLowerCase();
+  const search = ($("clientSearch")?.value || "").toLowerCase();
 
-  const rows = allClients.filter(c =>
-    [c.business_name,c.full_name,c.name,c.email,c.phone,c.id]
-      .join(" ").toLowerCase().includes(query)
-  );
+  const rows = allClients.filter(c => {
+    const text = [
+      c.business_name, c.full_name, c.name,
+      c.email, c.phone, c.status, c.id
+    ].join(" ").toLowerCase();
 
-  $("clientsTable").innerHTML = rows.length ? rows.map(c => `
+    return text.includes(search);
+  });
+
+  if (!rows.length) {
+    table.innerHTML = "<tr><td colspan='6'>No clients found</td></tr>";
+    return;
+  }
+
+  table.innerHTML = rows.map(c => `
     <tr>
-      <td>${safe(c.business_name || c.full_name || c.name || "—")}</td>
-      <td>${safe(c.email || "—")}</td>
-      <td>${safe(c.phone || "—")}</td>
-      <td>${statusBadge(c.status)}</td>
+      <td>${escapeHTML(c.business_name || "—")}</td>
+      <td>${escapeHTML(c.full_name || c.name || "—")}</td>
+      <td>${escapeHTML(c.email || "—")}</td>
+      <td>${escapeHTML(c.phone || "—")}</td>
+      <td><span class="status ${escapeHTML(c.status || "pending")}">${escapeHTML(c.status || "pending")}</span></td>
       <td>
-        <button class="small-btn" onclick="viewClient('${safe(c.id)}')">Details</button>
-        <button class="small-btn success" onclick="setClientStatus('${safe(c.id)}','approved')">Approve</button>
-        <button class="small-btn danger" onclick="setClientStatus('${safe(c.id)}','rejected')">Reject</button>
+        <button class="small-btn" onclick="viewClient('${escapeHTML(c.id)}')">View</button>
       </td>
     </tr>
-  `).join("") : `<tr><td colspan="5">No clients found</td></tr>`;
-}
-
-async function setClientStatus(id, status) {
-  if (!confirm("Client status " + status + " karna hai?")) return;
-
-  try {
-    await api(`/api/admin/clients/${encodeURIComponent(id)}/status`, {
-      method: "POST",
-      body: JSON.stringify({ status })
-    });
-
-    showToast("Client status updated");
-    await loadClients();
-    await loadDashboard();
-  } catch (error) {
-    showToast(error.message, true);
-  }
+  `).join("");
 }
 
 async function viewClient(id) {
   try {
-    const data = await api(`/api/admin/clients/${encodeURIComponent(id)}`);
-    const c = data.client || data.data || data;
+    const result = await api("/api/admin/clients/" + encodeURIComponent(id));
+    const client = result?.client || result?.data || result;
 
-    $("modalTitle").textContent = "Client Details";
-    $("modalBody").innerHTML = `
-      <p><b>Business:</b> ${safe(c.business_name || "—")}</p>
-      <p><b>Name:</b> ${safe(c.full_name || c.name || "—")}</p>
-      <p><b>Email:</b> ${safe(c.email || "—")}</p>
-      <p><b>Phone:</b> ${safe(c.phone || "—")}</p>
-      <p><b>Plan:</b> ${safe(c.plan || "—")}</p>
-      <p><b>Status:</b> ${safe(c.status || "—")}</p>
-      <p><b>Client ID:</b> ${safe(c.id || id)}</p>
-    `;
-    $("modal").classList.add("show");
+    showModal("Client Details", `
+      <p><b>Business:</b> ${escapeHTML(client.business_name || "—")}</p>
+      <p><b>Name:</b> ${escapeHTML(client.full_name || client.name || "—")}</p>
+      <p><b>Email:</b> ${escapeHTML(client.email || "—")}</p>
+      <p><b>Phone:</b> ${escapeHTML(client.phone || "—")}</p>
+      <p><b>Plan:</b> ${escapeHTML(client.plan || "—")}</p>
+      <p><b>Status:</b> ${escapeHTML(client.status || "—")}</p>
+      <p><b>Client ID:</b> ${escapeHTML(client.id || id)}</p>
+      <hr>
+      <label>Update client status</label>
+      <select id="clientNewStatus">
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <button class="small-btn success-btn"
+        onclick="updateClientStatus('${escapeHTML(id)}')">
+        Save Status
+      </button>
+    `);
+
+    if ($("clientNewStatus")) {
+      $("clientNewStatus").value = client.status || "pending";
+    }
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
   }
 }
+
+async function updateClientStatus(id) {
+  const status = $("clientNewStatus")?.value;
+  if (!status) return;
+
+  try {
+    await api("/api/admin/clients/" + encodeURIComponent(id) + "/status", {
+      method: "POST",
+      body: JSON.stringify({ status })
+    });
+
+    closeModal();
+    showToast("Client status updated");
+    await loadClients();
+    await loadDashboard();
+
+  } catch (error) {
+    showToast(error.message, "error");
+  }
+}
+
+/* MODAL */
+
+function showModal(title, body) {
+  if ($("modalTitle")) $("modalTitle").textContent = title;
+  if ($("modalBody")) $("modalBody").innerHTML = body;
+  if ($("modal")) $("modal").style.display = "flex";
+}
+
+function closeModal() {
+  if ($("modal")) $("modal").style.display = "none";
+}
 </script>
-// ================= API KEYS =================
+
+<script>
+/* API KEY MANAGEMENT */
 
 async function loadKeys() {
   const clientId = $("keyClientId")?.value.trim();
 
   if (!clientId) {
-    showToast("Pehle Client ID enter karein.", true);
+    showToast("Client ID enter karo", "error");
     return;
   }
 
   try {
-    const data = await api(
-      `/api/admin/clients/${encodeURIComponent(clientId)}/api-keys`
+    const result = await api(
+      "/api/admin/clients/" + encodeURIComponent(clientId) + "/api-keys"
     );
 
-    allKeys = getArray(data, ["keys","api_keys","items"]);
-    renderKeys();
+    const rows = getRows(result, "keys");
+    const table = $("keysTable");
+
+    if (!table) return;
+
+    if (!rows.length) {
+      table.innerHTML = "<tr><td colspan='5'>No API keys found</td></tr>";
+      return;
+    }
+
+    table.innerHTML = rows.map(key => `
+      <tr>
+        <td>${escapeHTML(key.name || "API Key")}</td>
+        <td>${escapeHTML(key.key_prefix || "Hidden")}</td>
+        <td>${escapeHTML(key.status || "active")}</td>
+        <td>${dateText(key.created_at)}</td>
+        <td>
+          ${key.status === "active" ? `
+            <button class="small-btn danger-btn"
+              onclick="revokeKey('${escapeHTML(key.id)}')">
+              Revoke
+            </button>
+          ` : "—"}
+        </td>
+      </tr>
+    `).join("");
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
   }
 }
 
-function renderKeys() {
-  if (!$("keysTable")) return;
-
-  $("keysTable").innerHTML = allKeys.length ? allKeys.map(k => `
-    <tr>
-      <td>${safe(k.name || "API Key")}</td>
-      <td>${safe(k.key_prefix || "Hidden")}</td>
-      <td>${statusBadge(k.status || "active")}</td>
-      <td>
-        <button class="small-btn danger"
-          onclick="revokeKey('${safe(k.id)}')">Revoke</button>
-      </td>
-    </tr>
-  `).join("") : `<tr><td colspan="4">No API keys found</td></tr>`;
-}
-
-async function createApiKey() {
+async function createKey() {
   const clientId = $("keyClientId")?.value.trim();
   const name = $("keyName")?.value.trim();
 
   if (!clientId || !name) {
-    showToast("Client ID aur API key name enter karein.", true);
+    showToast("Client ID aur key name bharo", "error");
     return;
   }
 
+  const button = $("createKeyBtn");
+  if (button) button.disabled = true;
+
   try {
-    const data = await api(
-      `/api/admin/clients/${encodeURIComponent(clientId)}/api-keys`,
+    const result = await api(
+      "/api/admin/clients/" + encodeURIComponent(clientId) + "/api-keys",
       {
         method: "POST",
         body: JSON.stringify({ name })
       }
     );
 
-    const secret = data.api_key || data.key || data.data?.api_key || data.data?.key;
+    const key =
+      result?.api_key ||
+      result?.key ||
+      result?.data?.api_key ||
+      result?.data?.key;
 
     if ($("newKeyResult")) {
-      $("newKeyResult").innerHTML = secret
-        ? `<b>New API Key:</b><br><code>${safe(secret)}</code>
-           <br><button class="small-btn" onclick="copyText('${safe(secret)}')">Copy Key</button>
-           <p>Is key ko secure jagah save karein. Dobara dikhna zaroori nahi hai.</p>`
-        : "API key create request successful. Response mein key field nahi mili.";
+      $("newKeyResult").textContent =
+        key || "Key create hua, lekin response mein key nahi mili.";
     }
 
-    $("keyName").value = "";
-    showToast("API key create request complete.");
+    if (key) {
+      showToast("API key create ho gayi. Abhi copy karke safe rakho.");
+    } else {
+      showToast("API key create request successful");
+    }
+
+    if ($("keyName")) $("keyName").value = "";
+
     await loadKeys();
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
   }
 }
 
@@ -767,19 +1412,68 @@ async function revokeKey(id) {
   if (!confirm("Is API key ko revoke karna hai?")) return;
 
   try {
-    await api(`/api/admin/api-keys/${encodeURIComponent(id)}/revoke`, {
-      method: "POST",
-      body: JSON.stringify({})
+    await api("/api/admin/api-keys/" + encodeURIComponent(id) + "/revoke", {
+      method: "POST"
     });
 
-    showToast("API key revoke ho gayi.");
+    showToast("API key revoke ho gayi");
     await loadKeys();
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
   }
 }
 
-// ================= WHATSAPP API =================
+/* WHATSAPP CONNECTION */
+
+async function loadWhatsApp() {
+  const clientId = $("waClientId")?.value.trim();
+
+  if (!clientId) {
+    showToast("Client ID enter karo", "error");
+    return;
+  }
+
+  try {
+    const result = await api(
+      "/api/admin/clients/" + encodeURIComponent(clientId) + "/whatsapp"
+    );
+
+    const connection =
+      result?.connection ||
+      result?.whatsapp ||
+      result?.data?.connection ||
+      result?.data ||
+      result;
+
+    if ($("waPhoneId")) {
+      $("waPhoneId").value = connection?.phone_number_id || "";
+    }
+
+    if ($("waWabaId")) {
+      $("waWabaId").value = connection?.waba_id || "";
+    }
+
+    // Security: saved access token is never returned to the browser.
+    if ($("waToken")) {
+      $("waToken").value = "";
+      $("waToken").placeholder =
+        connection?.status === "connected"
+          ? "Token saved — enter new token only to replace"
+          : "Paste Meta access token";
+    }
+
+    if ($("waResult")) {
+      $("waResult").textContent =
+        "Connection status: " + (connection?.status || "Not connected");
+    }
+
+    showToast("WhatsApp details loaded");
+
+  } catch (error) {
+    showToast(error.message, "error");
+  }
+}
 
 async function saveWhatsApp() {
   const clientId = $("waClientId")?.value.trim();
@@ -787,14 +1481,22 @@ async function saveWhatsApp() {
   const wabaId = $("waWabaId")?.value.trim();
   const token = $("waToken")?.value.trim();
 
-  if (!clientId || !phoneId || !wabaId || !token) {
-    showToast("Saari WhatsApp details fill karein.", true);
+  if (!clientId || !phoneId || !wabaId) {
+    showToast("Client ID, Phone Number ID aur WABA ID required hain", "error");
     return;
   }
 
+  if (!token) {
+    showToast("Meta access token enter karo", "error");
+    return;
+  }
+
+  const button = $("saveWaBtn");
+  if (button) button.disabled = true;
+
   try {
     await api(
-      `/api/admin/clients/${encodeURIComponent(clientId)}/whatsapp`,
+      "/api/admin/clients/" + encodeURIComponent(clientId) + "/whatsapp",
       {
         method: "POST",
         body: JSON.stringify({
@@ -805,95 +1507,78 @@ async function saveWhatsApp() {
       }
     );
 
-    $("waToken").value = "";
+    if ($("waToken")) $("waToken").value = "";
+
     if ($("waResult")) {
-      $("waResult").textContent = "WhatsApp connection save request successful.";
+      $("waResult").textContent = "WhatsApp connection details saved.";
     }
 
-    showToast("WhatsApp details save ho gayi.");
+    showToast("WhatsApp details save ho gayi");
+
   } catch (error) {
-    showToast(error.message, true);
+    showToast(error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
   }
 }
 
-async function loadWhatsApp() {
-  const clientId = $("waClientId")?.value.trim();
+/* APP INITIALIZATION */
 
-  if (!clientId) {
-    showToast("Client ID enter karein.", true);
+async function verifyAdminSession() {
+  if (!adminToken) {
+    $("loginScreen").style.display = "flex";
+    $("adminApp").style.display = "none";
     return;
   }
 
   try {
-    const data = await api(
-      `/api/admin/clients/${encodeURIComponent(clientId)}/whatsapp`
-    );
+    const result = await api("/api/admin/me");
 
-    const wa = data.connection || data.whatsapp || data.data || data;
+    $("loginScreen").style.display = "none";
+    $("adminApp").style.display = "flex";
 
-    $("waPhoneId").value = wa.phone_number_id || "";
-    $("waWabaId").value = wa.waba_id || "";
-
-    if ($("waResult")) {
-      $("waResult").textContent =
-        "Connection status: " + (wa.status || "Details loaded");
+    if ($("adminIdentity")) {
+      $("adminIdentity").textContent =
+        result?.email ||
+        result?.user?.email ||
+        "Admin";
     }
 
-    // Security: saved access token ko kabhi screen par show nahi karna.
-    $("waToken").value = "";
-    showToast("WhatsApp details load ho gayi.");
+    await loadDashboard();
+
   } catch (error) {
-    showToast(error.message, true);
+    adminToken = "";
+    localStorage.removeItem("ads_growth_admin_token");
+
+    $("loginScreen").style.display = "flex";
+    $("adminApp").style.display = "none";
   }
 }
 
-// ================= COMMON FUNCTIONS =================
-
-function copyText(value) {
-  navigator.clipboard.writeText(value)
-    .then(() => showToast("Copied!"))
-    .catch(() => showToast("Copy nahi ho paya.", true));
-}
-
-function closeModal() {
-  $("modal")?.classList.remove("show");
-}
-
-function refreshCurrentPage() {
-  const active = document.querySelector(".nav-btn.active");
-  const section = active?.dataset.section || "overview";
-
-  if (section === "overview") loadDashboard();
-  if (section === "payments") loadPayments();
-  if (section === "clients") loadClients();
-  if (section === "keys") loadKeys();
-  if (section === "whatsapp") loadWhatsApp();
-
-  showToast("Refresh complete");
-}
-
-// ================= EVENT LISTENERS =================
+/* EVENT LISTENERS */
 
 document.addEventListener("DOMContentLoaded", () => {
   $("loginForm")?.addEventListener("submit", loginAdmin);
 
   $("logoutBtn")?.addEventListener("click", logoutAdmin);
-  $("refreshBtn")?.addEventListener("click", refreshCurrentPage);
 
-  $("menuBtn")?.addEventListener("click", () => {
-    $("sidebar")?.classList.toggle("open");
+  $("refreshBtn")?.addEventListener("click", () => {
+    loadDashboard();
+    showToast("Refreshing dashboard...");
   });
 
   document.querySelectorAll(".nav-btn").forEach(button => {
     button.addEventListener("click", () => {
       openSection(button.dataset.section);
+
+      if (window.innerWidth <= 800) {
+        $("sidebar")?.classList.remove("open");
+      }
     });
   });
 
-  document.querySelectorAll("[data-go]").forEach(button => {
-    button.addEventListener("click", () => {
-      openSection(button.dataset.go);
-    });
+  $("menuBtn")?.addEventListener("click", () => {
+    $("sidebar")?.classList.toggle("open");
   });
 
   $("paymentSearch")?.addEventListener("input", renderPayments);
@@ -901,10 +1586,10 @@ document.addEventListener("DOMContentLoaded", () => {
   $("clientSearch")?.addEventListener("input", renderClients);
 
   $("loadKeysBtn")?.addEventListener("click", loadKeys);
-  $("createKeyBtn")?.addEventListener("click", createApiKey);
+  $("createKeyBtn")?.addEventListener("click", createKey);
 
-  $("saveWaBtn")?.addEventListener("click", saveWhatsApp);
   $("loadWaBtn")?.addEventListener("click", loadWhatsApp);
+  $("saveWaBtn")?.addEventListener("click", saveWhatsApp);
 
   $("closeModal")?.addEventListener("click", closeModal);
 
@@ -912,19 +1597,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.target === $("modal")) closeModal();
   });
 
-  if (adminToken) {
-    api("/api/admin/me")
-      .then(() => showDashboard())
-      .catch(() => {
-        localStorage.removeItem(TOKEN_KEY);
-        adminToken = "";
-        showLogin();
-      });
-  } else {
-    showLogin();
-  }
+  verifyAdminSession();
 });
 </script>
 </body>
-             </html>
-             
+ </html>
+ 
