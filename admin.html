@@ -5,859 +5,926 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
-<title>ADS GROWTH | Admin Dashboard</title>
-
+<title>ADS GROWTH | Admin Control Center</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#070b18;color:#f1f5f9}
-header{background:linear-gradient(120deg,#101d38,#142b42,#063c38);padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1eaa8a;position:sticky;top:0;z-index:10}
-header h2{color:#39e6b1;font-size:20px;margin:0}
-.container{max-width:1350px;margin:auto;padding:18px}
-.card{background:linear-gradient(145deg,#121d33,#0c1729);border:1px solid #263c58;border-radius:14px;padding:18px;margin-bottom:18px}
-h2,h3{margin-top:0}h3{color:#45ddb1}
-button{border:0;padding:11px 14px;border-radius:8px;background:linear-gradient(135deg,#20d5a0,#0ca77d);color:#031b17;font-weight:bold;cursor:pointer;margin:3px}
-button:disabled{opacity:.5;cursor:not-allowed}
-.secondary{background:#263e5d;color:white}.danger{background:#df4055;color:white}
-input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #344b68;border-radius:8px;background:#091326;color:white;outline:none}
-label{font-size:13px;color:#c5d3e2}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.stat{background:#142b42;border:1px solid #28516a;padding:20px;border-radius:12px}
-.stat strong{display:block;color:#39e6b1;font-size:30px;margin-top:10px}
-nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
-nav button{background:#192b45;color:#d8e7f5;border:1px solid #344d69}
-nav button.active{background:#20d5a0;color:#031b17}
-table{width:100%;border-collapse:collapse;min-width:720px}
-th{background:#19314b;color:#45ddb1;padding:12px;text-align:left}
-td{padding:12px;border-bottom:1px solid #263b53;font-size:13px;vertical-align:top}
-.table-wrap{overflow-x:auto;border-radius:9px}
-.small{color:#9eb2c8;font-size:13px}
-.success{color:#39e6b1}.error{color:#ff6978}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --bg:#07111f;--panel:#101d2d;--panel2:#142438;
+ --green:#20c779;--green2:#13a968;--text:#f3f7fb;
+ --muted:#91a2b6;--line:#25364a;--red:#fb6474;
+ --yellow:#f5bd4f;--blue:#60a5fa;
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
 .hidden{display:none!important}
-#loginSection{max-width:440px;margin:55px auto}
-#loginSection h2{color:#39e6b1}
-.keybox{background:#071321;border:1px solid #20b88f;border-radius:9px;padding:14px;word-break:break-all;margin:12px 0}
-.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#263e5d;font-size:12px}
-.notice{padding:12px;border:1px solid #344b68;border-radius:8px;color:#b9c9d9;margin:10px 0}
-.actions{display:flex;gap:5px;flex-wrap:wrap}
-@media(max-width:600px){.container{padding:10px}header h2{font-size:16px}.card{padding:13px}nav button{flex:1}.stat strong{font-size:25px}}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;
+ background:radial-gradient(circle at top right,#123c35 0,transparent 38%)}
+.login-card{width:100%;max-width:420px;background:var(--panel);
+ border:1px solid var(--line);border-radius:23px;padding:32px;
+ box-shadow:0 25px 70px #0008}
+.logo{width:52px;height:52px;border-radius:16px;background:#123f32;
+ display:grid;place-items:center;color:var(--green);font-weight:900;font-size:21px}
+.brand{display:flex;align-items:center;gap:13px;margin-bottom:30px}
+.brand h2{font-size:20px;font-style:italic}
+.brand p{font-size:11px;color:var(--muted);margin-top:5px}
+.login-card h1{font-size:27px;margin-bottom:9px}
+.sub{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:25px}
+.field-label{display:block;color:#b9c7d6;font-size:12px;font-weight:bold;margin:17px 0 9px}
+.field{width:100%;height:48px;border-radius:11px;border:1px solid var(--line);
+ background:#091625;color:white;padding:0 14px;outline:none}
+.field:focus{border-color:var(--green)}
+.btn{border:0;border-radius:11px;padding:13px 17px;font-weight:800}
+.btn-green{background:var(--green);color:#062416}
+.btn-dark{background:#203249;color:white;border:1px solid #34465a}
+.btn-red{background:#51232d;color:#ffb5bd}
+.btn-small{padding:8px 11px;font-size:12px}
+.full{width:100%;margin-top:22px}
+.error{color:#ff8b97;font-size:13px;margin-top:12px}
+.app{min-height:100vh}
+.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#0b1726;
+ border-right:1px solid var(--line);padding:22px 15px;z-index:10}
+.side-brand{display:flex;align-items:center;gap:11px;padding:5px 7px 28px}
+.side-brand .logo{width:43px;height:43px}
+.side-brand h2{font-size:17px;font-style:italic}
+.side-brand p{font-size:10px;color:var(--muted);margin-top:4px}
+.nav-title{font-size:10px;letter-spacing:2px;color:#6f8299;
+ padding:17px 10px 9px;font-weight:bold}
+.nav-btn{width:100%;border:0;background:transparent;color:#aab9ca;
+ padding:12px 13px;border-radius:10px;text-align:left;
+ display:flex;align-items:center;gap:12px;font-size:13px;margin:3px 0}
+.nav-btn:hover,.nav-btn.active{background:#123c32;color:#55e4a0}
+.nav-icon{width:20px;text-align:center;font-size:16px}
+.side-bottom{position:absolute;bottom:20px;left:15px;right:15px}
+.admin-tag{border:1px solid var(--line);padding:12px;border-radius:12px;
+ color:var(--muted);font-size:11px;margin-bottom:10px;overflow-wrap:anywhere}
+.main{margin-left:245px;padding:25px 30px;min-height:100vh}
+.topbar{display:flex;justify-content:space-between;align-items:center;
+ gap:15px;margin-bottom:27px}
+.topbar h1{font-size:24px}
+.topbar p{font-size:12px;color:var(--muted);margin-top:6px}
+.top-actions{display:flex;gap:9px;align-items:center}
+.status-pill{font-size:11px;color:#5be5a0;background:#12382f;
+ padding:8px 11px;border-radius:20px}
+.mobile-menu{display:none}
+.section{display:none}
+.section.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat-card{background:var(--panel);border:1px solid var(--line);
+ border-radius:15px;padding:18px;min-width:0}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-icon{width:37px;height:37px;border-radius:11px;background:#16382f;
+ display:grid;place-items:center;font-size:17px}
+.stat-card p{font-size:12px;color:var(--muted);margin-top:14px}
+.stat-card h2{font-size:25px;margin-top:7px;overflow-wrap:anywhere}
+.panel{background:var(--panel);border:1px solid var(--line);
+ border-radius:15px;padding:19px;margin-bottom:18px;min-width:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;
+ gap:12px;margin-bottom:17px;flex-wrap:wrap}
+.panel-head h3{font-size:16px}
+.panel-head p{font-size:11px;color:var(--muted);margin-top:5px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th{text-align:left;color:#8497ac;font-size:10px;letter-spacing:1px;
+ padding:12px 10px;border-bottom:1px solid var(--line)}
+td{padding:13px 10px;border-bottom:1px solid #1e3043;
+ font-size:12px;color:#dce5ef}
+.badge{display:inline-block;padding:6px 9px;border-radius:20px;
+ font-size:10px;background:#273448;color:#cbd5e1}
+.badge.pending{background:#47391d;color:#f6d27e}
+.badge.approved{background:#123b2d;color:#6de6a8}
+.badge.rejected{background:#49232d;color:#ff9ca8}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar .field{max-width:260px}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.notice{padding:12px;border-radius:10px;background:#142b3c;
+ color:#b8d6ed;font-size:12px;line-height:1.6;margin-bottom:14px}
+.empty{padding:25px;text-align:center;color:var(--muted);font-size:13px}
+.modal{position:fixed;inset:0;background:#000b;z-index:30;
+ display:none;place-items:center;padding:15px}
+.modal.show{display:grid}
+.modal-card{background:var(--panel);border:1px solid var(--line);
+ border-radius:17px;padding:22px;width:100%;max-width:520px;
+ max-height:90vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.modal-head button{background:none;border:0;color:white;font-size:22px}
+.form-row{margin:12px 0}
+.form-row label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
+.form-row input,.form-row textarea,.form-row select{width:100%;
+ background:#091625;border:1px solid var(--line);border-radius:9px;
+ color:white;padding:12px;outline:none}
+.form-row textarea{min-height:90px;resize:vertical}
+#toast{position:fixed;bottom:20px;right:20px;z-index:50;
+ background:#143c30;color:#8ff0ba;padding:13px 18px;border-radius:10px;
+ display:none;font-size:13px;max-width:90vw}
+@media(max-width:1050px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.25s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;padding:19px 14px}
+ .mobile-menu{display:inline-block}
+ .topbar h1{font-size:20px}
+ .grid-two{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+ .stats{grid-template-columns:1fr 1fr;gap:9px}
+ .stat-card{padding:13px}
+ .stat-card h2{font-size:21px}
+ .topbar{align-items:flex-start}
+ .status-pill{display:none}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <h2>ADS GROWTH ADMIN</h2>
-  <button id="logoutBtn" class="danger hidden">Logout</button>
-</header>
+<!-- ADMIN LOGIN -->
+<div id="loginScreen" class="login-wrap">
+ <div class="login-card">
+  <div class="brand">
+   <div class="logo">AG</div>
+   <div>
+    <h2>ADS GROWTH</h2>
+    <p>ADMIN CONTROL CENTER</p>
+   </div>
+  </div>
+  <h1>Welcome back</h1>
+  <p class="sub">Sign in to manage clients, payments and WhatsApp API services.</p>
+  <form id="loginForm">
+   <label class="field-label">ADMIN EMAIL</label>
+   <input class="field" id="adminEmail" type="email"
+    placeholder="Enter admin email" required>
+   <label class="field-label">PASSWORD</label>
+   <input class="field" id="adminPassword" type="password"
+    placeholder="Enter password" required>
+   <button class="btn btn-green full" id="loginBtn">Secure Login →</button>
+  </form>
+  <div id="loginError" class="error"></div>
+ </div>
+</div>
 
-<div class="container">
+<!-- ADMIN APPLICATION -->
+<div id="adminApp" class="app hidden">
 
-<section id="loginSection" class="card">
-  <h2>Admin Login</h2>
-  <label>Admin Email</label>
-  <input id="email" type="email" placeholder="Admin email" autocomplete="username">
-  <label>Password</label>
-  <input id="password" type="password" placeholder="Admin password" autocomplete="current-password">
-  <button id="loginBtn">Login to Dashboard</button>
-  <p id="loginMessage" class="small"></p>
-</section>
+<aside class="sidebar" id="sidebar">
+ <div class="side-brand">
+  <div class="logo">AG</div>
+  <div><h2>ADS GROWTH</h2><p>ADMIN CONTROL CENTER</p></div>
+ </div>
 
-<section id="dashboardSection" class="hidden">
+ <div class="nav-title">MAIN MENU</div>
+ <button class="nav-btn active" data-section="overview"><span class="nav-icon">▦</span>Overview</button>
+ <button class="nav-btn" data-section="payments"><span class="nav-icon">₹</span>Payments</button>
+ <button class="nav-btn" data-section="clients"><span class="nav-icon">♙</span>Clients</button>
 
-<nav>
-  <button class="active" data-tab="dashboard">Dashboard</button>
-  <button data-tab="clients">Clients</button>
-  <button data-tab="payments">Payments</button>
-  <button data-tab="keys">Create / Manage API</button>
-  <button data-tab="whatsapp">WhatsApp Setup</button>
-</nav>
+ <div class="nav-title">MANAGEMENT</div>
+ <button class="nav-btn" data-section="keys"><span class="nav-icon">⚿</span>API Keys</button>
+ <button class="nav-btn" data-section="whatsapp"><span class="nav-icon">◉</span>WhatsApp API</button>
 
-<div id="dashboardTab">
-  <div class="card">
-    <h2>Welcome to ADS GROWTH</h2>
-    <p id="adminEmail" class="small">Admin Panel</p>
-    <p>Manage clients, UPI payments, platform API keys and WhatsApp connections.</p>
-    <button data-open-tab="keys">Create API Key</button>
-    <button data-open-tab="payments" class="secondary">Review Payments</button>
+ <div class="side-bottom">
+  <div class="admin-tag" id="adminIdentity">Administrator</div>
+  <button class="nav-btn" id="logoutBtn">⇥ Logout</button>
+ </div>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+   <button class="btn btn-dark mobile-menu" id="menuBtn">☰</button>
+   <div><h1 id="pageTitle">Dashboard Overview</h1>
+   <p>Manage your ADS GROWTH agency platform</p></div>
+  </div>
+  <div class="top-actions">
+   <span class="status-pill">● SYSTEM ONLINE</span>
+   <button class="btn btn-dark btn-small" id="refreshBtn">↻ Refresh</button>
+  </div>
+ </header>
+
+ <!-- OVERVIEW -->
+ <section class="section active" id="overview">
+  <div class="stats">
+   <div class="stat-card"><div class="stat-top"><span>Clients</span><span class="stat-icon">♙</span></div><h2 id="totalClients">0</h2><p>Total registered clients</p></div>
+   <div class="stat-card"><div class="stat-top"><span>Payments</span><span class="stat-icon">₹</span></div><h2 id="totalPayments">0</h2><p>Total payment records</p></div>
+   <div class="stat-card"><div class="stat-top"><span>Pending</span><span class="stat-icon">◷</span></div><h2 id="pendingPayments">0</h2><p>Awaiting verification</p></div>
+   <div class="stat-card"><div class="stat-top"><span>Revenue</span><span class="stat-icon">↗</span></div><h2 id="totalRevenue">₹0</h2><p>Approved payments</p></div>
   </div>
 
-  <div class="grid">
-    <div class="stat">Total Clients<strong id="totalClients">0</strong></div>
-    <div class="stat">Approved Clients<strong id="approvedClients">0</strong></div>
-    <div class="stat">Pending Payments<strong id="pendingPayments">0</strong></div>
-    <div class="stat">Total API Keys<strong id="totalKeys">0</strong></div>
+  <div class="panel">
+   <div class="panel-head"><div><h3>Recent Payments</h3><p>Latest customer payment activity</p></div>
+    <button class="btn btn-dark btn-small" data-go="payments">View all</button>
+   </div>
+   <div class="table-wrap">
+    <table><thead><tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th></tr></thead>
+    <tbody id="recentPayments"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody></table>
+   </div>
   </div>
-  <p id="dashboardMessage" class="small"></p>
-</div>
 
-<div id="clientsTab" class="card hidden">
-  <h3>Client Management</h3>
-  <input id="clientSearch" placeholder="Search client name, email or phone">
-  <label>Filter by status</label>
-  <select id="clientStatusFilter">
-    <option value="">All clients</option>
-    <option value="pending">Pending</option>
-    <option value="approved">Approved</option>
-    <option value="rejected">Rejected</option>
-  </select>
-  <button id="refreshClients">Refresh Clients</button>
-  <p id="clientsMessage" class="small"></p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>Client</th><th>Email</th><th>Phone</th><th>Business</th><th>Plan</th><th>Status</th><th>Actions</th>
-      </tr></thead>
-      <tbody id="clientsBody"></tbody>
-    </table>
+  <div class="panel">
+   <div class="panel-head"><div><h3>Latest Clients</h3><p>Recently registered accounts</p></div>
+    <button class="btn btn-dark btn-small" data-go="clients">View clients</button>
+   </div>
+   <div class="table-wrap">
+    <table><thead><tr><th>NAME</th><th>BUSINESS</th><th>EMAIL</th><th>STATUS</th></tr></thead>
+    <tbody id="recentClients"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody></table>
+   </div>
   </div>
-</div>
+ </section>
 
-<div id="paymentsTab" class="card hidden">
-  <h3>UPI Payment Verification</h3>
-  <label>Payment status</label>
-  <select id="paymentStatusFilter">
-    <option value="">All payments</option>
-    <option value="pending">Pending</option>
-    <option value="approved">Approved</option>
-    <option value="rejected">Rejected</option>
-  </select>
-  <button id="refreshPayments">Refresh Payments</button>
-  <p id="paymentsMessage" class="small"></p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>Client</th><th>Amount</th><th>UTR</th><th>Method</th><th>Status</th><th>Proof</th><th>Review</th>
-      </tr></thead>
-      <tbody id="paymentsBody"></tbody>
-    </table>
+ <!-- PAYMENTS -->
+ <section class="section" id="payments">
+  <div class="panel">
+   <div class="panel-head"><div><h3>Payment Management</h3><p>Verify UPI payments and review proofs</p></div></div>
+   <div class="toolbar">
+    <input class="field" id="paymentSearch" placeholder="Search client or UTR">
+    <select class="field" id="paymentFilter"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+   </div>
+   <div class="table-wrap">
+    <table><thead><tr><th>CLIENT</th><th>AMOUNT</th><th>UTR</th><th>STATUS</th><th>DATE</th><th>ACTION</th></tr></thead>
+    <tbody id="paymentsTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table>
+   </div>
   </div>
-</div>
+ </section>
 
-<div id="keysTab" class="card hidden">
-  <h3>Create Platform API Key</h3>
-  <div class="notice">API key sirf approved client ke liye banegi aur payment approval zaroori hai.</div>
-  <label>Select Client</label>
-  <select id="keyCustomerId">
-    <option value="">Loading clients...</option>
-  </select>
-  <label>API Key Name</label>
-  <input id="keyName" placeholder="Example: WhatsApp Business API">
-  <button id="generateKeyBtn">Create API Key</button>
-  <div id="generatedKey" class="keybox hidden"></div>
-  <p id="keysMessage" class="small"></p>
-  <hr>
-  <h3>API Keys List</h3>
-  <button id="refreshKeys" class="secondary">Refresh API Keys</button>
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>Client ID</th><th>Key Name</th><th>Prefix</th><th>Status</th><th>Created</th><th>Action</th>
-      </tr></thead>
-      <tbody id="keysBody"></tbody>
-    </table>
+ <!-- CLIENTS -->
+ <section class="section" id="clients">
+  <div class="panel">
+   <div class="panel-head"><div><h3>Client Management</h3><p>View and manage registered customers</p></div></div>
+   <div class="toolbar">
+    <input class="field" id="clientSearch" placeholder="Search name, email, business">
+   </div>
+   <div class="table-wrap">
+    <table><thead><tr><th>CLIENT</th><th>BUSINESS</th><th>EMAIL</th><th>PHONE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+    <tbody id="clientsTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table>
+   </div>
   </div>
+ </section>
+
+ <!-- API KEYS -->
+ <section class="section" id="keys">
+  <div class="panel">
+   <div class="panel-head"><div><h3>Platform API Keys</h3><p>Create or revoke a client's ADS GROWTH API key</p></div></div>
+   <div class="notice">API keys are platform credentials. They are different from Meta WhatsApp access tokens.</div>
+   <div class="toolbar">
+    <input class="field" id="keyClientId" placeholder="Client ID">
+    <button class="btn btn-green" id="loadKeysBtn">Load client keys</button>
+   </div>
+   <div class="toolbar">
+    <input class="field" id="keyName" placeholder="API key name">
+    <button class="btn btn-green" id="createKeyBtn">＋ Create API Key</button>
+   </div>
+   <div id="newKeyResult" class="notice hidden"></div>
+   <div class="table-wrap">
+    <table><thead><tr><th>NAME</th><th>KEY PREFIX</th><th>STATUS</th><th>CREATED</th><th>ACTION</th></tr></thead>
+    <tbody id="keysTable"><tr><td colspan="5" class="empty">Enter a client ID to load keys.</td></tr></tbody></table>
+   </div>
+  </div>
+ </section>
+
+ <!-- WHATSAPP -->
+ <section class="section" id="whatsapp">
+  <div class="panel">
+   <div class="panel-head"><div><h3>WhatsApp Cloud API Management</h3><p>Connect a client's authorized Meta WhatsApp account</p></div></div>
+   <div class="notice">Only save credentials supplied or authorized by the client. Meta access tokens are sensitive. Never share them in chat or expose them in the client dashboard.</div>
+   <div class="form-row"><label>CLIENT ID</label><input id="waClientId" placeholder="Enter client ID"></div>
+   <div class="form-row"><label>PHONE NUMBER ID</label><input id="waPhoneId" placeholder="Meta Phone Number ID"></div>
+   <div class="form-row"><label>WHATSAPP BUSINESS ACCOUNT ID (WABA ID)</label><input id="waWabaId" placeholder="Meta WABA ID"></div>
+   <div class="form-row"><label>META ACCESS TOKEN</label><input id="waToken" type="password" placeholder="Paste authorized Meta access token"></div>
+   <div class="toolbar">
+    <button class="btn btn-green" id="saveWaBtn">Save WhatsApp Connection</button>
+    <button class="btn btn-dark" id="loadWaBtn">Load connection status</button>
+   </div>
+   <div id="waResult" class="notice hidden"></div>
+  </div>
+ </section>
+</main>
 </div>
 
-<div id="whatsappTab" class="card hidden">
-  <h3>WhatsApp Cloud API Connection</h3>
-  <div class="notice">Client ka Meta WhatsApp Phone Number ID, WABA ID aur Access Token yahan securely save karein.</div>
-  <label>Select Client</label>
-  <select id="waCustomerId">
-    <option value="">Select client</option>
-  </select>
-  <button id="loadWaConnection" class="secondary">Check Connection</button>
-  <p id="waCurrentStatus" class="small"></p>
-  <label>Phone Number ID</label>
-  <input id="waPhoneNumberId" placeholder="Meta Phone Number ID">
-  <label>WhatsApp Business Account ID (WABA ID)</label>
-  <input id="waWabaId" placeholder="WABA ID">
-  <label>Meta Access Token</label>
-  <textarea id="waAccessToken" rows="3" placeholder="Paste Meta access token"></textarea>
-  <button id="saveWaConnection">Save WhatsApp Connection</button>
-  <p id="waMessage" class="small"></p>
+<!-- MODAL -->
+<div class="modal" id="modal">
+ <div class="modal-card">
+  <div class="modal-head"><h3 id="modalTitle">Details</h3><button id="closeModal">×</button></div>
+  <div id="modalBody"></div>
+ </div>
 </div>
-
-</section>
-</div>
-
+<div id="toast"></div>
+  
 <script>
 const API = "https://ads-growth-whatsapp-api.onrender.com";
-let token = localStorage.getItem("ads_admin_token") || "";
-let allClients = [];
+const TOKEN_KEY = "ads_growth_admin_token";
+
+let adminToken = localStorage.getItem(TOKEN_KEY) || "";
 let allPayments = [];
+let allClients = [];
 let allKeys = [];
 
 const $ = id => document.getElementById(id);
 
-async function request(path, options = {}) {
-  const headers = {
-    ...(token ? {Authorization: "Bearer " + token} : {}),
-    ...(options.headers || {})
+function authHeaders(extra = {}) {
+  return {
+    ...extra,
+    Authorization: "Bearer " + adminToken
   };
+}
 
-  if (options.body && !(options.body instanceof FormData)) {
-    headers["Content-Type"] = "application/json";
-  }
+async function api(path, options = {}) {
+  const response = await fetch(API + path, {
+    ...options,
+    headers: authHeaders({
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    })
+  });
 
-  const response = await fetch(API + path, {...options, headers});
   const data = await response.json().catch(() => ({}));
 
-  if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Request failed (" + response.status + ")");
+  if (!response.ok) {
+    throw new Error(data.message || data.error || "Request failed: " + response.status);
   }
   return data;
 }
 
-function showMessage(id, message, isError = false) {
-  $(id).textContent = message;
-  $(id).className = isError ? "error small" : "success small";
+function showToast(message, error = false) {
+  const el = $("toast");
+  if (!el) return;
+  el.textContent = message;
+  el.style.background = error ? "#dc3545" : "#159b69";
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 3000);
+}
+
+function money(value) {
+  return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#039;"
+  }[char]));
+}
+
+function getArray(data, keys) {
+  if (Array.isArray(data)) return data;
+  for (const key of keys) {
+    if (Array.isArray(data?.[key])) return data[key];
+    if (Array.isArray(data?.data?.[key])) return data.data[key];
+  }
+  if (Array.isArray(data?.data)) return data.data;
+  return [];
+}
+
+function statusBadge(status) {
+  const s = String(status || "pending").toLowerCase();
+  return `<span class="status ${safe(s)}">${safe(s)}</span>`;
+}
+
+function openSection(name) {
+  document.querySelectorAll(".section").forEach(el => {
+    el.classList.toggle("active", el.id === "section-" + name);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(el => {
+    el.classList.toggle("active", el.dataset.section === name);
+  });
+
+  const titles = {
+    overview:"Overview",
+    payments:"Payments",
+    clients:"Clients",
+    keys:"API Keys",
+    whatsapp:"WhatsApp API"
+  };
+
+  if ($("pageTitle")) $("pageTitle").textContent = titles[name] || "Dashboard";
+  $("sidebar")?.classList.remove("open");
+
+  if (name === "payments") loadPayments();
+  if (name === "clients") loadClients();
 }
 
 function showLogin() {
-  $("loginSection").classList.remove("hidden");
-  $("dashboardSection").classList.add("hidden");
-  $("logoutBtn").classList.add("hidden");
+  $("loginScreen")?.classList.remove("hidden");
+  $("adminApp")?.classList.add("hidden");
 }
 
 function showDashboard() {
-  $("loginSection").classList.add("hidden");
-  $("dashboardSection").classList.remove("hidden");
-  $("logoutBtn").classList.remove("hidden");
-  loadAll();
+  $("loginScreen")?.classList.add("hidden");
+  $("adminApp")?.classList.remove("hidden");
+  openSection("overview");
+  loadDashboard();
 }
 
-function switchTab(tab) {
-  document.querySelectorAll("nav [data-tab]").forEach(button => {
-    button.classList.toggle("active", button.dataset.tab === tab);
-  });
+async function loginAdmin(event) {
+  event.preventDefault();
 
-  ["dashboard","clients","payments","keys","whatsapp"].forEach(name => {
-    $(name + "Tab").classList.toggle("hidden", name !== tab);
-  });
-
-  if (tab === "keys") loadKeys();
-  if (tab === "whatsapp") loadClientOptions();
-}
-
-document.querySelectorAll("nav [data-tab]").forEach(button => {
-  button.addEventListener("click", () => switchTab(button.dataset.tab));
-});
-
-document.querySelectorAll("[data-open-tab]").forEach(button => {
-  button.addEventListener("click", () => switchTab(button.dataset.openTab));
-});
-
-// Admin login — backend route: POST /api/admin/login
-$("loginBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
+  const email = $("adminEmail")?.value.trim();
+  const password = $("adminPassword")?.value;
 
   if (!email || !password) {
-    showMessage("loginMessage", "Email and password required.", true);
+    $("loginError").textContent = "Email aur password enter karein.";
     return;
   }
 
   $("loginBtn").disabled = true;
+  $("loginBtn").textContent = "Please wait...";
+
   try {
-    const data = await request("/api/admin/login", {
+    const response = await fetch(API + "/api/admin/login", {
       method: "POST",
-      body: JSON.stringify({email, password})
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({ email, password })
     });
 
-    if (!data.token) throw new Error("Login token missing.");
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || data.error || "Login failed");
+    }
 
-    token = data.token;
-    localStorage.setItem("ads_admin_token", token);
-    localStorage.setItem("ads_admin_email", email);
-    showMessage("loginMessage", "Login successful.");
+    const token = data.token || data.access_token || data.data?.token;
+    if (!token) throw new Error("Login response mein token nahi mila.");
+
+    adminToken = token;
+    localStorage.setItem(TOKEN_KEY, token);
+
+    await api("/api/admin/me");
+    $("loginError").textContent = "";
     showDashboard();
+    showToast("Admin login successful");
   } catch (error) {
-    showMessage("loginMessage", error.message, true);
+    $("loginError").textContent = error.message;
   } finally {
     $("loginBtn").disabled = false;
+    $("loginBtn").textContent = "Login to Dashboard";
   }
-});
+}
 
-$("logoutBtn").addEventListener("click", () => {
-  token = "";
-  localStorage.removeItem("ads_admin_token");
-  localStorage.removeItem("ads_admin_email");
+function logoutAdmin() {
+  localStorage.removeItem(TOKEN_KEY);
+  adminToken = "";
   showLogin();
-});
- 
-// Load dashboard, clients, payments and API keys
-async function loadAll() {
-  $("adminEmail").textContent =
-    "Admin: " + (localStorage.getItem("ads_admin_email") || "Logged in");
-
-  await Promise.allSettled([
-    loadDashboard(),
-    loadClients(),
-    loadPayments()
-  ]);
 }
 
 async function loadDashboard() {
   try {
-    const data = await request("/api/admin/dashboard");
-    const stats = data.dashboard || data.stats || data;
+    const data = await api("/api/admin/dashboard");
+    const summary = data.summary || data.stats || data.data || data;
 
-    $("totalClients").textContent =
-      stats.total_clients ?? stats.totalCustomers ?? 0;
-    $("approvedClients").textContent =
-      stats.approved_clients ?? stats.approvedCustomers ?? 0;
-    $("pendingPayments").textContent =
-      stats.pending_payments ?? stats.pendingPayments ?? 0;
-    $("totalKeys").textContent =
-      stats.total_api_keys ?? stats.totalKeys ?? 0;
+    if ($("totalClients"))
+      $("totalClients").textContent = summary.total_clients ?? summary.totalClients ?? "—";
 
-    showMessage("dashboardMessage", "Dashboard data refreshed.");
+    if ($("totalPayments"))
+      $("totalPayments").textContent = summary.total_payments ?? summary.totalPayments ?? "—";
+
+    if ($("pendingPayments"))
+      $("pendingPayments").textContent = summary.pending_payments ?? summary.pendingPayments ?? "—";
+
+    if ($("totalRevenue"))
+      $("totalRevenue").textContent = money(summary.total_revenue ?? summary.totalRevenue ?? 0);
+
+    const payments = getArray(data, ["recent_payments","payments"]);
+    const clients = getArray(data, ["recent_clients","clients"]);
+
+    renderRecentPayments(payments);
+    renderRecentClients(clients);
   } catch (error) {
-    showMessage("dashboardMessage", error.message, true);
+    showToast(error.message, true);
   }
 }
 
-// CLIENTS — backend route: GET /api/admin/clients
+function renderRecentPayments(rows) {
+  if (!$("recentPayments")) return;
+
+  $("recentPayments").innerHTML = rows.length ? rows.slice(0, 6).map(p => `
+    <tr>
+      <td>${safe(p.utr || p.id)}</td>
+      <td>${money(p.amount)}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td>${safe(p.created_at ? new Date(p.created_at).toLocaleDateString("en-IN") : "—")}</td>
+    </tr>
+  `).join("") : `<tr><td colspan="4">No recent payments</td></tr>`;
+}
+
+function renderRecentClients(rows) {
+  if (!$("recentClients")) return;
+
+  $("recentClients").innerHTML = rows.length ? rows.slice(0, 6).map(c => `
+    <tr>
+      <td>${safe(c.business_name || c.full_name || c.name || "—")}</td>
+      <td>${safe(c.email || "—")}</td>
+      <td>${statusBadge(c.status)}</td>
+    </tr>
+  `).join("") : `<tr><td colspan="3">No recent clients</td></tr>`;
+}
+
+async function loadPayments() {
+  try {
+    const data = await api("/api/admin/payments");
+    allPayments = getArray(data, ["payments","items"]);
+    renderPayments();
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+function renderPayments() {
+  if (!$("paymentsTable")) return;
+
+  const query = ($("paymentSearch")?.value || "").toLowerCase();
+  const filter = $("paymentFilter")?.value || "all";
+
+  const rows = allPayments.filter(p => {
+    const matchText = [
+      p.utr, p.id, p.email, p.business_name, p.customer_name
+    ].join(" ").toLowerCase().includes(query);
+
+    const matchStatus = filter === "all" ||
+      String(p.status).toLowerCase() === filter;
+
+    return matchText && matchStatus;
+  });
+
+  $("paymentsTable").innerHTML = rows.length ? rows.map(p => `
+    <tr>
+      <td>${safe(p.utr || "—")}</td>
+      <td>${safe(p.business_name || p.customer_name || p.email || p.customer_id || "—")}</td>
+      <td>${money(p.amount)}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td>
+        <button class="small-btn" onclick="viewPayment('${safe(p.id)}')">View</button>
+        ${String(p.status).toLowerCase() === "pending" ? `
+          <button class="small-btn success" onclick="reviewPayment('${safe(p.id)}','approve')">Approve</button>
+          <button class="small-btn danger" onclick="reviewPayment('${safe(p.id)}','reject')">Reject</button>
+        ` : ""}
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="5">No payments found</td></tr>`;
+}
+
+async function reviewPayment(id, action) {
+  const message = action === "approve"
+    ? "Is payment ko approve karna hai?"
+    : "Is payment ko reject karna hai?";
+
+  if (!confirm(message)) return;
+
+  try {
+    await api(`/api/admin/payments/${encodeURIComponent(id)}/review`, {
+      method: "POST",
+      body: JSON.stringify({ action })
+    });
+
+    showToast("Payment " + action + " ho gaya.");
+    await loadPayments();
+    await loadDashboard();
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+async function viewPayment(id) {
+  try {
+    const response = await fetch(
+      API + `/api/admin/payments/${encodeURIComponent(id)}/proof`,
+      { headers: authHeaders() }
+    );
+
+    if (!response.ok) throw new Error("Payment proof load nahi hua.");
+
+    const type = response.headers.get("content-type") || "";
+
+    if (type.includes("application/json")) {
+      const data = await response.json();
+      const url = data.url || data.signedUrl || data.proof_url || data.data?.url;
+
+      if (!url) throw new Error("Proof URL response mein nahi mila.");
+
+      $("modalTitle").textContent = "Payment Proof";
+      $("modalBody").innerHTML = `<a href="${safe(url)}" target="_blank" rel="noopener">Open payment screenshot</a>`;
+      $("modal").classList.add("show");
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    $("modalTitle").textContent = "Payment Proof";
+    $("modalBody").innerHTML = `<img src="${url}" style="width:100%;border-radius:12px" alt="Payment proof">`;
+    $("modal").classList.add("show");
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
 async function loadClients() {
   try {
-    const status = $("clientStatusFilter").value;
-    const query = status ? "?status=" + encodeURIComponent(status) : "";
-    const data = await request("/api/admin/clients" + query);
-
-    allClients = data.clients || [];
-    renderClients(allClients);
-    fillClientSelectors();
-
-    showMessage("clientsMessage", allClients.length + " clients loaded.");
-    $("totalClients").textContent = allClients.length;
-    $("approvedClients").textContent =
-      allClients.filter(c => c.status === "approved").length;
+    const data = await api("/api/admin/clients");
+    allClients = getArray(data, ["clients","items"]);
+    renderClients();
   } catch (error) {
-    showMessage("clientsMessage", error.message, true);
+    showToast(error.message, true);
   }
 }
 
-function renderClients(list) {
-  const body = $("clientsBody");
-  body.innerHTML = "";
+function renderClients() {
+  if (!$("clientsTable")) return;
 
-  if (!list.length) {
-    body.innerHTML =
-      '<tr><td colspan="7">No clients found.</td></tr>';
-    return;
-  }
+  const query = ($("clientSearch")?.value || "").toLowerCase();
 
-  list.forEach(client => {
-    const tr = document.createElement("tr");
+  const rows = allClients.filter(c =>
+    [c.business_name,c.full_name,c.name,c.email,c.phone,c.id]
+      .join(" ").toLowerCase().includes(query)
+  );
 
-    const values = [
-      client.full_name || client.name || "Client",
-      client.email || "-",
-      client.phone || "-",
-      client.business_name || "-",
-      client.plan || "-",
-      client.status || "pending"
-    ];
-
-    values.forEach(value => {
-      const td = document.createElement("td");
-      td.textContent = value;
-      tr.appendChild(td);
-    });
-
-    const action = document.createElement("td");
-    const buttons = document.createElement("div");
-    buttons.className = "actions";
-
-    const details = document.createElement("button");
-    details.textContent = "Details";
-    details.className = "secondary";
-    details.addEventListener("click", () => viewClient(client.id));
-
-    const approve = document.createElement("button");
-    approve.textContent = "Approve";
-    approve.disabled = client.status === "approved";
-    approve.addEventListener("click", () =>
-      changeClientStatus(client.id, "approved")
-    );
-
-    const reject = document.createElement("button");
-    reject.textContent = "Reject";
-    reject.className = "danger";
-    reject.disabled = client.status === "rejected";
-    reject.addEventListener("click", () =>
-      changeClientStatus(client.id, "rejected")
-    );
-
-    buttons.append(details, approve, reject);
-    action.appendChild(buttons);
-    tr.appendChild(action);
-    body.appendChild(tr);
-  });
+  $("clientsTable").innerHTML = rows.length ? rows.map(c => `
+    <tr>
+      <td>${safe(c.business_name || c.full_name || c.name || "—")}</td>
+      <td>${safe(c.email || "—")}</td>
+      <td>${safe(c.phone || "—")}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td>
+        <button class="small-btn" onclick="viewClient('${safe(c.id)}')">Details</button>
+        <button class="small-btn success" onclick="setClientStatus('${safe(c.id)}','approved')">Approve</button>
+        <button class="small-btn danger" onclick="setClientStatus('${safe(c.id)}','rejected')">Reject</button>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="5">No clients found</td></tr>`;
 }
 
-function fillClientSelectors() {
-  const options = allClients.map(client => {
-    const name = client.full_name || client.name || "Client";
-    const email = client.email || client.id;
-    return {id: client.id, label: name + " — " + email};
-  });
+async function setClientStatus(id, status) {
+  if (!confirm("Client status " + status + " karna hai?")) return;
 
-  ["keyCustomerId", "waCustomerId"].forEach(id => {
-    const select = $(id);
-    const oldValue = select.value;
-    select.innerHTML = '<option value="">Select client</option>';
-
-    options.forEach(option => {
-      const item = document.createElement("option");
-      item.value = option.id;
-      item.textContent = option.label;
-      select.appendChild(item);
+  try {
+    await api(`/api/admin/clients/${encodeURIComponent(id)}/status`, {
+      method: "POST",
+      body: JSON.stringify({ status })
     });
 
-    if (options.some(option => option.id === oldValue)) {
-      select.value = oldValue;
-    }
-  });
+    showToast("Client status updated");
+    await loadClients();
+    await loadDashboard();
+  } catch (error) {
+    showToast(error.message, true);
+  }
 }
 
 async function viewClient(id) {
   try {
-    const data = await request(
-      "/api/admin/clients/" + encodeURIComponent(id)
-    );
-    const client = data.client || data;
-    alert(
-      "Client: " + (client.full_name || client.name || "-") +
-      "\nEmail: " + (client.email || "-") +
-      "\nPhone: " + (client.phone || "-") +
-      "\nBusiness: " + (client.business_name || "-") +
-      "\nPlan: " + (client.plan || "-") +
-      "\nStatus: " + (client.status || "-")
-    );
+    const data = await api(`/api/admin/clients/${encodeURIComponent(id)}`);
+    const c = data.client || data.data || data;
+
+    $("modalTitle").textContent = "Client Details";
+    $("modalBody").innerHTML = `
+      <p><b>Business:</b> ${safe(c.business_name || "—")}</p>
+      <p><b>Name:</b> ${safe(c.full_name || c.name || "—")}</p>
+      <p><b>Email:</b> ${safe(c.email || "—")}</p>
+      <p><b>Phone:</b> ${safe(c.phone || "—")}</p>
+      <p><b>Plan:</b> ${safe(c.plan || "—")}</p>
+      <p><b>Status:</b> ${safe(c.status || "—")}</p>
+      <p><b>Client ID:</b> ${safe(c.id || id)}</p>
+    `;
+    $("modal").classList.add("show");
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, true);
   }
 }
+</script>
+// ================= API KEYS =================
 
-// Backend route: POST /api/admin/clients/:id/status
-async function changeClientStatus(id, status) {
-  if (!confirm("Change this client's status to " + status + "?")) return;
-
-  try {
-    await request(
-      "/api/admin/clients/" + encodeURIComponent(id) + "/status",
-      {
-        method: "POST",
-        body: JSON.stringify({status})
-      }
-    );
-
-    alert("Client status updated.");
-    await loadClients();
-    await loadDashboard();
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-$("refreshClients").addEventListener("click", loadClients);
-$("clientStatusFilter").addEventListener("change", loadClients);
-
-$("clientSearch").addEventListener("input", () => {
-  const q = $("clientSearch").value.toLowerCase();
-  const filtered = allClients.filter(client =>
-    [
-      client.full_name,
-      client.name,
-      client.email,
-      client.phone,
-      client.business_name,
-      client.status
-    ].some(value => String(value || "").toLowerCase().includes(q))
-  );
-  renderClients(filtered);
-});
-
-// PAYMENTS — backend route: GET /api/admin/payments
-async function loadPayments() {
-  try {
-    const status = $("paymentStatusFilter").value;
-    const query = status ? "?status=" + encodeURIComponent(status) : "";
-    const data = await request("/api/admin/payments" + query);
-
-    allPayments = data.payments || [];
-    renderPayments(allPayments);
-
-    $("pendingPayments").textContent =
-      allPayments.filter(p => p.status === "pending").length;
-
-    showMessage("paymentsMessage", allPayments.length + " payments loaded.");
-  } catch (error) {
-    showMessage("paymentsMessage", error.message, true);
-  }
-}
-
-function renderPayments(payments) {
-  const body = $("paymentsBody");
-  body.innerHTML = "";
-
-  if (!payments.length) {
-    body.innerHTML =
-      '<tr><td colspan="7">No payments found.</td></tr>';
-    return;
-  }
-
-  payments.forEach(payment => {
-    const tr = document.createElement("tr");
-    const customer = allClients.find(c => c.id === payment.customer_id);
-
-    const clientCell = document.createElement("td");
-    clientCell.textContent =
-      customer
-        ? (customer.full_name || customer.name || customer.email)
-        : (payment.customer_id || "-");
-
-    const amountCell = document.createElement("td");
-    amountCell.textContent = "₹" + (payment.amount ?? "-");
-
-    const utrCell = document.createElement("td");
-    utrCell.textContent = payment.utr || "-";
-
-    const methodCell = document.createElement("td");
-    methodCell.textContent = payment.payment_method || "UPI";
-
-    const statusCell = document.createElement("td");
-    statusCell.textContent = payment.status || "pending";
-
-    const proofCell = document.createElement("td");
-    const proofButton = document.createElement("button");
-    proofButton.textContent = "View Proof";
-    proofButton.className = "secondary";
-    proofButton.addEventListener("click", () => viewPaymentProof(payment.id));
-    proofCell.appendChild(proofButton);
-
-    const actionCell = document.createElement("td");
-    const approve = document.createElement("button");
-    approve.textContent = "Approve";
-    approve.disabled = payment.status === "approved";
-    approve.addEventListener("click", () =>
-      reviewPayment(payment.id, "approve")
-    );
-
-    const reject = document.createElement("button");
-    reject.textContent = "Reject";
-    reject.className = "danger";
-    reject.disabled = payment.status === "rejected";
-    reject.addEventListener("click", () =>
-      reviewPayment(payment.id, "reject")
-    );
-
-    actionCell.append(approve, reject);
-    tr.append(
-      clientCell, amountCell, utrCell,
-      methodCell, statusCell, proofCell, actionCell
-    );
-    body.appendChild(tr);
-  });
-}
-
-// Backend route: GET /api/admin/payments/:id/proof
-async function viewPaymentProof(id) {
-  try {
-    const data = await request(
-      "/api/admin/payments/" + encodeURIComponent(id) + "/proof"
-    );
-
-    const url = data.url || data.signed_url || data.proof_url;
-    if (!url) throw new Error("Proof URL was not returned.");
-
-    window.open(url, "_blank", "noopener,noreferrer");
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-// Backend route: POST /api/admin/payments/:id/review
-async function reviewPayment(id, action) {
-  if (!confirm("Are you sure you want to " + action + " this payment?")) return;
-
-  try {
-    await request(
-      "/api/admin/payments/" + encodeURIComponent(id) + "/review",
-      {
-        method: "POST",
-        body: JSON.stringify({action})
-      }
-    );
-
-    alert("Payment " + action + " successful.");
-    await Promise.all([loadPayments(), loadClients(), loadDashboard()]);
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-$("refreshPayments").addEventListener("click", loadPayments);
-$("paymentStatusFilter").addEventListener("change", loadPayments);
-
-// CREATE API KEY
-// Backend route: POST /api/admin/clients/:id/api-keys
-$("generateKeyBtn").addEventListener("click", async () => {
-  const customerId = $("keyCustomerId").value;
-  const name = $("keyName").value.trim();
-
-  if (!customerId || !name) {
-    showMessage("keysMessage", "Select a client and enter API key name.", true);
-    return;
-  }
-
-  const client = allClients.find(c => c.id === customerId);
-  if (!client || client.status !== "approved") {
-    showMessage("keysMessage", "Client must be approved first.", true);
-    return;
-  }
-
-  if (!confirm("Create an API key for this client?")) return;
-
-  $("generateKeyBtn").disabled = true;
-
-  try {
-    const data = await request(
-      "/api/admin/clients/" + encodeURIComponent(customerId) + "/api-keys",
-      {
-        method: "POST",
-        body: JSON.stringify({name})
-      }
-    );
-
-    const key = data.api_key || data.key;
-    if (!key) throw new Error("Server did not return the new API key.");
-
-    $("generatedKey").classList.remove("hidden");
-    $("generatedKey").textContent =
-      "NEW API KEY — COPY AND SAVE NOW: " + key;
-
-    showMessage("keysMessage", "API key created. Save it securely; this is the only time it is displayed.");
-    $("keyName").value = "";
-
-    await Promise.all([loadKeys(), loadDashboard()]);
-  } catch (error) {
-    showMessage("keysMessage", error.message, true);
-  } finally {
-    $("generateKeyBtn").disabled = false;
-  }
-});
-
-// Load API keys for each client because backend lists keys per client
 async function loadKeys() {
-  try {
-    if (!allClients.length) await loadClients();
+  const clientId = $("keyClientId")?.value.trim();
 
-    const results = await Promise.all(
-      allClients.map(async client => {
-        try {
-          const data = await request(
-            "/api/admin/clients/" + encodeURIComponent(client.id) + "/api-keys"
-          );
-          return (data.api_keys || data.keys || []).map(key => ({
-            ...key,
-            customer_id: client.id
-          }));
-        } catch (error) {
-          console.warn("Could not load keys for client", client.id, error.message);
-          return [];
-        }
-      })
-    );
-
-    allKeys = results.flat();
-    renderKeys(allKeys);
-    $("totalKeys").textContent = allKeys.length;
-  } catch (error) {
-    showMessage("keysMessage", error.message, true);
-  }
-}
-
-function renderKeys(keys) {
-  const body = $("keysBody");
-  body.innerHTML = "";
-
-  if (!keys.length) {
-    body.innerHTML = '<tr><td colspan="6">No API keys found.</td></tr>';
-    return;
-  }
-
-  keys.forEach(key => {
-    const tr = document.createElement("tr");
-
-    const customer = document.createElement("td");
-    customer.textContent = key.customer_id || "-";
-
-    const name = document.createElement("td");
-    name.textContent = key.name || "API Key";
-
-    const prefix = document.createElement("td");
-    prefix.textContent = key.key_prefix || "adsg_...";
-
-    const status = document.createElement("td");
-    status.textContent = key.status || "-";
-
-    const created = document.createElement("td");
-    created.textContent = key.created_at
-      ? new Date(key.created_at).toLocaleString()
-      : "-";
-
-    const action = document.createElement("td");
-    const revoke = document.createElement("button");
-    revoke.textContent = "Revoke";
-    revoke.className = "danger";
-    revoke.disabled = key.status !== "active";
-    revoke.addEventListener("click", () => revokeApiKey(key.id));
-
-    action.appendChild(revoke);
-    tr.append(customer, name, prefix, status, created, action);
-    body.appendChild(tr);
-  });
-}
-
-// Backend route: POST /api/admin/api-keys/:id/revoke
-async function revokeApiKey(id) {
-  if (!confirm("Revoke this API key? It will stop working immediately.")) return;
-
-  try {
-    await request(
-      "/api/admin/api-keys/" + encodeURIComponent(id) + "/revoke",
-      {method: "POST"}
-    );
-    showMessage("keysMessage", "API key revoked.");
-    await Promise.all([loadKeys(), loadDashboard()]);
-  } catch (error) {
-    showMessage("keysMessage", error.message, true);
-  }
-}
-
-$("refreshKeys").addEventListener("click", loadKeys);
- 
-// WHATSAPP CONNECTION
-// Backend route: GET /api/admin/clients/:id/whatsapp
-$("loadWaConnection").addEventListener("click", async () => {
-  const customerId = $("waCustomerId").value;
-
-  if (!customerId) {
-    showMessage("waCurrentStatus", "Please select a client.", true);
+  if (!clientId) {
+    showToast("Pehle Client ID enter karein.", true);
     return;
   }
 
   try {
-    const data = await request(
-      "/api/admin/clients/" + encodeURIComponent(customerId) + "/whatsapp"
+    const data = await api(
+      `/api/admin/clients/${encodeURIComponent(clientId)}/api-keys`
     );
 
-    const connection = data.connection;
+    allKeys = getArray(data, ["keys","api_keys","items"]);
+    renderKeys();
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
 
-    if (!connection) {
-      showMessage("waCurrentStatus", "No WhatsApp connection saved yet.");
-      $("waPhoneNumberId").value = "";
-      $("waWabaId").value = "";
-      $("waAccessToken").value = "";
-      return;
+function renderKeys() {
+  if (!$("keysTable")) return;
+
+  $("keysTable").innerHTML = allKeys.length ? allKeys.map(k => `
+    <tr>
+      <td>${safe(k.name || "API Key")}</td>
+      <td>${safe(k.key_prefix || "Hidden")}</td>
+      <td>${statusBadge(k.status || "active")}</td>
+      <td>
+        <button class="small-btn danger"
+          onclick="revokeKey('${safe(k.id)}')">Revoke</button>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="4">No API keys found</td></tr>`;
+}
+
+async function createApiKey() {
+  const clientId = $("keyClientId")?.value.trim();
+  const name = $("keyName")?.value.trim();
+
+  if (!clientId || !name) {
+    showToast("Client ID aur API key name enter karein.", true);
+    return;
+  }
+
+  try {
+    const data = await api(
+      `/api/admin/clients/${encodeURIComponent(clientId)}/api-keys`,
+      {
+        method: "POST",
+        body: JSON.stringify({ name })
+      }
+    );
+
+    const secret = data.api_key || data.key || data.data?.api_key || data.data?.key;
+
+    if ($("newKeyResult")) {
+      $("newKeyResult").innerHTML = secret
+        ? `<b>New API Key:</b><br><code>${safe(secret)}</code>
+           <br><button class="small-btn" onclick="copyText('${safe(secret)}')">Copy Key</button>
+           <p>Is key ko secure jagah save karein. Dobara dikhna zaroori nahi hai.</p>`
+        : "API key create request successful. Response mein key field nahi mili.";
     }
 
-    $("waPhoneNumberId").value = connection.phone_number_id || "";
-    $("waWabaId").value = connection.waba_id || "";
-
-    // Existing access token is never returned by the backend.
-    $("waAccessToken").value = "";
-
-    showMessage(
-      "waCurrentStatus",
-      "Connection status: " + (connection.status || "unknown") +
-      ". Enter a new token only if you want to replace it."
-    );
+    $("keyName").value = "";
+    showToast("API key create request complete.");
+    await loadKeys();
   } catch (error) {
-    showMessage("waCurrentStatus", error.message, true);
+    showToast(error.message, true);
   }
-});
+}
 
-// Backend route: POST /api/admin/clients/:id/whatsapp
-$("saveWaConnection").addEventListener("click", async () => {
-  const customerId = $("waCustomerId").value;
-  const phone_number_id = $("waPhoneNumberId").value.trim();
-  const waba_id = $("waWabaId").value.trim();
-  const access_token = $("waAccessToken").value.trim();
-
-  if (!customerId || !phone_number_id || !waba_id || !access_token) {
-    showMessage(
-      "waMessage",
-      "Select client and enter Phone Number ID, WABA ID and Access Token.",
-      true
-    );
-    return;
-  }
-
-  if (!confirm("Save this WhatsApp connection securely for the selected client?")) {
-    return;
-  }
-
-  $("saveWaConnection").disabled = true;
+async function revokeKey(id) {
+  if (!confirm("Is API key ko revoke karna hai?")) return;
 
   try {
-    await request(
-      "/api/admin/clients/" + encodeURIComponent(customerId) + "/whatsapp",
+    await api(`/api/admin/api-keys/${encodeURIComponent(id)}/revoke`, {
+      method: "POST",
+      body: JSON.stringify({})
+    });
+
+    showToast("API key revoke ho gayi.");
+    await loadKeys();
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+// ================= WHATSAPP API =================
+
+async function saveWhatsApp() {
+  const clientId = $("waClientId")?.value.trim();
+  const phoneId = $("waPhoneId")?.value.trim();
+  const wabaId = $("waWabaId")?.value.trim();
+  const token = $("waToken")?.value.trim();
+
+  if (!clientId || !phoneId || !wabaId || !token) {
+    showToast("Saari WhatsApp details fill karein.", true);
+    return;
+  }
+
+  try {
+    await api(
+      `/api/admin/clients/${encodeURIComponent(clientId)}/whatsapp`,
       {
         method: "POST",
         body: JSON.stringify({
-          phone_number_id,
-          waba_id,
-          access_token
+          phone_number_id: phoneId,
+          waba_id: wabaId,
+          access_token: token
         })
       }
     );
 
-    $("waAccessToken").value = "";
-    showMessage("waMessage", "WhatsApp connection saved successfully.");
-    showMessage("waCurrentStatus", "WhatsApp connection is active.");
-  } catch (error) {
-    showMessage("waMessage", error.message, true);
-  } finally {
-    $("saveWaConnection").disabled = false;
-  }
-});
+    $("waToken").value = "";
+    if ($("waResult")) {
+      $("waResult").textContent = "WhatsApp connection save request successful.";
+    }
 
-// Reload client list when entering WhatsApp section
-async function loadClientOptions() {
-  if (!allClients.length) {
-    await loadClients();
+    showToast("WhatsApp details save ho gayi.");
+  } catch (error) {
+    showToast(error.message, true);
   }
-  fillClientSelectors();
 }
 
-// RESTORE ADMIN SESSION
-async function restoreSession() {
-  if (!token) {
-    showLogin();
+async function loadWhatsApp() {
+  const clientId = $("waClientId")?.value.trim();
+
+  if (!clientId) {
+    showToast("Client ID enter karein.", true);
     return;
   }
 
   try {
-    const data = await request("/api/admin/me");
-    const admin = data.admin || data.user || {};
+    const data = await api(
+      `/api/admin/clients/${encodeURIComponent(clientId)}/whatsapp`
+    );
 
-    if (admin.email) {
-      localStorage.setItem("ads_admin_email", admin.email);
+    const wa = data.connection || data.whatsapp || data.data || data;
+
+    $("waPhoneId").value = wa.phone_number_id || "";
+    $("waWabaId").value = wa.waba_id || "";
+
+    if ($("waResult")) {
+      $("waResult").textContent =
+        "Connection status: " + (wa.status || "Details loaded");
     }
 
-    showDashboard();
+    // Security: saved access token ko kabhi screen par show nahi karna.
+    $("waToken").value = "";
+    showToast("WhatsApp details load ho gayi.");
   } catch (error) {
-    token = "";
-    localStorage.removeItem("ads_admin_token");
-    localStorage.removeItem("ads_admin_email");
-    showLogin();
+    showToast(error.message, true);
   }
 }
 
-restoreSession();
-</script>
+// ================= COMMON FUNCTIONS =================
 
+function copyText(value) {
+  navigator.clipboard.writeText(value)
+    .then(() => showToast("Copied!"))
+    .catch(() => showToast("Copy nahi ho paya.", true));
+}
+
+function closeModal() {
+  $("modal")?.classList.remove("show");
+}
+
+function refreshCurrentPage() {
+  const active = document.querySelector(".nav-btn.active");
+  const section = active?.dataset.section || "overview";
+
+  if (section === "overview") loadDashboard();
+  if (section === "payments") loadPayments();
+  if (section === "clients") loadClients();
+  if (section === "keys") loadKeys();
+  if (section === "whatsapp") loadWhatsApp();
+
+  showToast("Refresh complete");
+}
+
+// ================= EVENT LISTENERS =================
+
+document.addEventListener("DOMContentLoaded", () => {
+  $("loginForm")?.addEventListener("submit", loginAdmin);
+
+  $("logoutBtn")?.addEventListener("click", logoutAdmin);
+  $("refreshBtn")?.addEventListener("click", refreshCurrentPage);
+
+  $("menuBtn")?.addEventListener("click", () => {
+    $("sidebar")?.classList.toggle("open");
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      openSection(button.dataset.section);
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => {
+      openSection(button.dataset.go);
+    });
+  });
+
+  $("paymentSearch")?.addEventListener("input", renderPayments);
+  $("paymentFilter")?.addEventListener("change", renderPayments);
+  $("clientSearch")?.addEventListener("input", renderClients);
+
+  $("loadKeysBtn")?.addEventListener("click", loadKeys);
+  $("createKeyBtn")?.addEventListener("click", createApiKey);
+
+  $("saveWaBtn")?.addEventListener("click", saveWhatsApp);
+  $("loadWaBtn")?.addEventListener("click", loadWhatsApp);
+
+  $("closeModal")?.addEventListener("click", closeModal);
+
+  $("modal")?.addEventListener("click", event => {
+    if (event.target === $("modal")) closeModal();
+  });
+
+  if (adminToken) {
+    api("/api/admin/me")
+      .then(() => showDashboard())
+      .catch(() => {
+        localStorage.removeItem(TOKEN_KEY);
+        adminToken = "";
+        showLogin();
+      });
+  } else {
+    showLogin();
+  }
+});
+</script>
 </body>
-</html>
+             </html>
+             
